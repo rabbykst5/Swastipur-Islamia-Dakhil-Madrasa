@@ -3,144 +3,362 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা - রেজিস্ট্রেশন</title>
+  <title>সুবর্ণজয়ন্তী উৎসব - স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background: #f0f4f8; padding: 20px 10px; }
-    .container { max-width: 650px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
-    .header { text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 20px; margin-bottom: 25px; }
-    .header h1 { font-size: 24px; color: #1e3a8a; margin-bottom: 6px; }
-    .header h2 { font-size: 18px; color: #d97706; margin-bottom: 8px; }
-    .header p { font-size: 14px; color: #dc2626; font-weight: 600; }
+    body { background: #f0f4f9; color: #1e293b; line-height: 1.6; }
+
+    /* Top Hero Banner Section */
+    .hero-banner {
+      background: linear-gradient(135deg, #0f2b5c 0%, #1e40af 50%, #0284c7 100%);
+      color: #ffffff;
+      padding: 40px 15px 50px 15px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 5px solid #f59e0b;
+    }
+    .motto {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 5px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+      color: #fef08a;
+    }
+    .institution-name {
+      font-size: 32px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    .institution-sub {
+      font-size: 16px;
+      color: #cbd5e1;
+      margin-bottom: 25px;
+    }
+    .badge-50 {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 10px 25px;
+      border-radius: 50px;
+      border: 2px solid #fbbf24;
+      margin-bottom: 20px;
+    }
+    .badge-circle {
+      width: 55px;
+      height: 55px;
+      background: radial-gradient(circle, #f59e0b 0%, #b45309 100%);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 18px;
+      border: 2px solid #fef08a;
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+    }
+    .badge-circle span { font-size: 9px; margin-top: -3px; font-weight: normal; }
+    .badge-text { font-size: 20px; color: #fef08a; font-weight: 700; text-align: left; }
+    .festival-title {
+      font-size: 38px;
+      font-weight: 900;
+      color: #fef08a;
+      text-shadow: 0 3px 8px rgba(0,0,0,0.4);
+      margin-bottom: 12px;
+    }
+    .festival-sub {
+      background: #dc2626;
+      color: #fff;
+      display: inline-block;
+      padding: 6px 24px;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(220, 38, 38, 0.4);
+    }
+    .slogan-pill {
+      margin-top: 15px;
+      font-size: 15px;
+      color: #e2e8f0;
+      font-style: italic;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 900px;
+      margin: -30px auto 40px auto;
+      padding: 0 15px;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Info Cards Section */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .info-card {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      border-top: 4px solid #1e40af;
+    }
+    .info-card.highlight {
+      border-top-color: #16a34a;
+    }
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 14px;
+      border-bottom: 1px dashed #e2e8f0;
+      padding-bottom: 8px;
+    }
+    .card-title span { font-size: 22px; }
+    .card-text { font-size: 14px; color: #475569; line-height: 1.7; text-align: justify; }
+    .feature-list { list-style: none; }
+    .feature-list li {
+      position: relative;
+      padding-left: 24px;
+      margin-bottom: 10px;
+      font-size: 13.5px;
+      color: #334155;
+    }
+    .feature-list li::before {
+      content: '✔';
+      position: absolute;
+      left: 0;
+      color: #16a34a;
+      font-weight: bold;
+    }
+
+    /* Registration Form Card */
+    .form-wrapper {
+      background: #ffffff;
+      padding: 35px 30px;
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      border: 1px solid #e2e8f0;
+    }
+    .form-header {
+      text-align: center;
+      margin-bottom: 25px;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 15px;
+    }
+    .form-header h2 { font-size: 22px; color: #1e3a8a; }
+    .form-header p { font-size: 13.5px; color: #dc2626; font-weight: 600; margin-top: 4px; }
+
     .form-group { margin-bottom: 18px; }
     label { display: block; font-weight: 600; margin-bottom: 6px; color: #334155; font-size: 14px; }
     .required { color: #dc2626; }
     input[type="text"], input[type="tel"], select, textarea {
-      width: 100%; padding: 12px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 15px; outline: none; transition: 0.2s; background: #fff;
+      width: 100%; padding: 12px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 14.5px; outline: none; transition: 0.2s; background: #fff;
     }
     input:focus, select:focus, textarea:focus { border-color: #2563eb; }
     textarea { resize: vertical; min-height: 75px; }
     .warn-msg { color: #dc2626; font-size: 12px; margin-top: 4px; display: none; }
     .photo-preview { display: flex; align-items: center; gap: 15px; margin-top: 10px; }
-    .preview-box { width: 90px; height: 110px; border: 2px dashed #94a3b8; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #f8fafc; font-size: 12px; color: #94a3b8; }
+    .preview-box { width: 95px; height: 115px; border: 2px dashed #94a3b8; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #f8fafc; font-size: 12px; color: #94a3b8; }
     .preview-box img { width: 100%; height: 100%; object-fit: cover; }
+    
     .btn-submit {
-      width: 100%; background: #16a34a; color: #ffffff; border: none; padding: 14px; border-radius: 8px; font-size: 17px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-top: 10px;
+      width: 100%; background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: #ffffff; border: none; padding: 15px; border-radius: 8px; font-size: 17px; font-weight: 700; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); margin-top: 10px;
     }
-    .btn-submit:hover { background: #15803d; }
+    .btn-submit:hover { opacity: 0.95; }
     .btn-submit:disabled { background: #94a3b8; cursor: not-allowed; }
     .status-msg { text-align: center; margin-top: 15px; font-weight: 600; font-size: 15px; }
     .success { color: #16a34a; }
     .error { color: #dc2626; }
     #customProfessionGroup { margin-top: 10px; display: none; }
+
+    /* Footer */
+    .footer-bar {
+      text-align: center;
+      padding: 25px 15px;
+      color: #64748b;
+      font-size: 13.5px;
+    }
+
+    @media (max-width: 600px) {
+      .institution-name { font-size: 24px; }
+      .festival-title { font-size: 28px; }
+      .form-wrapper { padding: 25px 15px; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <div class="header">
-      <h1>স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা</h1>
-      <h2>সুবর্ণজয়ন্তী উৎসব ও পুনর্মিলনী রেজিস্ট্রেশন</h2>
-      <p>⚠️ অনুগ্রহ করে নাম ও ঠিকানা বাংলায় লিখুন (ইংরেজি গ্রহণযোগ্য নয়)</p>
+  <!-- শীর্ষ ব্যানার সেকশন -->
+  <header class="hero-banner">
+    <div class="motto">শিক্ষা • নৈতিকতা • মানবতা</div>
+    <h1 class="institution-name">স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা</h1>
+    <div class="institution-sub">স্বস্তিপুর, কুষ্টিয়া সদর, কুষ্টিয়া।</div>
+
+    <div class="badge-50">
+      <div class="badge-circle">৫০ <span>বছর পূর্তি</span></div>
+      <div class="badge-text">(প্রতিষ্ঠার ৫০ বছর পূর্তি উপলক্ষে)</div>
     </div>
 
-    <form id="regForm">
-      <div class="form-group">
-        <label>নাম (বাংলায়) <span class="required">*</span></label>
-        <input type="text" id="name" class="bn-only" placeholder="আপনার পূর্ণ নাম বাংলায় লিখুন" required>
-        <div class="warn-msg">শুধুমাত্র বাংলা অক্ষর লিখুন!</div>
+    <div class="festival-title">সুবর্ণজয়ন্তী উৎসব</div>
+    <div>
+      <span class="festival-sub">সাবেক ছাত্রছাত্রীদের রেজিস্ট্রেশন কার্যক্রম চলছে</span>
+    </div>
+    <div class="slogan-pill">"একই মাদ্রাসা, একই পরিবার চিরদিন..."</div>
+  </header>
+
+  <!-- মূল কন্টেইনার -->
+  <main class="container">
+
+    <!-- ব্যানারের তথ্যাবলি সেকশন (কার্ড ভিউ) -->
+    <section class="info-grid">
+      <!-- আমাদের গৌরবময় পথচলা -->
+      <div class="info-card">
+        <h3 class="card-title"><span>🏛️</span> আমাদের গৌরবময় পথচলা</h3>
+        <p class="card-text">
+          দীর্ঘ পাঁচ দশক ধরে স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা এলাকার শিক্ষা বিস্তার, নৈতিক মূল্যবোধ সৃষ্টি এবং যোগ্য নাগরিক গঠনে গুরুত্বপূর্ণ ভূমিকা পালন করে আসছে। এই গৌরবময় পথচলার সঙ্গে প্রত্যক্ষভাবে জড়িত রয়েছেন প্রতিষ্ঠানের অসংখ্য সাবেক ছাত্রছাত্রী।
+        </p>
       </div>
 
-      <div class="form-group">
-        <label>পিতার নাম (বাংলায়) <span class="required">*</span></label>
-        <input type="text" id="fatherName" class="bn-only" placeholder="পিতার নাম বাংলায় লিখুন" required>
-        <div class="warn-msg">শুধুমাত্র বাংলা অক্ষর লিখুন!</div>
+      <!-- কেন রেজিস্ট্রেশন করবেন? -->
+      <div class="info-card highlight">
+        <h3 class="card-title"><span>🎯</span> কেন রেজিস্ট্রেশন করবেন?</h3>
+        <ul class="feature-list">
+          <li>সাবেক ছাত্রছাত্রীদের একটি সমন্বিত ডাটাবেজ/তালিকা প্রস্তুত হবে।</li>
+          <li>দেশের বিভিন্ন প্রান্তে ও বিদেশে অবস্থানরতদের সঙ্গে যোগাযোগ সহজ হবে।</li>
+          <li>সুবর্ণজয়ন্তী অনুষ্ঠানে অংশগ্রহণের সুযোগ সৃষ্টি হবে।</li>
+          <li>মূল্যবান পরামর্শ, সহযোগিতা ও অংশগ্রহণে অনুষ্ঠান আরও সফল হবে।</li>
+          <li>প্রাক্তন ও বর্তমান শিক্ষার্থীদের মধ্যে সেতুবন্ধন আরও শক্তিশালী হবে।</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- রেজিস্ট্রেশন ফর্ম কার্ড -->
+    <section class="form-wrapper">
+      <div class="form-header">
+        <h2>সাবেক ছাত্রছাত্রী রেজিস্ট্রেশন ফর্ম</h2>
+        <p>⚠️ অনুগ্রহ করে নাম ও ঠিকানা বাংলায় পূরণ করুন (ইংরেজি গ্রহণযোগ্য নয়)</p>
       </div>
 
-      <div class="form-group">
-        <label>মাতার নাম (বাংলায়) <span class="required">*</span></label>
-        <input type="text" id="motherName" class="bn-only" placeholder="মাতার নাম বাংলায় লিখুন" required>
-        <div class="warn-msg">শুধুমাত্র বাংলা অক্ষর লিখুন!</div>
-      </div>
-
-      <!-- ব্যাচ ড্রপডাউন (২০২৬ থেকে ১৯৪০) -->
-      <div class="form-group">
-        <label>ব্যাচ <span class="required">*</span></label>
-        <select id="batch" required>
-          <option value="" disabled selected>ব্যাচ নির্বাচন করুন</option>
-        </select>
-      </div>
-
-      <!-- পাসের সন ড্রপডাউন (২০২৬ থেকে ১৯৪০) -->
-      <div class="form-group">
-        <label>দাখিল / এস এস সি পাসের সন <span class="required">*</span></label>
-        <select id="passingYear" required>
-          <option value="" disabled selected>পাসের সন নির্বাচন করুন</option>
-        </select>
-      </div>
-
-      <!-- বর্তমান পেশা -->
-      <div class="form-group">
-        <label>বর্তমান পেশা <span class="required">*</span></label>
-        <select id="profession" onchange="toggleCustomProfession(this.value)" required>
-          <option value="" disabled selected>পেশা নির্বাচন করুন</option>
-          <option value="ছাত্র / শিক্ষার্থী">ছাত্র / শিক্ষার্থী</option>
-          <option value="শিক্ষক / অধ্যাপনা">শিক্ষক / অধ্যাপনা</option>
-          <option value="ইমাম / খতিব / ধর্মীয় শিক্ষক">ইমাম / খতিব / ধর্মীয় শিক্ষক</option>
-          <option value="ব্যবসায়ী">ব্যবসায়ী</option>
-          <option value="প্রবাসী (বিদেশে কর্মরত)">প্রবাসী (বিদেশে কর্মরত)</option>
-          <option value="সরকারি চাকরিজীবী">সরকারি চাকরিজীবী</option>
-          <option value="বেসরকারি চাকরিজীবী">বেসরকারি চাকরিজীবী</option>
-          <option value="কৃষিজীবী / খামারি">কৃষিজীবী / খামারি</option>
-          <option value="আইনজীবী / আইন পেশা">আইনজীবী / আইন পেশা</option>
-          <option value="চিকিৎসক / ডাক্তার">চিকিৎসক / ডাক্তার</option>
-          <option value="প্রকৌশলী / ইঞ্জিনিয়ার">প্রকৌশলী / ইঞ্জিনিয়ার</option>
-          <option value="আইটি / ফ্রিল্যান্সার / সফটওয়্যার">আইটি / ফ্রিল্যান্সার / সফটওয়্যার</option>
-          <option value="সাংবাদিক / মিডিয়া কর্মী">সাংবাদিক / মিডিয়া কর্মী</option>
-          <option value="ব্যাংকার / আর্থিক প্রতিষ্ঠান">ব্যাংকার / আর্থিক প্রতিষ্ঠান</option>
-          <option value="পুলিশ / সামরিক / ডিফেন্স">পুলিশ / সামরিক / ডিফেন্স</option>
-          <option value="ফার্মাসিস্ট / স্বাস্থ্যকর্মী">ফার্মাসিস্ট / স্বাস্থ্যকর্মী</option>
-          <option value="চালক / পরিবহন কর্মী">চালক / পরিবহন কর্মী</option>
-          <option value="গৃহিণী">গৃহিণী</option>
-          <option value="অবসরপ্রাপ্ত">অবসরপ্রাপ্ত</option>
-          <option value="অন্যান্য">অন্যান্য (নিজে বাংলায় লিখুন)</option>
-        </select>
-        
-        <div id="customProfessionGroup">
-          <input type="text" id="customProfession" class="bn-only" placeholder="আপনার পেশার নাম বাংলায় লিখুন">
+      <form id="regForm">
+        <div class="form-group">
+          <label>নাম (বাংলায়) <span class="required">*</span></label>
+          <input type="text" id="name" class="bn-only" placeholder="আপনার পূর্ণ নাম বাংলায় লিখুন" required>
           <div class="warn-msg">শুধুমাত্র বাংলা অক্ষর লিখুন!</div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label>বর্তমান ঠিকানা (বাংলায়) <span class="required">*</span></label>
-        <textarea id="address" class="bn-only" placeholder="গ্রাম/বাসা, পোস্ট অফিস, থানা, জেলা (বাংলায় লিখুন)" required></textarea>
-        <div class="warn-msg">শুধুমাত্র বাংলা অক্ষর লিখুন!</div>
-      </div>
-
-      <div class="form-group">
-        <label>মোবাইল নাম্বার <span class="required">*</span></label>
-        <input type="tel" id="phone" placeholder="০১XXXXXXXXX" required>
-      </div>
-
-      <div class="form-group">
-        <label>পাসপোর্ট সাইজ ছবি <span class="required">*</span></label>
-        <input type="file" id="photo" accept="image/*" required>
-        <div class="photo-preview">
-          <div class="preview-box" id="previewContainer">ছবি নেই</div>
-          <small style="color: #64748b;">(স্পষ্ট ও পরিষ্কার পাসপোর্ট সাইজ ছবি নির্বাচন করুন)</small>
+        <div class="form-group">
+          <label>পিতার নাম (বাংলায়) <span class="required">*</span></label>
+          <input type="text" id="fatherName" class="bn-only" placeholder="পিতার নাম বাংলায় লিখুন" required>
+          <div class="warn-msg">শুধুমাত্র বাংলা অক্ষর লিখুন!</div>
         </div>
-      </div>
 
-      <button type="submit" id="btnSubmit" class="btn-submit">নিবন্ধন সম্পন্ন করুন</button>
-      <div id="statusMsg" class="status-msg"></div>
-    </form>
-  </div>
+        <div class="form-group">
+          <label>মাতার নাম (বাংলায়) <span class="required">*</span></label>
+          <input type="text" id="motherName" class="bn-only" placeholder="মাতার নাম বাংলায় লিখুন" required>
+          <div class="warn-msg">শুধুমাত্র বাংলা অক্ষর লিখুন!</div>
+        </div>
+
+        <!-- ব্যাচ ড্রপডাউন -->
+        <div class="form-group">
+          <label>ব্যাচ <span class="required">*</span></label>
+          <select id="batch" required>
+            <option value="" disabled selected>ব্যাচ নির্বাচন করুন</option>
+          </select>
+        </div>
+
+        <!-- পাসের সন ড্রপডাউন -->
+        <div class="form-group">
+          <label>দাখিল / এস এস সি পাসের সন <span class="required">*</span></label>
+          <select id="passingYear" required>
+            <option value="" disabled selected>পাসের সন নির্বাচন করুন</option>
+          </select>
+        </div>
+
+        <!-- বর্তমান পেশা ড্রপডাউন -->
+        <div class="form-group">
+          <label>বর্তমান পেশা <span class="required">*</span></label>
+          <select id="profession" onchange="toggleCustomProfession(this.value)" required>
+            <option value="" disabled selected>পেশা নির্বাচন করুন</option>
+            <option value="ছাত্র / শিক্ষার্থী">ছাত্র / শিক্ষার্থী</option>
+            <option value="শিক্ষক / অধ্যাপনা">শিক্ষক / অধ্যাপনা</option>
+            <option value="ইমাম / খতিব / ধর্মীয় শিক্ষক">ইমাম / খতিব / ধর্মীয় শিক্ষক</option>
+            <option value="ব্যবসায়ী">ব্যবসায়ী</option>
+            <option value="প্রবাসী (বিদেশে কর্মরত)">প্রবাসী (বিদেশে কর্মরত)</option>
+            <option value="সরকারি চাকরিজীবী">সরকারি চাকরিজীবী</option>
+            <option value="বেসরকারি চাকরিজীবী">বেসরকারি চাকরিজীবী</option>
+            <option value="কৃষিজীবী / খামারি">কৃষিজীবী / খামারি</option>
+            <option value="আইনজীবী / আইন পেশা">আইনজীবী / আইন পেশা</option>
+            <option value="চিকিৎসক / ডাক্তার">চিকিৎসক / ডাক্তার</option>
+            <option value="প্রকৌশলী / ইঞ্জিনিয়ার">প্রকৌশলী / ইঞ্জিনিয়ার</option>
+            <option value="আইটি / ফ্রিল্যান্সার / সফটওয়্যার">আইটি / ফ্রিল্যান্সার / সফটওয়্যার</option>
+            <option value="সাংবাদিক / মিডিয়া কর্মী">সাংবাদিক / মিডিয়া কর্মী</option>
+            <option value="ব্যাংকার / আর্থিক প্রতিষ্ঠান">ব্যাংকার / আর্থিক প্রতিষ্ঠান</option>
+            <option value="পুলিশ / সামরিক / ডিফেন্স">পুলিশ / সামরিক / ডিফেন্স</option>
+            <option value="ফার্মাসিস্ট / স্বাস্থ্যকর্মী">ফার্মাসিস্ট / স্বাস্থ্যকর্মী</option>
+            <option value="চালক / পরিবহন কর্মী">চালক / পরিবহন কর্মী</option>
+            <option value="গৃহিণী">গৃহিণী</option>
+            <option value="অবসরপ্রাপ্ত">অবসরপ্রাপ্ত</option>
+            <option value="অন্যান্য">অন্যান্য (নিজে বাংলায় লিখুন)</option>
+          </select>
+          
+          <div id="customProfessionGroup">
+            <input type="text" id="customProfession" class="bn-only" placeholder="আপনার পেশার নাম বাংলায় লিখুন">
+            <div class="warn-msg">শুধুমাত্র বাংলা অক্ষর লিখুন!</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>বর্তমান ঠিকানা (বাংলায়) <span class="required">*</span></label>
+          <textarea id="address" class="bn-only" placeholder="গ্রাম/বাসা, পোস্ট অফিস, থানা, জেলা (বাংলায় লিখুন)" required></textarea>
+          <div class="warn-msg">শুধুমাত্র বাংলা অক্ষর লিখুন!</div>
+        </div>
+
+        <div class="form-group">
+          <label>মোবাইল নাম্বার <span class="required">*</span></label>
+          <input type="tel" id="phone" placeholder="০১XXXXXXXXX" required>
+        </div>
+
+        <div class="form-group">
+          <label>পাসপোর্ট সাইজ ছবি <span class="required">*</span></label>
+          <input type="file" id="photo" accept="image/*" required>
+          <div class="photo-preview">
+            <div class="preview-box" id="previewContainer">ছবি নেই</div>
+            <small style="color: #64748b;">(স্পষ্ট ও পরিষ্কার পাসপোর্ট সাইজ ছবি নির্বাচন করুন)</small>
+          </div>
+        </div>
+
+        <button type="submit" id="btnSubmit" class="btn-submit">নিবন্ধন সম্পন্ন করুন</button>
+        <div id="statusMsg" class="status-msg"></div>
+      </form>
+    </section>
+
+    <footer class="footer-bar">
+      <p>— আসুন, আমরা সবাই মিলে গড়ে তুলি স্মৃতির এই মহিমান্বিত দিনটি —</p>
+      <p style="margin-top: 5px; font-size: 12px; color: #94a3b8;">স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা • সুবর্ণজয়ন্তী উৎসব</p>
+    </footer>
+
+  </main>
 
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxhGJXqi5sqTO-WrAO5oGgiQxFfRKJ7lOA7M7XUS3LqLTnCgOjMqoDInP2TsvXU5l3hOw/exec';
 
-    // শুধুমাত্র বাংলা লেখার ভ্যালিডেশন (ইংরেজি টাইপ করলেই আটকাবে)
+    // শুধুমাত্র বাংলা লেখার ভ্যালিডেশন
     const bnRegex = /[a-zA-Z]/;
     document.querySelectorAll('.bn-only').forEach(el => {
       el.addEventListener('input', function() {
@@ -154,7 +372,7 @@
       });
     });
 
-    // ড্রপডাউনে ১৯৪০ থেকে ২০২৬ সাল যোগ করা
+    // ড্রপডাউনে ২০২৬ থেকে ১৯৪০ সাল যুক্ত করা
     const banglaDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
     function toBn(num) {
       return num.toString().replace(/[0-9]/g, w => banglaDigits[w]);
