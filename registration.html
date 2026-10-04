@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা - রেজিস্ট্রেশন</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background: #f0f4f8; padding: 20px 10px; }
+    .container { max-width: 650px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    .header { text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 20px; margin-bottom: 25px; }
+    .header h1 { font-size: 24px; color: #1e3a8a; margin-bottom: 6px; }
+    .header h2 { font-size: 18px; color: #d97706; margin-bottom: 8px; }
+    .header p { font-size: 14px; color: #475569; }
+    .form-group { margin-bottom: 18px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; color: #334155; font-size: 14px; }
+    .required { color: #dc2626; }
+    input[type="text"], input[type="tel"], select, textarea {
+      width: 100%; padding: 12px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 15px; outline: none; transition: 0.2s; background: #fff;
+    }
+    input:focus, select:focus, textarea:focus { border-color: #2563eb; }
+    textarea { resize: vertical; min-height: 75px; }
+    .photo-preview { display: flex; align-items: center; gap: 15px; margin-top: 10px; }
+    .preview-box { width: 90px; height: 110px; border: 2px dashed #94a3b8; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #f8fafc; font-size: 12px; color: #94a3b8; }
+    .preview-box img { width: 100%; height: 100%; object-fit: cover; }
+    .btn-submit {
+      width: 100%; background: #16a34a; color: #ffffff; border: none; padding: 14px; border-radius: 8px; font-size: 17px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-top: 10px;
+    }
+    .btn-submit:hover { background: #15803d; }
+    .btn-submit:disabled { background: #94a3b8; cursor: not-allowed; }
+    .status-msg { text-align: center; margin-top: 15px; font-weight: 600; font-size: 15px; }
+    .success { color: #16a34a; }
+    .error { color: #dc2626; }
+    #customProfessionGroup { margin-top: 10px; display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা</h1>
+      <h2>সুবর্ণজয়ন্তী উৎসব ও পুনর্মিলনী রেজিস্ট্রেশন</h2>
+      <p>অনুগ্রহ করে নিচের তথ্যগুলো সঠিকভাবে বাংলায় পূরণ করুন</p>
+    </div>
+
+    <form id="regForm">
+      <div class="form-group">
+        <label>নাম <span class="required">*</span></label>
+        <input type="text" id="name" placeholder="আপনার পূর্ণ নাম লিখুন" required>
+      </div>
+
+      <div class="form-group">
+        <label>পিতার নাম <span class="required">*</span></label>
+        <input type="text" id="fatherName" placeholder="পিতার নাম লিখুন" required>
+      </div>
+
+      <div class="form-group">
+        <label>মাতার নাম <span class="required">*</span></label>
+        <input type="text" id="motherName" placeholder="মাতার নাম লিখুন" required>
+      </div>
+
+      <!-- ব্যাচ ড্রপডাউন (২০২৬ থেকে ১৯৪০) -->
+      <div class="form-group">
+        <label>ব্যাচ <span class="required">*</span></label>
+        <select id="batch" required>
+          <option value="" disabled selected>ব্যাচ নির্বাচন করুন</option>
+        </select>
+      </div>
+
+      <!-- পাসের সন ড্রপডাউন (২০২৬ থেকে ১৯৪০) -->
+      <div class="form-group">
+        <label>দাখিল / এস এস সি পাসের সন <span class="required">*</span></label>
+        <select id="passingYear" required>
+          <option value="" disabled selected>পাসের সন নির্বাচন করুন</option>
+        </select>
+      </div>
+
+      <!-- বর্তমান পেশা ড্রপডাউন -->
+      <div class="form-group">
+        <label>বর্তমান পেশা <span class="required">*</span></label>
+        <select id="profession" onchange="toggleCustomProfession(this.value)" required>
+          <option value="" disabled selected>পেশা নির্বাচন করুন</option>
+          <option value="ছাত্র / শিক্ষার্থী">ছাত্র / শিক্ষার্থী</option>
+          <option value="শিক্ষক / অধ্যাপনা">শিক্ষক / অধ্যাপনা</option>
+          <option value="ইমাম / খতিব / ধর্মীয় শিক্ষক">ইমাম / খতিব / ধর্মীয় শিক্ষক</option>
+          <option value="ব্যবসায়ী">ব্যবসায়ী</option>
+          <option value="প্রবাসী (বিদেশে কর্মরত)">প্রবাসী (বিদেশে কর্মরত)</option>
+          <option value="সরকারি চাকরিজীবী">সরকারি চাকরিজীবী</option>
+          <option value="বেসরকারি চাকরিজীবী">বেসরকারি চাকরিজীবী</option>
+          <option value="কৃষিজীবী / খামারি">কৃষিজীবী / খামারি</option>
+          <option value="আইনজীবী / আইন পেশা">আইনজীবী / আইন পেশা</option>
+          <option value="চিকিৎসক / ডাক্তার">চিকিৎসক / ডাক্তার</option>
+          <option value="প্রকৌশলী / ইঞ্জিনিয়ার">প্রকৌশলী / ইঞ্জিনিয়ার</option>
+          <option value="আইটি / ফ্রিল্যান্সার / সফটওয়্যার">আইটি / ফ্রিল্যান্সার / সফটওয়্যার</option>
+          <option value="সাংবাদিক / মিডিয়া কর্মী">সাংবাদিক / মিডিয়া কর্মী</option>
+          <option value="ব্যাংকার / আর্থিক প্রতিষ্ঠান">ব্যাংকার / আর্থিক প্রতিষ্ঠান</option>
+          <option value="পুলিশ / সামরিক / ডিফেন্স">পুলিশ / সামরিক / ডিফেন্স</option>
+          <option value="ফার্মাসিস্ট / স্বাস্থ্যকর্মী">ফার্মাসিস্ট / স্বাস্থ্যকর্মী</option>
+          <option value="চালক / পরিবহন কর্মী">চালক / পরিবহন কর্মী</option>
+          <option value="গৃহিণী">গৃহিণী</option>
+          <option value="অবসরপ্রাপ্ত">অবসরপ্রাপ্ত</option>
+          <option value="অন্যান্য">অন্যান্য (নিজে লিখুন)</option>
+        </select>
+        
+        <!-- অন্যান্য সিলেক্ট করলে লেখার ঘর -->
+        <div id="customProfessionGroup">
+          <input type="text" id="customProfession" placeholder="আপনার পেশার নাম লিখুন">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>বর্তমান ঠিকানা <span class="required">*</span></label>
+        <textarea id="address" placeholder="গ্রাম/বাসা, পোস্ট অফিস, থানা, জেলা" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>মোবাইল নাম্বার <span class="required">*</span></label>
+        <input type="tel" id="phone" placeholder="০১XXXXXXXXX" required>
+      </div>
+
+      <div class="form-group">
+        <label>পাসপোর্ট সাইজ ছবি <span class="required">*</span></label>
+        <input type="file" id="photo" accept="image/*" required>
+        <div class="photo-preview">
+          <div class="preview-box" id="previewContainer">ছবি নেই</div>
+          <small style="color: #64748b;">(স্পষ্ট ও পরিষ্কার পাসপোর্ট সাইজ ছবি নির্বাচন করুন)</small>
+        </div>
+      </div>
+
+      <button type="submit" id="btnSubmit" class="btn-submit">নিবন্ধন সম্পন্ন করুন</button>
+      <div id="statusMsg" class="status-msg"></div>
+    </form>
+  </div>
+
+  <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxhGJXqi5sqTO-WrAO5oGgiQxFfRKJ7lOA7M7XUS3LqLTnCgOjMqoDInP2TsvXU5l3hOw/exec';
+
+    // ১৯৪০ থেকে ২০২৬ পর্যন্ত বছর স্বয়ংক্রিয়ভাবে ড্রপডাউনে যুক্ত করা (ইংরেজি ও বাংলায় সুন্দর দেখানোর জন্য)
+    const banglaDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
+    function toBn(num) {
+      return num.toString().replace(/[0-9]/g, w => banglaDigits[w]);
+    }
+
+    const batchSelect = document.getElementById('batch');
+    const passSelect = document.getElementById('passingYear');
+
+    for (let yr = 2026; yr >= 1940; yr--) {
+      const bnYear = toBn(yr);
+
+      // ব্যাচ অপশন
+      const optBatch = document.createElement('option');
+      optBatch.value = `ব্যাচ ${bnYear}`;
+      optBatch.textContent = `ব্যাচ ${bnYear} (${yr})`;
+      batchSelect.appendChild(optBatch);
+
+      // পাসের সন অপশন
+      const optPass = document.createElement('option');
+      optPass.value = bnYear;
+      optPass.textContent = `${bnYear} (${yr})`;
+      passSelect.appendChild(optPass);
+    }
+
+    // পেশা 'অন্যান্য' নির্বাচন করলে টেক্সটবক্স দেখানো
+    function toggleCustomProfession(val) {
+      const customDiv = document.getElementById('customProfessionGroup');
+      const customInput = document.getElementById('customProfession');
+      if (val === 'অন্যান্য') {
+        customDiv.style.display = 'block';
+        customInput.required = true;
+      } else {
+        customDiv.style.display = 'none';
+        customInput.required = false;
+        customInput.value = '';
+      }
+    }
+
+    const photoInput = document.getElementById('photo');
+    const previewContainer = document.getElementById('previewContainer');
+    let base64Photo = '';
+
+    photoInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          base64Photo = evt.target.result;
+          previewContainer.innerHTML = `<img src="${base64Photo}" alt="Preview">`;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.getElementById('regForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      if (!base64Photo) {
+        alert('অনুগ্রহ করে আপনার একটি ছবি নির্বাচন করুন!');
+        return;
+      }
+
+      // পেশা নির্ধারণ
+      let profVal = document.getElementById('profession').value;
+      if (profVal === 'অন্যান্য') {
+        profVal = document.getElementById('customProfession').value.trim() || 'অন্যান্য';
+      }
+
+      const btnSubmit = document.getElementById('btnSubmit');
+      const statusMsg = document.getElementById('statusMsg');
+
+      btnSubmit.disabled = true;
+      btnSubmit.innerText = 'অপেক্ষা করুন, তথ্য জমা হচ্ছে...';
+      statusMsg.innerText = '';
+
+      const payload = {
+        name: document.getElementById('name').value.trim(),
+        fatherName: document.getElementById('fatherName').value.trim(),
+        motherName: document.getElementById('motherName').value.trim(),
+        batch: document.getElementById('batch').value,
+        passingYear: document.getElementById('passingYear').value,
+        profession: profVal,
+        address: document.getElementById('address').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        photoData: base64Photo,
+        photoType: photoInput.files[0].type
+      };
+
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(data => {
+        btnSubmit.disabled = false;
+        btnSubmit.innerText = 'নিবন্ধন সম্পন্ন করুন';
+
+        if (data.status === 'success') {
+          statusMsg.className = 'status-msg success';
+          statusMsg.innerText = '🎉 ' + data.message;
+          document.getElementById('regForm').reset();
+          previewContainer.innerHTML = 'ছবি নেই';
+          document.getElementById('customProfessionGroup').style.display = 'none';
+          base64Photo = '';
+        } else {
+          statusMsg.className = 'status-msg error';
+          statusMsg.innerText = 'ত্রুটি: ' + data.message;
+        }
+      })
+      .catch(err => {
+        btnSubmit.disabled = false;
+        btnSubmit.innerText = 'নিবন্ধন সম্পন্ন করুন';
+        statusMsg.className = 'status-msg error';
+        statusMsg.innerText = 'সার্ভারে সংযোগ পেতে সমস্যা হয়েছে। আবার চেষ্টা করুন।';
+        console.error(err);
+      });
+    });
+  </script>
+</body>
+</html>
