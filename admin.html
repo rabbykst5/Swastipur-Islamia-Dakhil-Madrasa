@@ -6,27 +6,33 @@
   <title>এডমিন প্যানেল - সুবর্ণজয়ন্তী উৎসব</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background: #f1f5f9; padding: 20px; }
-    .header-box { text-align: center; margin-bottom: 20px; }
-    .header-box h1 { color: #1e3a8a; font-size: 24px; margin-bottom: 4px; }
+    body { background: #f8fafc; padding: 25px 15px; color: #1e293b; }
+    
+    .header-box { text-align: center; margin-bottom: 25px; }
+    .header-box h1 { color: #1e3a8a; font-size: 26px; font-weight: 800; margin-bottom: 4px; }
     .header-box p { color: #64748b; font-size: 15px; }
 
+    /* Login Modal */
     #loginModal {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7);
-      display: flex; align-items: center; justify-content: center; z-index: 100;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75);
+      display: flex; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(4px);
     }
-    .login-card { background: #fff; padding: 30px; border-radius: 10px; width: 320px; text-align: center; }
-    .login-card input { width: 100%; padding: 10px; margin: 12px 0; border: 1px solid #cbd5e1; border-radius: 6px; }
-    .login-card button { width: 100%; padding: 10px; background: #2563eb; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+    .login-card { background: #fff; padding: 35px 30px; border-radius: 14px; width: 340px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+    .login-card input { width: 100%; padding: 12px; margin: 15px 0; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 15px; outline: none; }
+    .login-card input:focus { border-color: #2563eb; }
+    .login-card button { width: 100%; padding: 12px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    .login-card button:hover { background: #1d4ed8; }
 
-    .controls { max-width: 1250px; margin: 0 auto 20px auto; }
-    .search-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    /* Controls Bar */
+    .controls { max-width: 1280px; margin: 0 auto 25px auto; }
+    .search-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; margin-bottom: 16px; }
     .search-inputs { display: flex; gap: 10px; flex-wrap: wrap; }
-    .search-inputs input { padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; min-width: 240px; font-size: 14px; }
+    .search-inputs input { padding: 10px 16px; border: 1.5px solid #cbd5e1; border-radius: 8px; min-width: 250px; font-size: 14px; background: #fff; outline: none; }
+    .search-inputs input:focus { border-color: #2563eb; }
     
-    .status-filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+    .status-filter-tabs { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 12px; }
     .tab-btn {
-      background: #e2e8f0; border: none; padding: 8px 18px; border-radius: 20px; font-size: 13.5px; font-weight: 700; cursor: pointer; color: #334155; transition: 0.2s;
+      background: #e2e8f0; border: none; padding: 8px 18px; border-radius: 20px; font-size: 13.5px; font-weight: 700; cursor: pointer; color: #475569; transition: 0.2s;
     }
     .tab-btn.active { background: #1e40af; color: #fff; }
     .tab-btn.pending { background: #fef3c7; color: #b45309; }
@@ -36,51 +42,186 @@
     .tab-btn.active.received { background: #16a34a; color: #fff; }
     .tab-btn.active.rejected { background: #dc2626; color: #fff; }
 
-    .btn-action { color: #fff; border: none; padding: 9px 15px; border-radius: 6px; cursor: pointer; font-size: 13.5px; display: inline-flex; align-items: center; gap: 5px; }
+    .btn-action { color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
     .btn-refresh { background: #10b981; }
+    .btn-refresh:hover { background: #059669; }
     .btn-print { background: #0284c7; }
     .btn-logout { background: #ef4444; }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 18px; max-width: 1250px; margin: 0 auto; }
-    .card { background: #ffffff; border-radius: 12px; padding: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); text-align: center; border-top: 5px solid #2563eb; position: relative; }
-    .card-photo { width: 100px; height: 120px; object-fit: cover; border-radius: 6px; border: 1.5px solid #cbd5e1; margin-bottom: 8px; }
-    .card h3 { font-size: 18px; color: #0f172a; margin-bottom: 4px; }
-    .batch-badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+    /* Student Cards Grid */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 22px; max-width: 1280px; margin: 0 auto; }
     
-    .card-info { text-align: left; font-size: 13px; color: #475569; line-height: 1.6; border-top: 1px solid #f1f5f9; padding-top: 8px; }
-    .card-info strong { color: #1e293b; }
-
-    .pay-card-section {
-      background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; margin: 10px 0; text-align: left; font-size: 12.5px;
+    /* Modern Polished Card */
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
     }
-    .status-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11.5px; font-weight: 700; margin-bottom: 5px; }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #2563eb, #38bdf8);
+    }
+
+    .card-top { text-align: center; margin-bottom: 12px; }
+    .card-photo {
+      width: 110px;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid #e2e8f0;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+      margin: 6px auto 10px auto;
+      display: block;
+    }
+    .card-name { font-size: 19px; font-weight: 800; color: #0f172a; margin-bottom: 4px; }
+    .batch-badge {
+      display: inline-block;
+      background: #f0f9ff;
+      color: #0284c7;
+      border: 1px solid #bae6fd;
+      padding: 3px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Modern Structured Payment Section */
+    .pay-card-section {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin: 12px 0;
+    }
+    .pay-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 800;
+    }
     .status-Pending { background: #fef3c7; color: #b45309; }
     .status-Received { background: #dcfce7; color: #15803d; }
     .status-Rejected { background: #fee2e2; color: #b91c1c; }
 
+    .fee-badge {
+      font-size: 12px;
+      font-weight: 800;
+      color: #1e3a8a;
+      background: #dbeafe;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .pay-info-row {
+      font-size: 12.5px;
+      color: #475569;
+      line-height: 1.7;
+    }
+    .pay-info-row strong { color: #0f172a; }
+    .trx-tag {
+      background: #e2e8f0;
+      color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+    .btn-slip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #3b82f6;
+      color: #fff !important;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-decoration: none;
+      margin-top: 6px;
+      transition: 0.2s;
+    }
+    .btn-slip:hover { background: #1d4ed8; }
+
+    /* Student General Details */
+    .card-info {
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.6;
+      padding: 4px 0 10px 0;
+    }
+    .card-info p { margin-bottom: 2px; }
+    .card-info strong { color: #1e293b; }
+
+    /* Bottom Status Action Buttons */
     .status-control-box {
-      display: flex; gap: 6px; justify-content: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid #f1f5f9;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+      padding-top: 12px;
+      border-top: 1px solid #f1f5f9;
     }
     .status-btn {
-      border: none; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; color: #fff;
+      border: none;
+      padding: 8px 4px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: opacity 0.2s, transform 0.1s;
     }
+    .status-btn:active { transform: scale(0.96); }
     .btn-st-received { background: #16a34a; }
-    .btn-st-reject { background: #dc2626; }
     .btn-st-pending { background: #d97706; }
+    .btn-st-reject { background: #dc2626; }
+    .status-btn:hover { opacity: 0.92; }
 
     @media print {
       body { background: #fff; padding: 0; }
       .controls, .header-box p, .status-control-box { display: none; }
       .grid { display: block; }
-      .card { page-break-inside: avoid; margin-bottom: 15px; border: 1px solid #ddd; }
+      .card { page-break-inside: avoid; margin-bottom: 18px; border: 1px solid #ccc; box-shadow: none; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Admin Login Modal -->
   <div id="loginModal">
     <div class="login-card">
-      <h3 style="margin-bottom: 10px; color: #1e293b;">অ্যাডমিন লগইন</h3>
+      <h3 style="margin-bottom: 8px; color: #1e293b;">অ্যাডমিন লগইন</h3>
       <input type="password" id="adminPass" placeholder="পাসওয়ার্ড দিন (Enter চাপুন)" autofocus>
       <button onclick="checkLogin()">লগইন করুন</button>
       <div id="loginErr" style="color: red; font-size: 12px; margin-top: 8px;"></div>
@@ -89,13 +230,13 @@
 
   <div class="header-box">
     <h1>স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা</h1>
-    <p>সুবর্ণজয়ন্তী উৎসব — শিক্ষার্থী ও চাঁদা ডাটাবেজ</p>
+    <p>সুবর্ণজয়ন্তী উৎসব — শিক্ষার্থী ও চাঁদা ডাটাবেজ ড্যাশবোর্ড</p>
   </div>
 
   <div class="controls">
     <div class="search-row">
       <div class="search-inputs">
-        <input type="text" id="searchInput" placeholder="নাম, মোবাইল বা পেশা দিয়ে খুঁজুন..." onkeyup="filterData()">
+        <input type="text" id="searchInput" placeholder="নাম, মোবাইল বা TrxID দিয়ে খুঁজুন..." onkeyup="filterData()">
         <input type="text" id="batchInput" placeholder="ব্যাচ খুঁজুন (যেমন: 2024 বা ২০২৪)..." onkeyup="filterData()">
       </div>
       <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
@@ -105,8 +246,9 @@
       </div>
     </div>
 
+    <!-- Status Tabs -->
     <div class="status-filter-tabs">
-      <button class="tab-btn active" onclick="setStatusFilter('ALL', this)">সব তালিকা (<span id="countAll">0</span>)</button>
+      <button class="tab-btn active" onclick="setStatusFilter('ALL', this)">সব শিক্ষার্থী (<span id="countAll">0</span>)</button>
       <button class="tab-btn pending" onclick="setStatusFilter('Pending', this)">⏳ Pending (<span id="countPending">0</span>)</button>
       <button class="tab-btn received" onclick="setStatusFilter('Received', this)">✅ Received (<span id="countReceived">0</span>)</button>
       <button class="tab-btn rejected" onclick="setStatusFilter('Rejected', this)">❌ Rejected (<span id="countRejected">0</span>)</button>
@@ -198,7 +340,7 @@
       container.innerHTML = '';
 
       if (list.length === 0) {
-        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 30px;">কোনো শিক্ষার্থীর তথ্য পাওয়া যায়নি।</div>';
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 40px; font-weight: 600;">কোনো শিক্ষার্থীর তথ্য পাওয়া যায়নি।</div>';
         return;
       }
 
@@ -207,37 +349,49 @@
         if (student.photoLink && student.photoLink.includes('/d/')) {
           photoId = student.photoLink.split('/d/')[1].split('/')[0];
         }
-        const imgUrl = photoId ? `https://lh3.googleusercontent.com/d/${photoId}` : 'https://via.placeholder.com/100x120?text=No+Photo';
+        const imgUrl = photoId ? `https://lh3.googleusercontent.com/d/${photoId}` : 'https://via.placeholder.com/110x130?text=No+Photo';
 
         const st = student.status || 'Pending';
 
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
-          <img class="card-photo" src="${imgUrl}" alt="ছবি" onerror="this.src='https://via.placeholder.com/100x120?text=Error'">
-          <h3>${student.name}</h3>
-          <span class="batch-badge">ব্যাচ: ${student.batch} (পাস: ${student.passingYear})</span>
-          
-          <div class="pay-card-section">
-            <span class="status-badge status-${st}">স্ট্যাটাস: ${st}</span><br>
-            <strong>মাধ্যম:</strong> ${student.payMethod || 'অজানা'}<br>
-            <strong>TrxID:</strong> <code style="background:#e2e8f0; padding:2px 4px; border-radius:4px;">${student.trxId || 'N/A'}</code><br>
-            ${student.payProofLink && student.payProofLink !== 'N/A' ? 
-              `<a href="${student.payProofLink}" target="_blank" style="color:#2563eb; font-weight:700; text-decoration:none;">🖼️ পেমেন্ট স্লিপ দেখুন</a>` : 
-              '<span style="color:#94a3b8;">স্লিপ নেই</span>'}
+          <div>
+            <div class="card-top">
+              <img class="card-photo" src="${imgUrl}" alt="ছবি" onerror="this.src='https://via.placeholder.com/110x130?text=Error'">
+              <div class="card-name">${student.name}</div>
+              <span class="batch-badge">ব্যাচ: ${student.batch} (পাস: ${student.passingYear})</span>
+            </div>
+
+            <!-- Polished Payment Details -->
+            <div class="pay-card-section">
+              <div class="pay-header">
+                <span class="status-badge status-${st}">● ${st}</span>
+                <span class="fee-badge">ফি: ৫০০/=</span>
+              </div>
+              <div class="pay-info-row">
+                <div><strong>মাধ্যম:</strong> ${student.payMethod || 'অজানা'}</div>
+                <div><strong>TrxID:</strong> <span class="trx-tag">${student.trxId || 'N/A'}</span></div>
+                ${student.payProofLink && student.payProofLink !== 'N/A' ? 
+                  `<div style="margin-top: 4px;"><a href="${student.payProofLink}" target="_blank" class="btn-slip">🖼️ স্লিপ দেখুন</a></div>` : 
+                  '<div style="color:#94a3b8; font-size:11.5px; margin-top:2px;">(স্লিপ নেই)</div>'}
+              </div>
+            </div>
+
+            <!-- Student Info -->
+            <div class="card-info">
+              <p><strong>পিতা:</strong> ${student.fatherName}</p>
+              <p><strong>মোবাইল:</strong> ${student.phone}</p>
+              <p><strong>পেশা:</strong> ${student.profession}</p>
+              <p><strong>ঠিকানা:</strong> ${student.address}</p>
+            </div>
           </div>
 
-          <div class="card-info">
-            <p><strong>পিতা:</strong> ${student.fatherName}</p>
-            <p><strong>মোবাইল:</strong> ${student.phone}</p>
-            <p><strong>পেশা:</strong> ${student.profession}</p>
-            <p><strong>ঠিকানা:</strong> ${student.address}</p>
-          </div>
-
+          <!-- Bottom Action Buttons -->
           <div class="status-control-box">
-            <button class="status-btn btn-st-received" onclick="changeStatus('${student.phone}', '${student.timestamp}', 'Received')">✓ Received</button>
-            <button class="status-btn btn-st-pending" onclick="changeStatus('${student.phone}', '${student.timestamp}', 'Pending')">⏳ Pending</button>
-            <button class="status-btn btn-st-reject" onclick="changeStatus('${student.phone}', '${student.timestamp}', 'Rejected')">✗ Reject</button>
+            <button class="status-btn btn-st-received" onclick="changeStatus('${student.phone}', '${student.name}', 'Received')">✓ Received</button>
+            <button class="status-btn btn-st-pending" onclick="changeStatus('${student.phone}', '${student.name}', 'Pending')">⏳ Pending</button>
+            <button class="status-btn btn-st-reject" onclick="changeStatus('${student.phone}', '${student.name}', 'Rejected')">✕ Reject</button>
           </div>
         `;
         container.appendChild(card);
@@ -286,10 +440,10 @@
       renderCards(filtered);
     }
 
-    function changeStatus(phone, timestamp, newStatus) {
+    function changeStatus(phone, name, newStatus) {
       if (!confirm(`আপনি কি এই শিক্ষার্থীর স্ট্যাটাস "${newStatus}" করতে চান?`)) return;
 
-      const target = allStudents.find(s => s.phone.toString() === phone.toString() && s.timestamp.toString() === timestamp.toString());
+      const target = allStudents.find(s => s.phone.toString() === phone.toString() && s.name.toString() === name.toString());
       if (target) {
         target.status = newStatus;
         updateTabCounts();
@@ -301,7 +455,7 @@
         body: JSON.stringify({
           action: 'updateStatus',
           phone: phone,
-          timestamp: timestamp,
+          name: name,
           newStatus: newStatus
         })
       })
