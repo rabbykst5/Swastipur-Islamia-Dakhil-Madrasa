@@ -8,7 +8,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background: #f0f4f9; color: #1e293b; line-height: 1.6; }
 
-    /* Top Hero Banner Section */
     .hero-banner {
       background: linear-gradient(135deg, #0f2b5c 0%, #1e40af 50%, #0284c7 100%);
       color: #ffffff;
@@ -92,7 +91,6 @@
       font-style: italic;
     }
 
-    /* Main Container */
     .container {
       max-width: 900px;
       margin: -30px auto 40px auto;
@@ -101,7 +99,6 @@
       z-index: 10;
     }
 
-    /* Info Cards Section */
     .info-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -147,7 +144,6 @@
       font-weight: bold;
     }
 
-    /* Registration Form Card */
     .form-wrapper {
       background: #ffffff;
       padding: 35px 30px;
@@ -173,6 +169,64 @@
     input:focus, select:focus, textarea:focus { border-color: #2563eb; }
     textarea { resize: vertical; min-height: 75px; }
     .warn-msg { color: #dc2626; font-size: 12px; margin-top: 4px; display: none; }
+    
+    .payment-box {
+      background: #f8fafc;
+      border: 2px dashed #2563eb;
+      border-radius: 12px;
+      padding: 22px 20px;
+      margin: 25px 0 20px 0;
+    }
+    .fee-badge-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1.5px dashed #cbd5e1;
+    }
+    .fee-badge-container .title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e3a8a;
+    }
+    .fee-tag {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1.5px solid #f59e0b;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 16px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pay-methods {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .pay-opt {
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 10px 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      background: #fff;
+      font-size: 13.5px;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    .pay-opt input { cursor: pointer; }
+    .pay-opt:hover { border-color: #2563eb; background: #eff6ff; }
+
     .photo-preview { display: flex; align-items: center; gap: 15px; margin-top: 10px; }
     .preview-box { width: 95px; height: 115px; border: 2px dashed #94a3b8; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #f8fafc; font-size: 12px; color: #94a3b8; }
     .preview-box img { width: 100%; height: 100%; object-fit: cover; }
@@ -187,24 +241,26 @@
     .error { color: #dc2626; }
     #customProfessionGroup { margin-top: 10px; display: none; }
 
-    /* Footer */
+    .tech-oversight-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 16px 20px;
+      text-align: center;
+      margin-top: 25px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
     .footer-bar {
       text-align: center;
       padding: 25px 15px;
       color: #64748b;
       font-size: 13.5px;
     }
-
-    @media (max-width: 600px) {
-      .institution-name { font-size: 24px; }
-      .festival-title { font-size: 28px; }
-      .form-wrapper { padding: 25px 15px; }
-    }
   </style>
 </head>
 <body>
 
-  <!-- শীর্ষ ব্যানার সেকশন -->
   <header class="hero-banner">
     <div class="motto">শিক্ষা • নৈতিকতা • মানবতা</div>
     <h1 class="institution-name">স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা</h1>
@@ -222,12 +278,8 @@
     <div class="slogan-pill">"একই মাদ্রাসা, একই পরিবার চিরদিন..."</div>
   </header>
 
-  <!-- মূল কন্টেইনার -->
   <main class="container">
-
-    <!-- ব্যানারের তথ্যাবলি সেকশন (কার্ড ভিউ) -->
     <section class="info-grid">
-      <!-- আমাদের গৌরবময় পথচলা -->
       <div class="info-card">
         <h3 class="card-title"><span>🏛️</span> আমাদের গৌরবময় পথচলা</h3>
         <p class="card-text">
@@ -235,7 +287,6 @@
         </p>
       </div>
 
-      <!-- কেন রেজিস্ট্রেশন করবেন? -->
       <div class="info-card highlight">
         <h3 class="card-title"><span>🎯</span> কেন রেজিস্ট্রেশন করবেন?</h3>
         <ul class="feature-list">
@@ -248,10 +299,9 @@
       </div>
     </section>
 
-    <!-- রেজিস্ট্রেশন ফর্ম কার্ড -->
     <section class="form-wrapper">
       <div class="form-header">
-        <h2>সাবেক ছাত্রছাত্রী রেজিস্ট্রেশন ফর্ম</h2>
+        <h2>সাবেক ছাত্রছাত্রী রেজিস্ট্রেশন ও চাঁদা প্রদান</h2>
         <p>⚠️ অনুগ্রহ করে নাম ও ঠিকানা বাংলায় পূরণ করুন (ইংরেজি গ্রহণযোগ্য নয়)</p>
       </div>
 
@@ -274,7 +324,6 @@
           <div class="warn-msg">শুধুমাত্র বাংলা অক্ষর লিখুন!</div>
         </div>
 
-        <!-- ব্যাচ ড্রপডাউন (Value hobe English 2010) -->
         <div class="form-group">
           <label>ব্যাচ <span class="required">*</span></label>
           <select id="batch" required>
@@ -282,7 +331,6 @@
           </select>
         </div>
 
-        <!-- পাসের সন ড্রপডাউন (Value hobe English 2010) -->
         <div class="form-group">
           <label>দাখিল / এস এস সি পাসের সন <span class="required">*</span></label>
           <select id="passingYear" required>
@@ -290,7 +338,6 @@
           </select>
         </div>
 
-        <!-- বর্তমান পেশা ড্রপডাউন -->
         <div class="form-group">
           <label>বর্তমান পেশা <span class="required">*</span></label>
           <select id="profession" onchange="toggleCustomProfession(this.value)" required>
@@ -316,7 +363,6 @@
             <option value="অবসরপ্রাপ্ত">অবসরপ্রাপ্ত</option>
             <option value="অন্যান্য">অন্যান্য (নিজে বাংলায় লিখুন)</option>
           </select>
-          
           <div id="customProfessionGroup">
             <input type="text" id="customProfession" class="bn-only" placeholder="আপনার পেশার নাম বাংলায় লিখুন">
             <div class="warn-msg">শুধুমাত্র বাংলা অক্ষর লিখুন!</div>
@@ -329,7 +375,6 @@
           <div class="warn-msg">শুধুমাত্র বাংলা অক্ষর লিখুন!</div>
         </div>
 
-        <!-- মোবাইল নাম্বার (Bangla likhleo automatic English hoye jabe) -->
         <div class="form-group">
           <label>মোবাইল নাম্বার <span class="required">*</span></label>
           <input type="tel" id="phone" placeholder="01XXXXXXXXX" required>
@@ -344,34 +389,81 @@
           </div>
         </div>
 
-        <button type="submit" id="btnSubmit" class="btn-submit">নিবন্ধন সম্পন্ন করুন</button>
+        <div class="payment-box">
+          <div class="fee-badge-container">
+            <span class="title">💳 রেজিস্ট্রেশন চাঁদা পরিশোধের মাধ্যম</span>
+            <span class="fee-tag">ফি: ৫০০/= (পাঁচশত টাকা)</span>
+          </div>
+
+          <div class="pay-methods">
+            <label class="pay-opt"><input type="radio" name="payMethod" value="বিকাশ (bKash)" checked onchange="handlePaymentChange(this.value)"> বিকাশ</label>
+            <label class="pay-opt"><input type="radio" name="payMethod" value="নগদ (Nagad)" onchange="handlePaymentChange(this.value)"> নগদ</label>
+            <label class="pay-opt"><input type="radio" name="payMethod" value="রকেট (Rocket)" onchange="handlePaymentChange(this.value)"> রকেট</label>
+            <label class="pay-opt"><input type="radio" name="payMethod" value="উপায় (Upay)" onchange="handlePaymentChange(this.value)"> উপায়</label>
+            <label class="pay-opt"><input type="radio" name="payMethod" value="ব্যাংক (Bank)" onchange="handlePaymentChange(this.value)"> ব্যাংক</label>
+            <label class="pay-opt"><input type="radio" name="payMethod" value="মাদ্রাসার অফিসে সরাসরি" onchange="handlePaymentChange(this.value)"> অফিসে জমা</label>
+          </div>
+
+          <div id="onlinePaymentFields">
+            <div class="form-group">
+              <label>ট্রানজেকশন আইডি (TrxID) <span class="required">*</span></label>
+              <input type="text" id="trxId" placeholder="৫০০ টাকা পরিশোধের TrxID লিখুন (যেমন: 9J7X8KL9)">
+            </div>
+
+            <div class="form-group">
+              <label>পেমেন্ট স্লিপ / স্ক্রিনশট <span class="required">*</span></label>
+              <input type="file" id="payProof" accept="image/*">
+              <div class="photo-preview">
+                <div class="preview-box" id="payProofPreview" style="width: 140px; height: 90px;">স্লিপ নেই</div>
+                <small style="color: #64748b;">(সফল পেমেন্টের স্ক্রিনশট বা রসিদ আপলোড করুন)</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" id="btnSubmit" class="btn-submit">৫০০/- টাকা ফি সহ নিবন্ধন সম্পন্ন করুন</button>
         <div id="statusMsg" class="status-msg"></div>
       </form>
     </section>
+
+    <!-- RS BD SOFT Official Technical Supervision Badge -->
+    <div class="tech-oversight-card">
+      <div style="font-size: 13.5px; color: #475569; font-weight: 600; margin-bottom: 4px;">
+        অনলাইন নিবন্ধন ও ডাটাবেজ কার্যক্রমের সার্বিক কারিগরি পর্যবেক্ষণে:
+      </div>
+      <div style="font-size: 18px; font-weight: 800; color: #1e3a8a; letter-spacing: 0.8px;">
+        🛡️ RS BD SOFT
+      </div>
+      <div style="font-size: 12px; color: #64748b; margin-top: 4px; font-style: italic;">
+        (সিস্টেম অডিট, সার্ভার ম্যানেজমেন্ট ও সার্বিক আইটি তদারকি)
+      </div>
+      
+      <div style="margin-top: 10px;">
+        <a href="https://wa.me/8801615450447?text=আসসালামু%20আলাইকুম,%20মাদ্রাসার%20সুবর্ণজয়ন্তী%20রেজিস্ট্রেশন%20সিস্টেম%20পর্যবেক্ষণ%20টিমের%20সাথে%20যোগাযোগ।" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; color: #16a34a; font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid #bbf7d0; background: #f0fdf4; padding: 5px 14px; border-radius: 20px;">
+          <span>💬</span> অফিশিয়াল কারিগরি সেল
+        </a>
+      </div>
+    </div>
 
     <footer class="footer-bar">
       <p>— আসুন, আমরা সবাই মিলে গড়ে তুলি স্মৃতির এই মহিমান্বিত দিনটি —</p>
       <p style="margin-top: 5px; font-size: 12px; color: #94a3b8;">স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা • সুবর্ণজয়ন্তী উৎসব</p>
     </footer>
-
   </main>
 
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxhGJXqi5sqTO-WrAO5oGgiQxFfRKJ7lOA7M7XUS3LqLTnCgOjMqoDInP2TsvXU5l3hOw/exec';
 
-    // বাংলা সংখ্যা থেকে ইংরেজি সংখ্যায় রূপান্তর ফাংশন
     const bnToEnDigits = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
     function toEnglishDigits(str) {
       return (str || '').toString().replace(/[০-৯]/g, w => bnToEnDigits[w]);
     }
 
-    // মোবাইল নাম্বারে বাংলা টাইপ করলেও সাথে সাথে ইংলিশ হয়ে যাবে
     const phoneInput = document.getElementById('phone');
     phoneInput.addEventListener('input', function() {
       this.value = toEnglishDigits(this.value).replace(/[^0-9+]/g, '');
     });
 
-    // শুধুমাত্র বাংলা লেখার ভ্যালিডেশন
     const bnRegex = /[a-zA-Z]/;
     document.querySelectorAll('.bn-only').forEach(el => {
       el.addEventListener('input', function() {
@@ -385,8 +477,6 @@
       });
     });
 
-    // ড্রপডাউনে ২০২৬ থেকে ১৯৪০ সাল যুক্ত করা
-    // ইউজার দেখবে বাংলায়/ইংরেজিতে, কিন্তু ভ্যালু জমা হবে শুধু English Digit (যেমন: 2010)
     const enToBnMap = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
     function toBnYear(yr) {
       return yr.toString().replace(/[0-9]/g, w => enToBnMap[w]);
@@ -397,16 +487,13 @@
 
     for (let yr = 2026; yr >= 1940; yr--) {
       const bnYear = toBnYear(yr);
-
-      // ব্যাচ ড্রপডাউন: value = 2010 (pure English), text = ব্যাচ ২০১০ (2010)
       const optBatch = document.createElement('option');
-      optBatch.value = yr.toString(); // English 2010
+      optBatch.value = yr.toString();
       optBatch.textContent = `ব্যাচ ${bnYear} (${yr})`;
       batchSelect.appendChild(optBatch);
 
-      // পাসের সন: value = 2010 (pure English), text = ২০১০ (2010)
       const optPass = document.createElement('option');
-      optPass.value = yr.toString(); // English 2010
+      optPass.value = yr.toString();
       optPass.textContent = `${bnYear} (${yr})`;
       passSelect.appendChild(optPass);
     }
@@ -424,17 +511,39 @@
       }
     }
 
-    const photoInput = document.getElementById('photo');
-    const previewContainer = document.getElementById('previewContainer');
-    let base64Photo = '';
+    function handlePaymentChange(method) {
+      const onlineBox = document.getElementById('onlinePaymentFields');
+      const trxInput = document.getElementById('trxId');
+      if (method === 'মাদ্রাসার অফিসে সরাসরি') {
+        onlineBox.style.display = 'none';
+        trxInput.required = false;
+      } else {
+        onlineBox.style.display = 'block';
+        trxInput.required = true;
+      }
+    }
 
-    photoInput.addEventListener('change', function(e) {
+    let base64Photo = '';
+    document.getElementById('photo').addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(evt) {
+        reader.onload = evt => {
           base64Photo = evt.target.result;
-          previewContainer.innerHTML = `<img src="${base64Photo}" alt="Preview">`;
+          document.getElementById('previewContainer').innerHTML = `<img src="${base64Photo}">`;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    let base64PayProof = '';
+    document.getElementById('payProof').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = evt => {
+          base64PayProof = evt.target.result;
+          document.getElementById('payProofPreview').innerHTML = `<img src="${base64PayProof}">`;
         };
         reader.readAsDataURL(file);
       }
@@ -444,7 +553,13 @@
       e.preventDefault();
 
       if (!base64Photo) {
-        alert('অনুগ্রহ করে আপনার একটি ছবি নির্বাচন করুন!');
+        alert('অনুগ্রহ করে আপনার একটি পাসপোর্ট সাইজ ছবি নির্বাচন করুন!');
+        return;
+      }
+
+      const payMethod = document.querySelector('input[name="payMethod"]:checked').value;
+      if (payMethod !== 'মাদ্রাসার অফিসে সরাসরি' && !base64PayProof) {
+        alert('অনুগ্রহ করে পেমেন্ট স্লিপ বা স্ক্রিনশট আপলোড করুন!');
         return;
       }
 
@@ -453,28 +568,27 @@
         profVal = document.getElementById('customProfession').value.trim() || 'অন্যান্য';
       }
 
-      // ফোন নাম্বার ইংরেজিতে নিশ্চিত করা
-      const rawPhone = document.getElementById('phone').value.trim();
-      const englishPhone = toEnglishDigits(rawPhone);
-
       const btnSubmit = document.getElementById('btnSubmit');
       const statusMsg = document.getElementById('statusMsg');
-
       btnSubmit.disabled = true;
-      btnSubmit.innerText = 'অপেক্ষা করুন, তথ্য জমা হচ্ছে...';
+      btnSubmit.innerText = 'অপেক্ষা করুন, তথ্য ও চাঁদা স্লিপ জমা হচ্ছে...';
       statusMsg.innerText = '';
 
       const payload = {
         name: document.getElementById('name').value.trim(),
         fatherName: document.getElementById('fatherName').value.trim(),
         motherName: document.getElementById('motherName').value.trim(),
-        batch: document.getElementById('batch').value, // English 2010
-        passingYear: document.getElementById('passingYear').value, // English 2010
+        batch: document.getElementById('batch').value,
+        passingYear: document.getElementById('passingYear').value,
         profession: profVal,
         address: document.getElementById('address').value.trim(),
-        phone: englishPhone, // English 017...
+        phone: toEnglishDigits(document.getElementById('phone').value.trim()),
         photoData: base64Photo,
-        photoType: photoInput.files[0].type
+        photoType: document.getElementById('photo').files[0].type,
+        payMethod: payMethod,
+        trxId: document.getElementById('trxId').value.trim(),
+        payProofData: base64PayProof,
+        payProofType: document.getElementById('payProof').files[0] ? document.getElementById('payProof').files[0].type : ''
       };
 
       fetch(SCRIPT_URL, {
@@ -484,15 +598,16 @@
       .then(res => res.json())
       .then(data => {
         btnSubmit.disabled = false;
-        btnSubmit.innerText = 'নিবন্ধন সম্পন্ন করুন';
+        btnSubmit.innerText = 'ডেমো ৫০০/- টাকা ফি সহ নিবন্ধন সম্পন্ন করুন';
 
         if (data.status === 'success') {
           statusMsg.className = 'status-msg success';
           statusMsg.innerText = '🎉 ' + data.message;
           document.getElementById('regForm').reset();
-          previewContainer.innerHTML = 'ছবি নেই';
-          document.getElementById('customProfessionGroup').style.display = 'none';
+          document.getElementById('previewContainer').innerHTML = 'ছবি নেই';
+          document.getElementById('payProofPreview').innerHTML = 'স্লিপ নেই';
           base64Photo = '';
+          base64PayProof = '';
         } else {
           statusMsg.className = 'status-msg error';
           statusMsg.innerText = 'ত্রুটি: ' + data.message;
@@ -500,7 +615,7 @@
       })
       .catch(err => {
         btnSubmit.disabled = false;
-        btnSubmit.innerText = 'নিবন্ধন সম্পন্ন করুন';
+        btnSubmit.innerText = '৫০০/- টাকা ফি সহ নিবন্ধন সম্পন্ন করুন';
         statusMsg.className = 'status-msg error';
         statusMsg.innerText = 'সার্ভারে সংযোগ পেতে সমস্যা হয়েছে। আবার চেষ্টা করুন।';
         console.error(err);

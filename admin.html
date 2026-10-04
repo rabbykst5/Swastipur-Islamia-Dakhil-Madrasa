@@ -7,11 +7,10 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background: #f1f5f9; padding: 20px; }
-    .header-box { text-align: center; margin-bottom: 25px; }
+    .header-box { text-align: center; margin-bottom: 20px; }
     .header-box h1 { color: #1e3a8a; font-size: 24px; margin-bottom: 4px; }
     .header-box p { color: #64748b; font-size: 15px; }
 
-    /* Login Modal */
     #loginModal {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7);
       display: flex; align-items: center; justify-content: center; z-index: 100;
@@ -20,29 +19,58 @@
     .login-card input { width: 100%; padding: 10px; margin: 12px 0; border: 1px solid #cbd5e1; border-radius: 6px; }
     .login-card button { width: 100%; padding: 10px; background: #2563eb; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
 
-    /* Control Bar */
-    .controls { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 20px auto; }
+    .controls { max-width: 1250px; margin: 0 auto 20px auto; }
+    .search-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; margin-bottom: 15px; }
     .search-inputs { display: flex; gap: 10px; flex-wrap: wrap; }
     .search-inputs input { padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; min-width: 240px; font-size: 14px; }
-    .stats-badge { background: #0f172a; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; }
-    .btn-action { color: #fff; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 5px; }
+    
+    .status-filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+    .tab-btn {
+      background: #e2e8f0; border: none; padding: 8px 18px; border-radius: 20px; font-size: 13.5px; font-weight: 700; cursor: pointer; color: #334155; transition: 0.2s;
+    }
+    .tab-btn.active { background: #1e40af; color: #fff; }
+    .tab-btn.pending { background: #fef3c7; color: #b45309; }
+    .tab-btn.received { background: #dcfce7; color: #15803d; }
+    .tab-btn.rejected { background: #fee2e2; color: #b91c1c; }
+    .tab-btn.active.pending { background: #d97706; color: #fff; }
+    .tab-btn.active.received { background: #16a34a; color: #fff; }
+    .tab-btn.active.rejected { background: #dc2626; color: #fff; }
+
+    .btn-action { color: #fff; border: none; padding: 9px 15px; border-radius: 6px; cursor: pointer; font-size: 13.5px; display: inline-flex; align-items: center; gap: 5px; }
     .btn-refresh { background: #10b981; }
-    .btn-refresh:hover { background: #059669; }
     .btn-print { background: #0284c7; }
     .btn-logout { background: #ef4444; }
 
-    /* Grid Display */
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; max-width: 1200px; margin: 0 auto; }
-    .card { background: #ffffff; border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center; border-top: 4px solid #2563eb; }
-    .card-photo { width: 105px; height: 125px; object-fit: cover; border-radius: 6px; border: 1.5px solid #cbd5e1; margin-bottom: 10px; }
-    .card h3 { font-size: 18px; color: #0f172a; margin-bottom: 5px; }
-    .batch-badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-bottom: 12px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 18px; max-width: 1250px; margin: 0 auto; }
+    .card { background: #ffffff; border-radius: 12px; padding: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); text-align: center; border-top: 5px solid #2563eb; position: relative; }
+    .card-photo { width: 100px; height: 120px; object-fit: cover; border-radius: 6px; border: 1.5px solid #cbd5e1; margin-bottom: 8px; }
+    .card h3 { font-size: 18px; color: #0f172a; margin-bottom: 4px; }
+    .batch-badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+    
     .card-info { text-align: left; font-size: 13px; color: #475569; line-height: 1.6; border-top: 1px solid #f1f5f9; padding-top: 8px; }
     .card-info strong { color: #1e293b; }
 
+    .pay-card-section {
+      background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; margin: 10px 0; text-align: left; font-size: 12.5px;
+    }
+    .status-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11.5px; font-weight: 700; margin-bottom: 5px; }
+    .status-Pending { background: #fef3c7; color: #b45309; }
+    .status-Received { background: #dcfce7; color: #15803d; }
+    .status-Rejected { background: #fee2e2; color: #b91c1c; }
+
+    .status-control-box {
+      display: flex; gap: 6px; justify-content: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid #f1f5f9;
+    }
+    .status-btn {
+      border: none; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; color: #fff;
+    }
+    .btn-st-received { background: #16a34a; }
+    .btn-st-reject { background: #dc2626; }
+    .btn-st-pending { background: #d97706; }
+
     @media print {
       body { background: #fff; padding: 0; }
-      .controls, .header-box p { display: none; }
+      .controls, .header-box p, .status-control-box { display: none; }
       .grid { display: block; }
       .card { page-break-inside: avoid; margin-bottom: 15px; border: 1px solid #ddd; }
     }
@@ -50,7 +78,6 @@
 </head>
 <body>
 
-  <!-- Login Modal -->
   <div id="loginModal">
     <div class="login-card">
       <h3 style="margin-bottom: 10px; color: #1e293b;">অ্যাডমিন লগইন</h3>
@@ -62,19 +89,27 @@
 
   <div class="header-box">
     <h1>স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা</h1>
-    <p>সুবর্ণজয়ন্তী উৎসব — কেন্দ্রীয় শিক্ষার্থী ডাটাবেজ</p>
+    <p>সুবর্ণজয়ন্তী উৎসব — শিক্ষার্থী ও চাঁদা ডাটাবেজ</p>
   </div>
 
   <div class="controls">
-    <div class="search-inputs">
-      <input type="text" id="searchInput" placeholder="নাম, মোবাইল বা পেশা দিয়ে খুঁজুন..." onkeyup="filterData()">
-      <input type="text" id="batchInput" placeholder="ব্যাচ খুঁজুন (যেমন: 2024 বা ২০২৪)..." onkeyup="filterData()">
+    <div class="search-row">
+      <div class="search-inputs">
+        <input type="text" id="searchInput" placeholder="নাম, মোবাইল বা পেশা দিয়ে খুঁজুন..." onkeyup="filterData()">
+        <input type="text" id="batchInput" placeholder="ব্যাচ খুঁজুন (যেমন: 2024 বা ২০২৪)..." onkeyup="filterData()">
+      </div>
+      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+        <button class="btn-action btn-refresh" id="refreshBtn" onclick="loadRegistrations()">🔄 রিফ্রেশ</button>
+        <button class="btn-action btn-print" onclick="window.print()">🖨️ প্রিন্ট</button>
+        <button class="btn-action btn-logout" onclick="logoutAdmin()">🚪 লগআউট</button>
+      </div>
     </div>
-    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-      <span class="stats-badge" id="totalCount">মোট: ০ জন</span>
-      <button class="btn-action btn-refresh" id="refreshBtn" onclick="loadRegistrations()">🔄 রিফ্রেশ</button>
-      <button class="btn-action btn-print" onclick="window.print()">🖨️ প্রিন্ট</button>
-      <button class="btn-action btn-logout" onclick="logoutAdmin()">🚪 লগআউট</button>
+
+    <div class="status-filter-tabs">
+      <button class="tab-btn active" onclick="setStatusFilter('ALL', this)">সব তালিকা (<span id="countAll">0</span>)</button>
+      <button class="tab-btn pending" onclick="setStatusFilter('Pending', this)">⏳ Pending (<span id="countPending">0</span>)</button>
+      <button class="tab-btn received" onclick="setStatusFilter('Received', this)">✅ Received (<span id="countReceived">0</span>)</button>
+      <button class="tab-btn rejected" onclick="setStatusFilter('Rejected', this)">❌ Rejected (<span id="countRejected">0</span>)</button>
     </div>
   </div>
 
@@ -86,27 +121,18 @@
     const ADMIN_PASSWORD = 'admin123'; 
 
     let allStudents = [];
+    let currentStatusTab = 'ALL';
 
-    // Shonkha translation helpers (Bangla <-> English)
     const enToBnMap = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
     const bnToEnMap = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
 
-    function convertEnToBn(str) {
-      return (str || '').toString().replace(/[0-9]/g, w => enToBnMap[w]);
-    }
+    function convertEnToBn(str) { return (str || '').toString().replace(/[0-9]/g, w => enToBnMap[w]); }
+    function convertBnToEn(str) { return (str || '').toString().replace(/[০-৯]/g, w => bnToEnMap[w]); }
 
-    function convertBnToEn(str) {
-      return (str || '').toString().replace(/[০-৯]/g, w => bnToEnMap[w]);
-    }
-
-    // Enter press kore login
     document.getElementById('adminPass').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        checkLogin();
-      }
+      if (e.key === 'Enter') checkLogin();
     });
 
-    // Session dhore rakha (Reload korle logout hobe na)
     window.onload = function() {
       if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
         document.getElementById('loginModal').style.display = 'none';
@@ -143,7 +169,8 @@
           allStudents = data;
           loader.style.display = 'none';
           refreshBtn.disabled = false;
-          renderCards(allStudents);
+          updateTabCounts();
+          filterData();
         })
         .catch(err => {
           loader.innerText = 'তথ্য লোড করতে ব্যর্থ হয়েছে!';
@@ -152,36 +179,65 @@
         });
     }
 
+    function updateTabCounts() {
+      document.getElementById('countAll').innerText = allStudents.length;
+      document.getElementById('countPending').innerText = allStudents.filter(s => (s.status || 'Pending') === 'Pending').length;
+      document.getElementById('countReceived').innerText = allStudents.filter(s => s.status === 'Received').length;
+      document.getElementById('countRejected').innerText = allStudents.filter(s => s.status === 'Rejected').length;
+    }
+
+    function setStatusFilter(status, btn) {
+      currentStatusTab = status;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterData();
+    }
+
     function renderCards(list) {
       const container = document.getElementById('studentsContainer');
-      const totalCount = document.getElementById('totalCount');
       container.innerHTML = '';
-      totalCount.innerText = `মোট: ${list.length} জন`;
 
       if (list.length === 0) {
-        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #64748b;">কোনো শিক্ষার্থীর তথ্য পাওয়া যায়নি।</div>';
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 30px;">কোনো শিক্ষার্থীর তথ্য পাওয়া যায়নি।</div>';
         return;
       }
 
-      list.forEach(student => {
-        let fileId = '';
+      list.forEach((student) => {
+        let photoId = '';
         if (student.photoLink && student.photoLink.includes('/d/')) {
-          fileId = student.photoLink.split('/d/')[1].split('/')[0];
+          photoId = student.photoLink.split('/d/')[1].split('/')[0];
         }
-        const imgUrl = fileId ? `https://lh3.googleusercontent.com/d/${fileId}` : 'https://via.placeholder.com/105x125?text=No+Photo';
+        const imgUrl = photoId ? `https://lh3.googleusercontent.com/d/${photoId}` : 'https://via.placeholder.com/100x120?text=No+Photo';
+
+        const st = student.status || 'Pending';
 
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
-          <img class="card-photo" src="${imgUrl}" alt="ছবি" onerror="this.src='https://via.placeholder.com/105x125?text=Error'">
+          <img class="card-photo" src="${imgUrl}" alt="ছবি" onerror="this.src='https://via.placeholder.com/100x120?text=Error'">
           <h3>${student.name}</h3>
-          <span class="batch-badge">${student.batch} (পাস: ${student.passingYear})</span>
+          <span class="batch-badge">ব্যাচ: ${student.batch} (পাস: ${student.passingYear})</span>
+          
+          <div class="pay-card-section">
+            <span class="status-badge status-${st}">স্ট্যাটাস: ${st}</span><br>
+            <strong>মাধ্যম:</strong> ${student.payMethod || 'অজানা'}<br>
+            <strong>TrxID:</strong> <code style="background:#e2e8f0; padding:2px 4px; border-radius:4px;">${student.trxId || 'N/A'}</code><br>
+            ${student.payProofLink && student.payProofLink !== 'N/A' ? 
+              `<a href="${student.payProofLink}" target="_blank" style="color:#2563eb; font-weight:700; text-decoration:none;">🖼️ পেমেন্ট স্লিপ দেখুন</a>` : 
+              '<span style="color:#94a3b8;">স্লিপ নেই</span>'}
+          </div>
+
           <div class="card-info">
             <p><strong>পিতা:</strong> ${student.fatherName}</p>
-            <p><strong>মাতা:</strong> ${student.motherName}</p>
             <p><strong>মোবাইল:</strong> ${student.phone}</p>
             <p><strong>পেশা:</strong> ${student.profession}</p>
             <p><strong>ঠিকানা:</strong> ${student.address}</p>
+          </div>
+
+          <div class="status-control-box">
+            <button class="status-btn btn-st-received" onclick="changeStatus('${student.phone}', '${student.timestamp}', 'Received')">✓ Received</button>
+            <button class="status-btn btn-st-pending" onclick="changeStatus('${student.phone}', '${student.timestamp}', 'Pending')">⏳ Pending</button>
+            <button class="status-btn btn-st-reject" onclick="changeStatus('${student.phone}', '${student.timestamp}', 'Rejected')">✗ Reject</button>
           </div>
         `;
         container.appendChild(card);
@@ -192,27 +248,29 @@
       const rawQuery = document.getElementById('searchInput').value.trim().toLowerCase();
       const rawBatchQuery = document.getElementById('batchInput').value.trim();
 
-      // General query er jonno English & Bangla duto form-i toiri kora holo
       const queryEn = convertBnToEn(rawQuery);
       const queryBn = convertEnToBn(rawQuery);
-
-      // Batch query er jonno English & Bangla duto form-i toiri kora holo
       const batchEn = convertBnToEn(rawBatchQuery).toLowerCase();
       const batchBn = convertEnToBn(rawBatchQuery);
 
       const filtered = allStudents.filter(item => {
+        const itemStatus = item.status || 'Pending';
+        if (currentStatusTab !== 'ALL' && itemStatus !== currentStatusTab) {
+          return false;
+        }
+
         const nameStr = (item.name || '').toLowerCase();
         const phoneStr = (item.phone || '').toString();
         const profStr = (item.profession || '').toLowerCase();
+        const trxStr = (item.trxId || '').toLowerCase();
 
-        // Phone ba text e search
         const matchesGeneral = !rawQuery || 
           nameStr.includes(rawQuery) || 
           profStr.includes(rawQuery) || 
+          trxStr.includes(rawQuery) ||
           phoneStr.includes(queryEn) || 
           phoneStr.includes(queryBn);
 
-        // Batch e search (English 2024 likhleo match hobe, Bangla ২০২৪ likhleo match hobe)
         const batchFullStr = (item.batch || '').toString();
         const passYearStr = (item.passingYear || '').toString();
 
@@ -226,6 +284,38 @@
       });
 
       renderCards(filtered);
+    }
+
+    function changeStatus(phone, timestamp, newStatus) {
+      if (!confirm(`আপনি কি এই শিক্ষার্থীর স্ট্যাটাস "${newStatus}" করতে চান?`)) return;
+
+      const target = allStudents.find(s => s.phone.toString() === phone.toString() && s.timestamp.toString() === timestamp.toString());
+      if (target) {
+        target.status = newStatus;
+        updateTabCounts();
+        filterData();
+      }
+
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'updateStatus',
+          phone: phone,
+          timestamp: timestamp,
+          newStatus: newStatus
+        })
+      })
+      .then(res => res.json())
+      .then(res => {
+        if (res.status !== 'success') {
+          alert('স্ট্যাটাস আপডেট করতে সমস্যা হয়েছে!');
+          loadRegistrations();
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert('সার্ভারে সংযোগ পেতে ব্যর্থ হয়েছে!');
+      });
     }
   </script>
 </body>
