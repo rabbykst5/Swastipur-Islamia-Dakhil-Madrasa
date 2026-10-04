@@ -274,7 +274,7 @@
           <div class="warn-msg">শুধুমাত্র বাংলা অক্ষর লিখুন!</div>
         </div>
 
-        <!-- ব্যাচ ড্রপডাউন -->
+        <!-- ব্যাচ ড্রপডাউন (Value hobe English 2010) -->
         <div class="form-group">
           <label>ব্যাচ <span class="required">*</span></label>
           <select id="batch" required>
@@ -282,7 +282,7 @@
           </select>
         </div>
 
-        <!-- পাসের সন ড্রপডাউন -->
+        <!-- পাসের সন ড্রপডাউন (Value hobe English 2010) -->
         <div class="form-group">
           <label>দাখিল / এস এস সি পাসের সন <span class="required">*</span></label>
           <select id="passingYear" required>
@@ -329,9 +329,10 @@
           <div class="warn-msg">শুধুমাত্র বাংলা অক্ষর লিখুন!</div>
         </div>
 
+        <!-- মোবাইল নাম্বার (Bangla likhleo automatic English hoye jabe) -->
         <div class="form-group">
           <label>মোবাইল নাম্বার <span class="required">*</span></label>
-          <input type="tel" id="phone" placeholder="০১XXXXXXXXX" required>
+          <input type="tel" id="phone" placeholder="01XXXXXXXXX" required>
         </div>
 
         <div class="form-group">
@@ -358,6 +359,18 @@
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxhGJXqi5sqTO-WrAO5oGgiQxFfRKJ7lOA7M7XUS3LqLTnCgOjMqoDInP2TsvXU5l3hOw/exec';
 
+    // বাংলা সংখ্যা থেকে ইংরেজি সংখ্যায় রূপান্তর ফাংশন
+    const bnToEnDigits = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
+    function toEnglishDigits(str) {
+      return (str || '').toString().replace(/[০-৯]/g, w => bnToEnDigits[w]);
+    }
+
+    // মোবাইল নাম্বারে বাংলা টাইপ করলেও সাথে সাথে ইংলিশ হয়ে যাবে
+    const phoneInput = document.getElementById('phone');
+    phoneInput.addEventListener('input', function() {
+      this.value = toEnglishDigits(this.value).replace(/[^0-9+]/g, '');
+    });
+
     // শুধুমাত্র বাংলা লেখার ভ্যালিডেশন
     const bnRegex = /[a-zA-Z]/;
     document.querySelectorAll('.bn-only').forEach(el => {
@@ -373,24 +386,27 @@
     });
 
     // ড্রপডাউনে ২০২৬ থেকে ১৯৪০ সাল যুক্ত করা
-    const banglaDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
-    function toBn(num) {
-      return num.toString().replace(/[0-9]/g, w => banglaDigits[w]);
+    // ইউজার দেখবে বাংলায়/ইংরেজিতে, কিন্তু ভ্যালু জমা হবে শুধু English Digit (যেমন: 2010)
+    const enToBnMap = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
+    function toBnYear(yr) {
+      return yr.toString().replace(/[0-9]/g, w => enToBnMap[w]);
     }
 
     const batchSelect = document.getElementById('batch');
     const passSelect = document.getElementById('passingYear');
 
     for (let yr = 2026; yr >= 1940; yr--) {
-      const bnYear = toBn(yr);
+      const bnYear = toBnYear(yr);
 
+      // ব্যাচ ড্রপডাউন: value = 2010 (pure English), text = ব্যাচ ২০১০ (2010)
       const optBatch = document.createElement('option');
-      optBatch.value = `ব্যাচ ${bnYear}`;
+      optBatch.value = yr.toString(); // English 2010
       optBatch.textContent = `ব্যাচ ${bnYear} (${yr})`;
       batchSelect.appendChild(optBatch);
 
+      // পাসের সন: value = 2010 (pure English), text = ২০১০ (2010)
       const optPass = document.createElement('option');
-      optPass.value = bnYear;
+      optPass.value = yr.toString(); // English 2010
       optPass.textContent = `${bnYear} (${yr})`;
       passSelect.appendChild(optPass);
     }
@@ -437,6 +453,10 @@
         profVal = document.getElementById('customProfession').value.trim() || 'অন্যান্য';
       }
 
+      // ফোন নাম্বার ইংরেজিতে নিশ্চিত করা
+      const rawPhone = document.getElementById('phone').value.trim();
+      const englishPhone = toEnglishDigits(rawPhone);
+
       const btnSubmit = document.getElementById('btnSubmit');
       const statusMsg = document.getElementById('statusMsg');
 
@@ -448,11 +468,11 @@
         name: document.getElementById('name').value.trim(),
         fatherName: document.getElementById('fatherName').value.trim(),
         motherName: document.getElementById('motherName').value.trim(),
-        batch: document.getElementById('batch').value,
-        passingYear: document.getElementById('passingYear').value,
+        batch: document.getElementById('batch').value, // English 2010
+        passingYear: document.getElementById('passingYear').value, // English 2010
         profession: profVal,
         address: document.getElementById('address').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
+        phone: englishPhone, // English 017...
         photoData: base64Photo,
         photoType: photoInput.files[0].type
       };

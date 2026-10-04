@@ -50,7 +50,7 @@
 </head>
 <body>
 
-  <!-- লগইন উইন্ডো -->
+  <!-- Login Modal -->
   <div id="loginModal">
     <div class="login-card">
       <h3 style="margin-bottom: 10px; color: #1e293b;">অ্যাডমিন লগইন</h3>
@@ -68,11 +68,10 @@
   <div class="controls">
     <div class="search-inputs">
       <input type="text" id="searchInput" placeholder="নাম, মোবাইল বা পেশা দিয়ে খুঁজুন..." onkeyup="filterData()">
-      <input type="text" id="batchInput" placeholder="নির্দিষ্ট ব্যাচ খুঁজুন..." onkeyup="filterData()">
+      <input type="text" id="batchInput" placeholder="ব্যাচ খুঁজুন (যেমন: 2024 বা ২০২৪)..." onkeyup="filterData()">
     </div>
     <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
       <span class="stats-badge" id="totalCount">মোট: ০ জন</span>
-      <!-- রিফ্রেশ বাটন (লগআউট ছাড়া ডাটা আপডেট) -->
       <button class="btn-action btn-refresh" id="refreshBtn" onclick="loadRegistrations()">🔄 রিফ্রেশ</button>
       <button class="btn-action btn-print" onclick="window.print()">🖨️ প্রিন্ট</button>
       <button class="btn-action btn-logout" onclick="logoutAdmin()">🚪 লগআউট</button>
@@ -88,14 +87,26 @@
 
     let allStudents = [];
 
-    // Enter চাপলে সাথে সাথে লগইন হওয়া
+    // Shonkha translation helpers (Bangla <-> English)
+    const enToBnMap = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
+    const bnToEnMap = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
+
+    function convertEnToBn(str) {
+      return (str || '').toString().replace(/[0-9]/g, w => enToBnMap[w]);
+    }
+
+    function convertBnToEn(str) {
+      return (str || '').toString().replace(/[০-৯]/g, w => bnToEnMap[w]);
+    }
+
+    // Enter press kore login
     document.getElementById('adminPass').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         checkLogin();
       }
     });
 
-    // পেজ রিফ্রেশ দিলেও সেশন ধরে রাখার নিয়ম
+    // Session dhore rakha (Reload korle logout hobe na)
     window.onload = function() {
       if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
         document.getElementById('loginModal').style.display = 'none';
@@ -178,19 +189,38 @@
     }
 
     function filterData() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
-      const batchQuery = document.getElementById('batchInput').value.toLowerCase();
+      const rawQuery = document.getElementById('searchInput').value.trim().toLowerCase();
+      const rawBatchQuery = document.getElementById('batchInput').value.trim();
+
+      // General query er jonno English & Bangla duto form-i toiri kora holo
+      const queryEn = convertBnToEn(rawQuery);
+      const queryBn = convertEnToBn(rawQuery);
+
+      // Batch query er jonno English & Bangla duto form-i toiri kora holo
+      const batchEn = convertBnToEn(rawBatchQuery).toLowerCase();
+      const batchBn = convertEnToBn(rawBatchQuery);
 
       const filtered = allStudents.filter(item => {
-        const matchesGeneral = 
-          (item.name && item.name.toLowerCase().includes(query)) ||
-          (item.phone && item.phone.includes(query)) ||
-          (item.profession && item.profession.toLowerCase().includes(query));
-        
-        const matchesBatch = 
-          !batchQuery || 
-          (item.batch && item.batch.toString().toLowerCase().includes(batchQuery)) ||
-          (item.passingYear && item.passingYear.toString().includes(batchQuery));
+        const nameStr = (item.name || '').toLowerCase();
+        const phoneStr = (item.phone || '').toString();
+        const profStr = (item.profession || '').toLowerCase();
+
+        // Phone ba text e search
+        const matchesGeneral = !rawQuery || 
+          nameStr.includes(rawQuery) || 
+          profStr.includes(rawQuery) || 
+          phoneStr.includes(queryEn) || 
+          phoneStr.includes(queryBn);
+
+        // Batch e search (English 2024 likhleo match hobe, Bangla ২০২৪ likhleo match hobe)
+        const batchFullStr = (item.batch || '').toString();
+        const passYearStr = (item.passingYear || '').toString();
+
+        const matchesBatch = !rawBatchQuery ||
+          batchFullStr.includes(batchBn) ||
+          convertBnToEn(batchFullStr).toLowerCase().includes(batchEn) ||
+          passYearStr.includes(batchBn) ||
+          convertBnToEn(passYearStr).includes(batchEn);
 
         return matchesGeneral && matchesBatch;
       });
