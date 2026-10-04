@@ -23,9 +23,13 @@
     /* Control Bar */
     .controls { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 20px auto; }
     .search-inputs { display: flex; gap: 10px; flex-wrap: wrap; }
-    .search-inputs input { padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; min-width: 250px; font-size: 14px; }
+    .search-inputs input { padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; min-width: 240px; font-size: 14px; }
     .stats-badge { background: #0f172a; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; }
-    .btn-print { background: #0284c7; color: #fff; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+    .btn-action { color: #fff; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 5px; }
+    .btn-refresh { background: #10b981; }
+    .btn-refresh:hover { background: #059669; }
+    .btn-print { background: #0284c7; }
+    .btn-logout { background: #ef4444; }
 
     /* Grid Display */
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; max-width: 1200px; margin: 0 auto; }
@@ -46,10 +50,11 @@
 </head>
 <body>
 
+  <!-- লগইন উইন্ডো -->
   <div id="loginModal">
     <div class="login-card">
       <h3 style="margin-bottom: 10px; color: #1e293b;">অ্যাডমিন লগইন</h3>
-      <input type="password" id="adminPass" placeholder="পাসওয়ার্ড দিন">
+      <input type="password" id="adminPass" placeholder="পাসওয়ার্ড দিন (Enter চাপুন)" autofocus>
       <button onclick="checkLogin()">লগইন করুন</button>
       <div id="loginErr" style="color: red; font-size: 12px; margin-top: 8px;"></div>
     </div>
@@ -65,9 +70,12 @@
       <input type="text" id="searchInput" placeholder="নাম, মোবাইল বা পেশা দিয়ে খুঁজুন..." onkeyup="filterData()">
       <input type="text" id="batchInput" placeholder="নির্দিষ্ট ব্যাচ খুঁজুন..." onkeyup="filterData()">
     </div>
-    <div style="display: flex; gap: 10px; align-items: center;">
+    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
       <span class="stats-badge" id="totalCount">মোট: ০ জন</span>
-      <button class="btn-print" onclick="window.print()">🖨️ প্রিন্ট করুন</button>
+      <!-- রিফ্রেশ বাটন (লগআউট ছাড়া ডাটা আপডেট) -->
+      <button class="btn-action btn-refresh" id="refreshBtn" onclick="loadRegistrations()">🔄 রিফ্রেশ</button>
+      <button class="btn-action btn-print" onclick="window.print()">🖨️ প্রিন্ট</button>
+      <button class="btn-action btn-logout" onclick="logoutAdmin()">🚪 লগআউট</button>
     </div>
   </div>
 
@@ -75,15 +83,30 @@
   <div class="grid" id="studentsContainer"></div>
 
   <script>
-    // আপনার নতুন Web App URL
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxhGJXqi5sqTO-WrAO5oGgiQxFfRKJ7lOA7M7XUS3LqLTnCgOjMqoDInP2TsvXU5l3hOw/exec';
     const ADMIN_PASSWORD = 'admin123'; 
 
     let allStudents = [];
 
+    // Enter চাপলে সাথে সাথে লগইন হওয়া
+    document.getElementById('adminPass').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        checkLogin();
+      }
+    });
+
+    // পেজ রিফ্রেশ দিলেও সেশন ধরে রাখার নিয়ম
+    window.onload = function() {
+      if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
+        document.getElementById('loginModal').style.display = 'none';
+        loadRegistrations();
+      }
+    };
+
     function checkLogin() {
       const pass = document.getElementById('adminPass').value;
       if (pass === ADMIN_PASSWORD) {
+        sessionStorage.setItem('isAdminLoggedIn', 'true');
         document.getElementById('loginModal').style.display = 'none';
         loadRegistrations();
       } else {
@@ -91,16 +114,29 @@
       }
     }
 
+    function logoutAdmin() {
+      sessionStorage.removeItem('isAdminLoggedIn');
+      location.reload();
+    }
+
     function loadRegistrations() {
+      const loader = document.getElementById('loader');
+      const refreshBtn = document.getElementById('refreshBtn');
+      loader.style.display = 'block';
+      loader.innerText = 'নতুন ডাটা লোড হচ্ছে...';
+      refreshBtn.disabled = true;
+
       fetch(SCRIPT_URL)
         .then(res => res.json())
         .then(data => {
           allStudents = data;
-          document.getElementById('loader').style.display = 'none';
+          loader.style.display = 'none';
+          refreshBtn.disabled = false;
           renderCards(allStudents);
         })
         .catch(err => {
-          document.getElementById('loader').innerText = 'তথ্য লোড করতে ব্যর্থ হয়েছে!';
+          loader.innerText = 'তথ্য লোড করতে ব্যর্থ হয়েছে!';
+          refreshBtn.disabled = false;
           console.error(err);
         });
     }
@@ -128,7 +164,7 @@
         card.innerHTML = `
           <img class="card-photo" src="${imgUrl}" alt="ছবি" onerror="this.src='https://via.placeholder.com/105x125?text=Error'">
           <h3>${student.name}</h3>
-          <span class="batch-badge">ব্যাচ: ${student.batch} (পাস: ${student.passingYear})</span>
+          <span class="batch-badge">${student.batch} (পাস: ${student.passingYear})</span>
           <div class="card-info">
             <p><strong>পিতা:</strong> ${student.fatherName}</p>
             <p><strong>মাতা:</strong> ${student.motherName}</p>
