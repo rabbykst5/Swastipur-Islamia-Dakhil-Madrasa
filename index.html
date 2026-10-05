@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>সুবর্ণজয়ন্তী উৎসব - স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা</title>
+  <!-- html2canvas library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -148,159 +149,187 @@
     #statusResultBox {
       display: none;
       margin-top: 20px;
-      overflow-x: auto;
     }
 
-    .invitation-card-wrapper {
-      width: 100%;
-      display: flex;
+    /* Modal Popup Box for Direct Image Display */
+    #imageModalPopup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.85);
+      z-index: 9999;
+      align-items: center;
       justify-content: center;
+      padding: 15px;
+      backdrop-filter: blur(4px);
     }
-    .invitation-card {
-      width: 720px;
-      min-width: 720px;
-      background: #fffdf7;
-      border: 3.5px solid #b45309;
-      outline: 2px dashed #f59e0b;
-      outline-offset: -10px;
-      border-radius: 16px;
-      padding: 35px 30px;
-      box-shadow: 0 12px 35px rgba(180, 83, 9, 0.12);
+    .modal-content-box {
+      background: #ffffff;
+      border-radius: 14px;
+      max-width: 600px;
+      width: 100%;
+      padding: 20px;
       position: relative;
-      color: #1e293b;
-      margin: 0 auto;
-    }
-    .invitation-card::after {
-      content: "৫০";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 210px;
-      font-weight: 900;
-      color: rgba(217, 119, 6, 0.04);
-      z-index: 1;
-      pointer-events: none;
-      user-select: none;
-    }
-    .inv-content { position: relative; z-index: 2; }
-    .inv-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: #94a3b8;
-      border-bottom: 1px solid #fef3c7;
-      padding-bottom: 6px;
-      margin-bottom: 15px;
-    }
-    .inv-header {
       text-align: center;
-      border-bottom: 2px dashed #f59e0b;
-      padding-bottom: 15px;
-      margin-bottom: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      max-height: 95vh;
+      overflow-y: auto;
     }
-    .inv-bismillah {
-      font-size: 16px;
-      color: #166534;
-      font-weight: bold;
-      margin-bottom: 5px;
+    .modal-close-btn {
+      position: absolute;
+      top: 12px; right: 14px;
+      background: #ef4444; color: #fff;
+      border: none; border-radius: 50%;
+      width: 32px; height: 32px;
+      font-size: 16px; font-weight: bold;
+      cursor: pointer;
     }
-    .inv-inst-name {
-      font-size: 25px;
-      font-weight: 900;
-      color: #1e3a8a;
-    }
-    .inv-title-badge {
-      display: inline-block;
-      background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%);
-      color: #ffffff;
-      padding: 4px 20px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 800;
-      margin-top: 8px;
-      letter-spacing: 0.5px;
-    }
-    
-    .inv-body-table {
+    .rendered-card-img {
       width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 18px;
-    }
-    .inv-body-table td {
-      vertical-align: middle;
-      padding: 0 8px;
-    }
-    .inv-photo {
-      width: 110px;
-      height: 130px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 3px solid #f59e0b;
+      border-radius: 10px;
+      border: 2px solid #b45309;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin: 15px 0;
       display: block;
-      background: #f1f5f9;
     }
-    .inv-guest-name {
-      font-size: 24px;
-      font-weight: 900;
-      color: #0f172a;
-      margin: 2px 0 6px 0;
-    }
-    .inv-guest-info {
-      font-size: 13.5px;
-      color: #334155;
-      line-height: 1.6;
-    }
-    .inv-qr-img {
-      border: 1px solid #e2e8f0;
-      padding: 3px;
-      background: #fff;
-      border-radius: 6px;
-      width: 85px;
-      height: 85px;
-      display: block;
-      margin: 0 auto;
-    }
-
-    .inv-text-letter {
-      background: rgba(254, 243, 199, 0.45);
-      padding: 12px 18px;
-      border-radius: 8px;
-      border-left: 4px solid #f59e0b;
-      font-size: 13.5px;
-      line-height: 1.7;
-      text-align: justify;
-      color: #334155;
-      margin-bottom: 20px;
-    }
-    
-    .inv-footer-table {
-      width: 100%;
-      border-collapse: collapse;
-      border-top: 1px dashed #cbd5e1;
-      padding-top: 15px;
-      margin-top: 10px;
-    }
-    .inv-footer-table td {
-      vertical-align: bottom;
-    }
-
-    .btn-download-inv {
-      width: 100%;
-      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    .btn-popup-download {
+      background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
       color: #ffffff;
       border: none;
-      padding: 14px;
+      padding: 13px 25px;
       border-radius: 8px;
       font-size: 16px;
       font-weight: 700;
       cursor: pointer;
-      margin-top: 18px;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 8px;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+    }
+
+    /* Hidden Sandbox: কার্ডটি স্ক্রিনের বাইরে ৮০০px চওড়া হয়ে সুন্দরভাবে রেন্ডার হবে */
+    #offscreenCardContainer {
+      position: fixed;
+      top: -9999px;
+      left: -9999px;
+      width: 800px;
+      background: #fffdf7;
+      z-index: -1;
+      visibility: hidden;
+    }
+
+    /* Fixed Desktop-Style Card Template */
+    .printable-canvas-card {
+      width: 800px;
+      background: #fffdf7;
+      border: 4px solid #b45309;
+      outline: 2px dashed #f59e0b;
+      outline-offset: -12px;
+      border-radius: 16px;
+      padding: 35px 30px;
+      position: relative;
+      color: #1e293b;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .card-watermark {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 220px;
+      font-weight: 900;
+      color: rgba(217, 119, 6, 0.04);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .card-inner-content {
+      position: relative;
+      z-index: 2;
+    }
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #94a3b8;
+      border-bottom: 1.5px solid #fef3c7;
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+    }
+    .card-head-center {
+      text-align: center;
+      border-bottom: 2px dashed #f59e0b;
+      padding-bottom: 16px;
+      margin-bottom: 22px;
+    }
+    .bismillah-txt { font-size: 17px; color: #166534; font-weight: bold; margin-bottom: 4px; }
+    .inst-title-main { font-size: 27px; font-weight: 900; color: #1e3a8a; }
+    .badge-pill-header {
+      display: inline-block;
+      background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%);
+      color: #ffffff;
+      padding: 5px 22px;
+      border-radius: 20px;
+      font-size: 14.5px;
+      font-weight: 800;
+      margin-top: 10px;
+    }
+
+    /* Fixed 3-Column Table to Guarantee Horizontal Layout */
+    .identity-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    .identity-table td { vertical-align: middle; }
+    .photo-cell { width: 130px; }
+    .photo-frame {
+      width: 115px; height: 135px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 3.5px solid #f59e0b;
+      display: block;
+    }
+    .info-cell { padding: 0 20px; text-align: left; }
+    .guest-salutation { font-size: 14px; color: #64748b; font-style: italic; }
+    .guest-title-name { font-size: 25px; font-weight: 900; color: #0f172a; margin: 2px 0 6px 0; }
+    .guest-meta-lines { font-size: 14px; color: #334155; line-height: 1.65; }
+    .qr-cell { width: 110px; text-align: center; }
+    .qr-frame {
+      width: 90px; height: 90px;
+      border: 1px solid #e2e8f0;
+      padding: 3px;
+      background: #fff;
+      border-radius: 6px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .invitation-letter-box {
+      background: rgba(254, 243, 199, 0.5);
+      padding: 14px 20px;
+      border-radius: 8px;
+      border-left: 4.5px solid #f59e0b;
+      font-size: 14px;
+      line-height: 1.75;
+      text-align: justify;
+      color: #334155;
+      margin-bottom: 22px;
+    }
+
+    .footer-identity-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-top: 1.5px dashed #cbd5e1;
+      padding-top: 15px;
+    }
+    .footer-identity-table td { vertical-align: bottom; }
+    .verified-seal-tag {
+      background: #dcfce7;
+      border: 1.5px solid #86efac;
+      border-radius: 6px;
+      padding: 4px 10px;
+      display: inline-table;
+      margin-top: 5px;
     }
 
     .info-grid {
@@ -503,6 +532,28 @@
   </style>
 </head>
 <body>
+
+  <!-- Image Popup Modal -->
+  <div id="imageModalPopup" onclick="closeImagePopup()">
+    <div class="modal-content-box" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="closeImagePopup()">✕</button>
+      <h3 style="color:#1e3a8a; font-size: 18px; margin-top: 4px;">🎉 আপনার ডিজিটাল আমন্ত্রণপত্র তৈরি হয়েছে</h3>
+      <p style="font-size: 12.5px; color:#64748b; margin-top: 2px;">নিচের ছবিটি দেখে নিন অথবা ডাউনলোড বাটনে ক্লিক করুন</p>
+      
+      <!-- Rendered Image Placeholder -->
+      <img id="popupCardImg" src="" alt="আমন্ত্রণপত্র" class="rendered-card-img">
+
+      <div style="margin-top: 10px;">
+        <a id="btnDownloadFromPopup" href="" download="Amontron_Patra.jpg" class="btn-popup-download">
+          📥 আমন্ত্রণপত্রটি ডাউনলোড করুন (JPG)
+        </a>
+      </div>
+      <p style="font-size: 11px; color:#94a3b8; margin-top: 8px;">(মোবাইলে ডাউনলোড না হলে ছবির ওপর আঙুল দিয়ে ধরে রেখে "Save Image" করতে পারেন)</p>
+    </div>
+  </div>
+
+  <!-- Offscreen Container: এখানে কার্ডটি সম্পূর্ণ পর্দার আড়ালে ৮০০px আকারে ঠিকঠাক আঁকা হবে -->
+  <div id="offscreenCardContainer"></div>
 
   <header class="hero-banner">
     <div class="motto">শিক্ষা • নৈতিকতা • মানবতা</div>
@@ -794,6 +845,11 @@
       }
     }
 
+    function closeImagePopup() {
+      document.getElementById('imageModalPopup').style.display = 'none';
+    }
+
+    // Status Check & Instant Popup Card Generator
     function checkUserStatus() {
       let qPhone = toEnglishDigits(document.getElementById('checkPhoneInput').value.trim()).replace(/^'+/, '');
       if (!qPhone) {
@@ -854,123 +910,126 @@
             return;
           }
 
-          resultBox.innerHTML = '<div style="text-align:center; color:#2563eb; padding:15px; font-weight:700;">আমন্ত্রণপত্র প্রস্তুত করা হচ্ছে...</div>';
+          resultBox.innerHTML = '<div style="text-align:center; color:#2563eb; padding:15px; font-weight:700;">আমন্ত্রণপত্রটি হাই-কোয়ালিটি ছবি হিসেবে তৈরি হচ্ছে...</div>';
+          
           const [base64StudentPhoto, base64QrCode] = await Promise.all([
             toDataURL(rawImgUrl),
             toDataURL(qrCodeUrl)
           ]);
 
-          resultBox.innerHTML = `
-            <div class="invitation-card-wrapper">
-              <div class="invitation-card" id="printableCard">
-                <div class="inv-content">
-                  <div class="inv-meta">
-                    <span>ডকুমেন্ট আইডি: SIDM-50-${student.phone.slice(-4)}</span>
-                    <span>ইস্যু: সুবর্ণজয়ন্তী পরিষদ</span>
-                  </div>
+          // Render Desktop-sized Perfect Card in Offscreen Sandbox (৮০০px ফিক্সড উইডথ)
+          const sandbox = document.getElementById('offscreenCardContainer');
+          sandbox.style.visibility = 'visible';
+          sandbox.innerHTML = `
+            <div class="printable-canvas-card" id="sandboxCardElement">
+              <div class="card-watermark">৫০</div>
+              <div class="card-inner-content">
+                <div class="meta-row">
+                  <span>ডকুমেন্ট আইডি: SIDM-50-${student.phone.slice(-4)}</span>
+                  <span>ইস্যু: সুবর্ণজয়ন্তী পরিষদ</span>
+                </div>
 
-                  <div class="inv-header">
-                    <div class="inv-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-                    <div class="inv-inst-name">স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা</div>
-                    <div style="font-size:13px; color:#64748b;">স্বস্তিপুর, কুষ্টিয়া সদর, কুষ্টিয়া</div>
-                    <div><span class="inv-title-badge">⚜️ সুবর্ণজয়ন্তী উৎসবের বিশেষ আমন্ত্রণপত্র ⚜️️</span></div>
-                  </div>
+                <div class="card-head-center">
+                  <div class="bismillah-txt">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+                  <div class="inst-title-main">স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা</div>
+                  <div style="font-size:13px; color:#64748b;">স্বস্তিপুর, কুষ্টিয়া সদর, কুষ্টিয়া</div>
+                  <div><span class="badge-pill-header">⚜️ সুবর্ণজয়ন্তী উৎসবের বিশেষ আমন্ত্রণপত্র ⚜️</span></div>
+                </div>
 
-                  <table class="inv-body-table">
-                    <tr>
-                      <td style="width: 120px; text-align: left;">
-                        <img class="inv-photo" src="${base64StudentPhoto}" alt="ছবি">
-                      </td>
-                      <td style="padding: 0 15px;">
-                        <div style="font-size:14px; color:#64748b; font-style:italic;">সম্মানিত প্রাক্তন শিক্ষার্থী,</div>
-                        <div class="inv-guest-name">${student.name}</div>
-                        <div class="inv-guest-info">
-                          <div><strong>পিতার নাম:</strong> ${student.fatherName}</div>
-                          <div><strong>দাখিল/এসএসসি পাসের সন:</strong> ${student.passingYear} (ব্যাচ: ${student.batch})</div>
-                          <div><strong>বর্তমান পেশা:</strong> ${student.profession}</div>
-                          <div><strong>মোবাইল নম্বর:</strong> ${student.phone}</div>
-                        </div>
-                      </td>
-                      <td style="width: 100px; text-align: center;">
-                        <img class="inv-qr-img" src="${base64QrCode}" alt="QR Code">
-                        <div style="font-size:10px; color:#64748b; margin-top:3px; font-weight:700;">ডিজিটাল ভেরিফাইড</div>
-                      </td>
-                    </tr>
-                  </table>
+                <table class="identity-table">
+                  <tr>
+                    <td class="photo-cell">
+                      <img class="photo-frame" src="${base64StudentPhoto}" alt="ছবি">
+                    </td>
+                    <td class="info-cell">
+                      <div class="guest-salutation">সম্মানিত প্রাক্তন শিক্ষার্থী,</div>
+                      <div class="guest-title-name">${student.name}</div>
+                      <div class="guest-meta-lines">
+                        <div><strong>পিতার নাম:</strong> ${student.fatherName}</div>
+                        <div><strong>দাখিল/এসএসসি পাসের সন:</strong> ${student.passingYear} (ব্যাচ: ${student.batch})</div>
+                        <div><strong>বর্তমান পেশা:</strong> ${student.profession}</div>
+                        <div><strong>মোবাইল নম্বর:</strong> ${student.phone}</div>
+                      </div>
+                    </td>
+                    <td class="qr-cell">
+                      <img class="qr-frame" src="${base64QrCode}" alt="QR">
+                      <div style="font-size:10px; color:#64748b; margin-top:3px; font-weight:700;">ডিজিটাল ভেরিফাইড</div>
+                    </td>
+                  </tr>
+                </table>
 
-                  <div class="inv-text-letter">
-                    আসসালামু আলাইকুম ওয়া রাহমাতুল্লাহ। স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসার গৌরবময় পথচলার ৫০ বছর পূর্তি উপলক্ষে আয়োজিত <strong>"সুবর্ণজয়ন্তী উৎসব"</strong>-এ আপনাকে মাদ্রাসার পক্ষ থেকে অত্যন্ত প্রীতি ও আনন্দের সাথে সাদর আমন্ত্রণ জানাচ্ছি। আপনার উপস্থিতি আমাদের এই মিলনমেলাকে আরও মহিমান্বিত ও স্মরণীয় করে তুলবে।
-                  </div>
+                <div class="invitation-letter-box">
+                  আসসালামু আলাইকুম ওয়া রাহমাতুল্লাহ। স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসার গৌরবময় পথচলার ৫০ বছর পূর্তি উপলক্ষে আয়োজিত <strong>"সুবর্ণজয়ন্তী উৎসব"</strong>-এ আপনাকে মাদ্রাসার পক্ষ থেকে অত্যন্ত প্রীতি ও আনন্দের সাথে সাদর আমন্ত্রণ জানাচ্ছি। আপনার উপস্থিতি আমাদের এই মিলনমেলাকে আরও মহিমান্বিত ও স্মরণীয় করে তুলবে।
+                </div>
 
-                  <table class="inv-footer-table">
-                    <tr>
-                      <td style="text-align: left;">
-                        <div style="color:#0f172a; font-weight:700; font-size:12px; margin-bottom: 4px;">রেজিস্ট্রেশন ফি: ১০০০/= পরিশোধিত</div>
-                        
-                        <table style="background:#dcfce7; border:1px solid #86efac; border-radius:6px; padding:3px 8px; display:inline-table;">
-                          <tr>
-                            <td style="padding-right:6px;">
-                              <div style="width:16px; height:16px; background:#16a34a; color:#fff; border-radius:50%; text-align:center; font-size:10px; line-height:16px; font-weight:900;">✔</div>
-                            </td>
-                            <td style="color:#15803d; font-weight:800; font-size:12px; white-space:nowrap;">
-                              অনুমোদিত ও নিবন্ধিত প্রতিনিধি
-                            </td>
-                          </tr>
-                        </table>
+                <table class="footer-identity-table">
+                  <tr>
+                    <td style="text-align: left;">
+                      <div style="color:#0f172a; font-weight:700; font-size:13px; margin-bottom: 4px;">রেজিস্ট্রেশন ফি: ১০০০/= পরিশোধিত</div>
+                      
+                      <!-- Table Structure for Zero-Blank Seal Badge -->
+                      <table class="verified-seal-tag">
+                        <tr>
+                          <td style="padding-right:6px;">
+                            <div style="width:16px; height:16px; background:#16a34a; color:#fff; border-radius:50%; text-align:center; font-size:10px; line-height:16px; font-weight:900;">✔</div>
+                          </td>
+                          <td style="color:#15803d; font-weight:800; font-size:12.5px; white-space:nowrap;">
+                            অনুমোদিত ও নিবন্ধিত প্রতিনিধি
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td style="text-align: right;">
+                      <div style="font-size:14px; font-weight:800; color:#0f172a;">আহ্বায়ক ও মাদ্রাসা কর্তৃপক্ষ</div>
+                      <div style="font-size:12.5px; color:#475569;">সুবর্ণজয়ন্তী উদযাপন পরিষদ</div>
+                      <div style="font-size: 11px; color: #64748b; margin-top: 2px; font-style: italic;">
+                        (এটি সিস্টেম জেনারেটেড ডিজিটাল কপি, কোনো স্বাক্ষরের প্রয়োজন নেই)
+                      </div>
+                    </td>
+                  </tr>
+                </table>
 
-                      </td>
-                      <td style="text-align: right;">
-                        <div style="font-size:13.5px; font-weight:800; color:#0f172a;">আহ্বায়ক ও মাদ্রাসা কর্তৃপক্ষ</div>
-                        <div style="font-size:12px; color:#475569;">সুবর্ণজয়ন্তী উদযাপন পরিষদ</div>
-                        <div style="font-size: 11px; color: #64748b; margin-top: 2px; font-style: italic;">
-                          (এটি সিস্টেম জেনারেটেড ডিজিটাল কপি, কোনো স্বাক্ষরের প্রয়োজন নেই)
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-
-                  <div style="border-top: 1px dotted #cbd5e1; margin-top: 14px; padding-top: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #64748b;">
-                    <div>কারিগরি তত্ত্বাবধানে: <strong style="color: #1e3a8a;">🛡️ RSB BD SOFT</strong></div>
-                    <div style="font-style: italic; font-size: 10px; color: #94a3b8;">IT & Software Oversight Cell</div>
-                  </div>
-
-                  <button type="button" class="btn-download-inv" id="btnDownloadJpg" onclick="downloadCardAsJpg('${student.name}')">
-                    🖼️ আমন্ত্রণপত্রটি ইমেজ (JPG) হিসেবে ডাউনলোড করুন
-                  </button>
+                <div style="border-top: 1px dotted #cbd5e1; margin-top: 15px; padding-top: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #64748b;">
+                  <div>কারিগরি তত্ত্বাবধানে: <strong style="color: #1e3a8a;">🛡️ RSB BD SOFT</strong></div>
+                  <div style="font-style: italic; font-size: 10px; color: #94a3b8;">IT & Software Oversight Cell</div>
                 </div>
               </div>
             </div>
           `;
+
+          // Generate Canvas offscreen and open Image Modal Popup
+          const cardTarget = document.getElementById('sandboxCardElement');
+          html2canvas(cardTarget, {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            width: 800,
+            backgroundColor: '#fffdf7'
+          }).then(canvas => {
+            sandbox.style.visibility = 'hidden';
+            resultBox.innerHTML = '';
+
+            const imgData = canvas.toDataURL('image/jpeg', 0.95);
+            
+            // Set image and download link in Modal Popup
+            document.getElementById('popupCardImg').src = imgData;
+            const downloadBtn = document.getElementById('btnDownloadFromPopup');
+            downloadBtn.href = imgData;
+            downloadBtn.download = `Amontron_Patra_${student.name.replace(/\s+/g, '_')}.jpg`;
+
+            // Open Modal
+            document.getElementById('imageModalPopup').style.display = 'flex';
+          }).catch(err => {
+            sandbox.style.visibility = 'hidden';
+            resultBox.innerHTML = '<div style="color:#dc2626; text-align:center;">কার্ড তৈরিতে সমস্যা হয়েছে। আবার চেষ্টা করুন।</div>';
+          });
+
         })
         .catch(err => {
           btn.disabled = false;
           btn.innerText = 'আমন্ত্রণপত্র খুঁজুন';
           resultBox.innerHTML = '<div style="color:#dc2626; text-align:center;">সার্ভারের সাথে সংযোগ পাওয়া যায়নি।</div>';
         });
-    }
-
-    function downloadCardAsJpg(studentName) {
-      const cardElement = document.getElementById('printableCard');
-      const downloadBtn = document.getElementById('btnDownloadJpg');
-      downloadBtn.style.display = 'none';
-
-      html2canvas(cardElement, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        width: 720,
-        windowWidth: 720,
-        backgroundColor: '#fffdf7'
-      }).then(canvas => {
-        downloadBtn.style.display = 'flex';
-        const link = document.createElement('a');
-        link.download = `Amontron_Patra_${studentName.replace(/\s+/g, '_')}.jpg`;
-        link.href = canvas.toDataURL('image/jpeg', 0.95);
-        link.click();
-      }).catch(err => {
-        downloadBtn.style.display = 'flex';
-        alert('ডাউনলোড করতে সমস্যা হয়েছে, পুনরায় চেষ্টা করুন।');
-      });
     }
 
     let isTrxValid = false;
@@ -1024,7 +1083,7 @@
         .catch(err => {
           trxStatusMsg.style.display = 'block';
           trxStatusMsg.style.color = '#dc2626';
-          trxStatusMsg.innerHTML = '⚠️ ডাটাবেজ যাচাইয়ে সংযোগ পেতে সমস্যা হচ্ছে। পুনরায় চেষ্টা করুন।';
+          trxStatusMsg.innerHTML = '⚠️️ ডাটাবেজ যাচাইয়ে সংযোগ পেতে সমস্যা হচ্ছে। পুনরায় চেষ্টা করুন।';
           submitBtn.style.display = 'none';
           isTrxValid = false;
         });
