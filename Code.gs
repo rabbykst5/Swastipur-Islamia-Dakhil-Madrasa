@@ -1,8 +1,11 @@
-var FOLDER_ID = "1-kAEVjWPb5t-3JWVikOqms6bde39NWyF";
+var PHOTO_FOLDER_ID = "1-kAEVjWPb5t-3JWVikOqms6bde39NWyF";   // Profile Photo Folder
+var PAYMENT_FOLDER_ID = "1hf89fvix6aOMIl8-qQ7sq1VuTdg4DQki"; // Payment Slip Folder
 
 function testDriveAccess() {
-  var folder = DriveApp.getFolderById(FOLDER_ID);
-  Logger.log("Folder Found: " + folder.getName());
+  var photoFolder = DriveApp.getFolderById(PHOTO_FOLDER_ID);
+  var payFolder = DriveApp.getFolderById(PAYMENT_FOLDER_ID);
+  Logger.log("Photo Folder: " + photoFolder.getName());
+  Logger.log("Payment Folder: " + payFolder.getName());
 }
 
 function doPost(e) {
@@ -11,18 +14,27 @@ function doPost(e) {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var sheet = ss.getSheetByName("All_Registrations") || ss.getActiveSheet();
 
-    // অ্যাডমিন প্যানেল থেকে স্ট্যাটাস পরিবর্তনের রিকোয়েস্ট
+    // 1. Status Update from Admin Panel
     if (data.action === "updateStatus") {
       var rows = sheet.getDataRange().getValues();
       var targetRow = -1;
+      
+      var searchPhone = (data.phone || "").toString().trim().replace(/^'+/, '');
+      var searchName = (data.name || "").toString().trim();
+
       for (var i = 1; i < rows.length; i++) {
-        if (rows[i][9].toString() === data.phone.toString() && rows[i][0].toString() === data.timestamp.toString()) {
+        var rowPhone = (rows[i][9] || "").toString().trim().replace(/^'+/, '');
+        var rowName = (rows[i][2] || "").toString().trim();
+
+        if (rowPhone === searchPhone || (searchName && rowName === searchName)) {
           targetRow = i + 1;
           break;
         }
       }
+
       if (targetRow !== -1) {
-        sheet.getRange(targetRow, 14).setValue(data.newStatus); // Column N (14) হলো স্ট্যাটাস
+        sheet.getRange(targetRow, 14).setValue(data.newStatus); // Column N (14) = Status
+        SpreadsheetApp.flush();
         return ContentService.createTextOutput(JSON.stringify({ status: "success", message: "Status updated" }))
           .setMimeType(ContentService.MimeType.JSON);
       }
@@ -30,7 +42,7 @@ function doPost(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
 
-    // নতুন রেজিস্ট্রেশন ও হেডার যাচাই
+    // 2. Header Row check
     if (sheet.getLastRow() === 0) {
       sheet.appendRow([
         "রেজিস্ট্রেশন তারিখ ও সময়",
@@ -47,32 +59,39 @@ function doPost(e) {
         "TrxID",
         "পেমেন্ট স্লিপ লিঙ্ক",
         "স্ট্যাটাস",
-        "ছবির লিঙ্ক" // সবার শেষে
+        "ছবির লিঙ্ক"
       ]);
     }
 
-    var folder = DriveApp.getFolderById(FOLDER_ID);
-
-    // শিক্ষার্থীর প্রোফাইল ছবি ড্রাইভে সেভ করা
+    // 3. Save Student Photo
+    var photoFolder = DriveApp.getFolderById(PHOTO_FOLDER_ID);
     var photoFile = Utilities.base64Decode(data.photoData.split(",")[1]);
     var photoName = "Photo_" + data.name.replace(/\s+/g, '_') + "_" + data.phone + ".jpg";
     var photoBlob = Utilities.newBlob(photoFile, data.photoType || "image/jpeg", photoName);
-    var photoDriveFile = folder.createFile(photoBlob);
+    var photoDriveFile = photoFolder.createFile(photoBlob);
     var photoId = photoDriveFile.getId();
     var photoViewLink = photoDriveFile.getUrl();
     var photoFormula = '=IMAGE("https://lh3.googleusercontent.com/d/' + photoId + '", 1)';
 
-    // পেমেন্ট স্লিপ/স্ক্রিনশট ড্রাইভে সেভ করা
+    // 4. Save Payment Slip to Separate Folder
     var payProofLink = "N/A";
     if (data.payProofData) {
+      var payFolder = DriveApp.getFolderById(PAYMENT_FOLDER_ID);
       var proofFile = Utilities.base64Decode(data.payProofData.split(",")[1]);
-      var proofName = "PayProof_" + data.phone + "_" + (data.trxId || "manual") + ".jpg";
+      var proofName = "PaySlip_" + data.phone + "_" + (data.trxId || "manual") + ".jpg";
       var proofBlob = Utilities.newBlob(proofFile, data.payProofType || "image/jpeg", proofName);
-      var proofDriveFile = folder.createFile(proofBlob);
+      var proofDriveFile = payFolder.createFile(proofBlob);
       payProofLink = proofDriveFile.getUrl();
     }
 
-    // শীটে সারি যোগ করা (ছবির লিংক সবার শেষে Column O-তে)
+    // Phone number text hishebe rakhle 0 kokhono katbe na
+    var formattedPhone = (data.phone || "").toString().trim();
+    if (formattedPhone.length === 10 && formattedPhone.startsWith('1')) {
+      formattedPhone = '0' + formattedPhone;
+    }
+    var phoneText = "'" + formattedPhone;
+
+    // 5. Append Row to Sheet
     sheet.appendRow([
       new Date(),
       photoFormula,
@@ -83,7 +102,7 @@ function doPost(e) {
       data.passingYear,
       data.profession,
       data.address,
-      data.phone,
+      phoneText,
       data.payMethod,
       data.trxId || "N/A",
       payProofLink,
@@ -116,6 +135,11 @@ function doGet(e) {
 
     var dataRows = rows.slice(1);
     var studentList = dataRows.map(function(row) {
+      var p = (row[9] || "").toString().trim().replace(/^'+/, '');
+      if (p.length === 10 && p.startsWith('1')) {
+        p = '0' + p;
+      }
+
       return {
         timestamp: row[0],
         name: row[2],
@@ -125,7 +149,7 @@ function doGet(e) {
         passingYear: row[6],
         profession: row[7],
         address: row[8],
-        phone: row[9],
+        phone: p,
         payMethod: row[10],
         trxId: row[11],
         payProofLink: row[12],

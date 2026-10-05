@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>সুবর্ণজয়ন্তী উৎসব - স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা</title>
+  <!-- html2canvas library for direct JPG download -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background: #f0f4f9; color: #1e293b; line-height: 1.6; }
@@ -98,6 +100,241 @@
       position: relative;
       z-index: 10;
     }
+
+    /* Status Check Section Box */
+    .status-check-card {
+      background: #ffffff;
+      padding: 20px 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      border-left: 5px solid #2563eb;
+      margin-bottom: 25px;
+    }
+    .status-check-header {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e40af;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .status-check-form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .status-check-form input {
+      flex: 1;
+      min-width: 220px;
+      padding: 11px 14px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 14.5px;
+      outline: none;
+    }
+    .status-check-form input:focus { border-color: #2563eb; }
+    .btn-check {
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      padding: 11px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14.5px;
+      transition: 0.2s;
+    }
+    .btn-check:hover { background: #1d4ed8; }
+
+    /* Invitation Card Styles */
+    #statusResultBox {
+      display: none;
+      margin-top: 20px;
+    }
+    .invitation-card {
+      background: #fffdf7;
+      border: 3px solid #b45309;
+      outline: 2px dashed #f59e0b;
+      outline-offset: -8px;
+      border-radius: 16px;
+      padding: 35px 25px;
+      box-shadow: 0 12px 35px rgba(180, 83, 9, 0.12);
+      position: relative;
+      overflow: hidden;
+      color: #1e293b;
+    }
+    .invitation-card::after {
+      content: "৫০";
+      position: absolute;
+      top: 52%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 170px;
+      font-weight: 900;
+      color: rgba(217, 119, 6, 0.04);
+      z-index: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+    .inv-content {
+      position: relative;
+      z-index: 2;
+    }
+    .inv-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: #94a3b8;
+      border-bottom: 1px solid #fef3c7;
+      padding-bottom: 6px;
+      margin-bottom: 15px;
+    }
+    .inv-header {
+      text-align: center;
+      border-bottom: 2px dashed #f59e0b;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
+    .inv-bismillah {
+      font-size: 16px;
+      color: #166534;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .inv-inst-name {
+      font-size: 22px;
+      font-weight: 900;
+      color: #1e3a8a;
+    }
+    .inv-title-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%);
+      color: #ffffff;
+      padding: 4px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 800;
+      margin-top: 8px;
+      letter-spacing: 0.5px;
+    }
+    .inv-body {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .inv-photo-wrap {
+      text-align: center;
+      flex: 0 0 110px;
+    }
+    .inv-photo {
+      width: 105px;
+      height: 125px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 3px solid #f59e0b;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: block;
+      background: #f1f5f9;
+    }
+    .inv-details {
+      flex: 1;
+      min-width: 230px;
+    }
+    .inv-salutation {
+      font-size: 15px;
+      color: #64748b;
+      font-style: italic;
+    }
+    .inv-guest-name {
+      font-size: 24px;
+      font-weight: 900;
+      color: #0f172a;
+      margin: 2px 0 6px 0;
+    }
+    .inv-guest-info {
+      font-size: 13.5px;
+      color: #334155;
+      line-height: 1.6;
+    }
+    .inv-qr-wrap {
+      text-align: center;
+      flex: 0 0 95px;
+    }
+    .inv-qr-img {
+      border: 1px solid #e2e8f0;
+      padding: 3px;
+      background: #fff;
+      border-radius: 6px;
+      width: 85px;
+      height: 85px;
+      display: block;
+    }
+    .inv-text-letter {
+      background: rgba(254, 243, 199, 0.45);
+      padding: 12px 16px;
+      border-radius: 8px;
+      border-left: 4px solid #f59e0b;
+      font-size: 13.5px;
+      line-height: 1.7;
+      text-align: justify;
+      color: #334155;
+      margin-bottom: 20px;
+    }
+    .inv-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px dashed #cbd5e1;
+      padding-top: 15px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .inv-seal {
+      text-align: left;
+      font-size: 12px;
+    }
+    .inv-seal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #dcfce7;
+      border: 1px solid #86efac;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-top: 4px;
+    }
+    .inv-signature {
+      text-align: right;
+      font-size: 12.5px;
+      color: #475569;
+    }
+    .inv-signature strong {
+      display: block;
+      color: #0f172a;
+      font-size: 13.5px;
+    }
+    .btn-download-inv {
+      width: 100%;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff;
+      border: none;
+      padding: 13px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.2s;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+    .btn-download-inv:hover { opacity: 0.95; }
 
     .info-grid {
       display: grid;
@@ -205,26 +442,74 @@
       gap: 5px;
     }
 
+    .payment-instruction-card {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      color: #1e3a8a;
+    }
+    
+    .copyable-number-btn {
+      background: #1e3a8a;
+      color: #ffffff;
+      padding: 5px 14px;
+      border-radius: 8px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      border: 2px solid #2563eb;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(30, 58, 138, 0.25);
+      margin: 4px 0;
+    }
+    .copyable-number-btn:hover { background: #2563eb; }
+
+    .amount-highlight {
+      background: #dc2626;
+      color: #ffffff;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 800;
+    }
+
+    #copyToast {
+      display: none;
+      background: #15803d;
+      color: #ffffff;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 13.5px;
+      font-weight: 700;
+      margin-top: 8px;
+      text-align: center;
+    }
+
     .pay-methods {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
       margin-bottom: 15px;
     }
     .pay-opt {
       border: 1.5px solid #cbd5e1;
       border-radius: 8px;
-      padding: 10px 8px;
+      padding: 12px 10px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       cursor: pointer;
       background: #fff;
-      font-size: 13.5px;
-      font-weight: 600;
+      font-size: 14px;
+      font-weight: 700;
       transition: 0.2s;
     }
-    .pay-opt input { cursor: pointer; }
+    .pay-opt input { cursor: pointer; transform: scale(1.2); }
     .pay-opt:hover { border-color: #2563eb; background: #eff6ff; }
 
     .photo-preview { display: flex; align-items: center; gap: 15px; margin-top: 10px; }
@@ -232,7 +517,7 @@
     .preview-box img { width: 100%; height: 100%; object-fit: cover; }
     
     .btn-submit {
-      width: 100%; background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: #ffffff; border: none; padding: 15px; border-radius: 8px; font-size: 17px; font-weight: 700; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); margin-top: 10px;
+      width: 100%; background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: #ffffff; border: none; padding: 15px; border-radius: 8px; font-size: 17px; font-weight: 700; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); margin-top: 15px;
     }
     .btn-submit:hover { opacity: 0.95; }
     .btn-submit:disabled { background: #94a3b8; cursor: not-allowed; }
@@ -279,6 +564,20 @@
   </header>
 
   <main class="container">
+
+    <!-- Registration Status & Digital Invitation Card Section -->
+    <section class="status-check-card">
+      <div class="status-check-header">
+        <span>💌</span> পূর্বে রেজিস্ট্রেশন করে থাকলে স্ট্যাটাস ও অফিসিয়াল আমন্ত্রণপত্র দেখুন:
+      </div>
+      <div class="status-check-form">
+        <input type="tel" id="checkPhoneInput" placeholder="আপনার নিবন্ধিত মোবাইল নম্বর দিন...">
+        <button type="button" class="btn-check" id="btnCheckStatus" onclick="checkUserStatus()">আমন্ত্রণপত্র খুঁজুন</button>
+      </div>
+
+      <div id="statusResultBox"></div>
+    </section>
+
     <section class="info-grid">
       <div class="info-card">
         <h3 class="card-title"><span>🏛️</span> আমাদের গৌরবময় পথচলা</h3>
@@ -389,30 +688,52 @@
           </div>
         </div>
 
+        <!-- রেজিস্ট্রেশন চাঁদা ও পেমেন্ট বক্স (১০০০/= ফি, বিকাশ ১০২০ ও নগদ ১০১৫) -->
         <div class="payment-box">
           <div class="fee-badge-container">
             <span class="title">💳 রেজিস্ট্রেশন চাঁদা পরিশোধের মাধ্যম</span>
-            <span class="fee-tag">ফি: ৫০০/= (পাঁচশত টাকা)</span>
+            <span class="fee-tag">ফি: ১০০০/= (এক হাজার টাকা)</span>
+          </div>
+
+          <!-- পেমেন্ট ইন্সট্রাকশন বক্স (Click to Copy সহ) -->
+          <div class="payment-instruction-card">
+            <div>
+              📌 <strong>পার্সোনাল Send Money নম্বর (ক্লিক করলেই কপি হবে):</strong><br>
+              <button type="button" class="copyable-number-btn" onclick="copyPaymentNumber()" title="ক্লিক করে নম্বরটি কপি করুন">
+                <span>01705369861</span>
+                <span style="font-size: 13px; background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 4px;">📋 কপি করুন</span>
+              </button>
+            </div>
+
+            <div id="copyToast">✅ আপনার Send Money নম্বর কপি হয়েছে! বিকাশ/নগদ অ্যাপে পেস্ট করে নিশ্চিন্তে টাকা পাঠান।</div>
+
+            <div style="margin-top: 10px;" id="feeInstruction">
+              বিকাশ (bKash) পার্সোনাল নম্বরে খরচ সহ <span class="amount-highlight">১০২০ টাকা</span> Send Money করুন।
+            </div>
           </div>
 
           <div class="pay-methods">
-            <label class="pay-opt"><input type="radio" name="payMethod" value="বিকাশ (bKash)" checked onchange="handlePaymentChange(this.value)"> বিকাশ</label>
-            <label class="pay-opt"><input type="radio" name="payMethod" value="নগদ (Nagad)" onchange="handlePaymentChange(this.value)"> নগদ</label>
-            <label class="pay-opt"><input type="radio" name="payMethod" value="রকেট (Rocket)" onchange="handlePaymentChange(this.value)"> রকেট</label>
-            <label class="pay-opt"><input type="radio" name="payMethod" value="উপায় (Upay)" onchange="handlePaymentChange(this.value)"> উপায়</label>
-            <label class="pay-opt"><input type="radio" name="payMethod" value="ব্যাংক (Bank)" onchange="handlePaymentChange(this.value)"> ব্যাংক</label>
-            <label class="pay-opt"><input type="radio" name="payMethod" value="মাদ্রাসার অফিসে সরাসরি" onchange="handlePaymentChange(this.value)"> অফিসে জমা</label>
+            <label class="pay-opt">
+              <input type="radio" name="payMethod" value="বিকাশ (bKash)" checked onchange="updatePaymentMethod(this.value)"> 
+              বিকাশ (Send Money ১০২০ টাকা)
+            </label>
+            <label class="pay-opt">
+              <input type="radio" name="payMethod" value="নগদ (Nagad)" onchange="updatePaymentMethod(this.value)"> 
+              নগদ (Send Money ১০১৫ টাকা)
+            </label>
           </div>
 
           <div id="onlinePaymentFields">
             <div class="form-group">
               <label>ট্রানজেকশন আইডি (TrxID) <span class="required">*</span></label>
-              <input type="text" id="trxId" placeholder="৫০০ টাকা পরিশোধের TrxID লিখুন (যেমন: 9J7X8KL9)">
+              <input type="text" id="trxId" placeholder="Send Money করার পর প্রাপ্ত TrxID লিখুন (যেমন: 9J7X8KL9)" required autocomplete="off">
+              <!-- Live Database TrxID Verification Message Box -->
+              <div id="trxCheckStatus" style="font-size: 13px; font-weight: 700; margin-top: 6px; display: none;"></div>
             </div>
 
             <div class="form-group">
               <label>পেমেন্ট স্লিপ / স্ক্রিনশট <span class="required">*</span></label>
-              <input type="file" id="payProof" accept="image/*">
+              <input type="file" id="payProof" accept="image/*" required>
               <div class="photo-preview">
                 <div class="preview-box" id="payProofPreview" style="width: 140px; height: 90px;">স্লিপ নেই</div>
                 <small style="color: #64748b;">(সফল পেমেন্টের স্ক্রিনশট বা রসিদ আপলোড করুন)</small>
@@ -421,7 +742,8 @@
           </div>
         </div>
 
-        <button type="submit" id="btnSubmit" class="btn-submit">৫০০/- টাকা ফি সহ নিবন্ধন সম্পন্ন করুন</button>
+        <!-- Registration Button initially hidden until TrxID is successfully verified -->
+        <button type="submit" id="btnSubmit" class="btn-submit" style="display: none;">১০০০/- টাকা ফি সহ নিবন্ধন সম্পন্ন করুন</button>
         <div id="statusMsg" class="status-msg"></div>
       </form>
     </section>
@@ -439,7 +761,7 @@
       </div>
       
       <div style="margin-top: 10px;">
-        <a href="https://wa.me/8801615450447?text=আসসালামু%20আলাইকুম,%20মাদ্রাসার%20সুবর্ণজয়ন্তী%20রেজিস্ট্রেশন%20সিস্টেম%20পর্যবেক্ষণ%20টিমের%20সাথে%20যোগাযোগ।" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; color: #16a34a; font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid #bbf7d0; background: #f0fdf4; padding: 5px 14px; border-radius: 20px;">
+        <a href="https://wa.me/8801757248673?text=আসসালামু%20আলাইকুম,%20মাদ্রাসার%20সুবর্ণজয়ন্তী%20রেজিস্ট্রেশন%20সিস্টেম%20পর্যবেক্ষণ%20টিমের%20সাথে%20যোগাযোগ।" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; color: #16a34a; font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid #bbf7d0; background: #f0fdf4; padding: 5px 14px; border-radius: 20px;">
           <span>💬</span> অফিশিয়াল কারিগরি সেল
         </a>
       </div>
@@ -454,6 +776,15 @@
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxhGJXqi5sqTO-WrAO5oGgiQxFfRKJ7lOA7M7XUS3LqLTnCgOjMqoDInP2TsvXU5l3hOw/exec';
 
+    function copyPaymentNumber() {
+      const num = "01705369861";
+      navigator.clipboard.writeText(num).then(() => {
+        const toast = document.getElementById("copyToast");
+        toast.style.display = "block";
+        setTimeout(() => { toast.style.display = "none"; }, 4500);
+      }).catch(err => { alert("নম্বর কপি হয়েছে: 01705369861"); });
+    }
+
     const bnToEnDigits = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
     function toEnglishDigits(str) {
       return (str || '').toString().replace(/[০-৯]/g, w => bnToEnDigits[w]);
@@ -461,6 +792,11 @@
 
     const phoneInput = document.getElementById('phone');
     phoneInput.addEventListener('input', function() {
+      this.value = toEnglishDigits(this.value).replace(/[^0-9+]/g, '');
+    });
+
+    const checkPhoneInput = document.getElementById('checkPhoneInput');
+    checkPhoneInput.addEventListener('input', function() {
       this.value = toEnglishDigits(this.value).replace(/[^0-9+]/g, '');
     });
 
@@ -511,16 +847,258 @@
       }
     }
 
-    function handlePaymentChange(method) {
-      const onlineBox = document.getElementById('onlinePaymentFields');
-      const trxInput = document.getElementById('trxId');
-      if (method === 'মাদ্রাসার অফিসে সরাসরি') {
-        onlineBox.style.display = 'none';
-        trxInput.required = false;
-      } else {
-        onlineBox.style.display = 'block';
-        trxInput.required = true;
+    function updatePaymentMethod(method) {
+      const feeText = document.getElementById('feeInstruction');
+      if (method === 'বিকাশ (bKash)') {
+        feeText.innerHTML = 'বিকাশ (bKash) পার্সোনাল নম্বরে খরচ সহ <span class="amount-highlight">১০২০ টাকা</span> Send Money করুন।';
+      } else if (method === 'নগদ (Nagad)') {
+        feeText.innerHTML = 'নগদ (Nagad) পার্সোনাল নম্বরে খরচ সহ <span class="amount-highlight">১০১৫ টাকা</span> Send Money করুন।';
       }
+    }
+
+    // Convert external URLs to Data URL (Base64) to prevent CORS blanking in html2canvas
+    async function toDataURL(url) {
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      } catch (e) {
+        return url;
+      }
+    }
+
+    // Status & Digital Invitation Card Generator
+    function checkUserStatus() {
+      let qPhone = toEnglishDigits(document.getElementById('checkPhoneInput').value.trim()).replace(/^'+/, '');
+      if (!qPhone) {
+        alert("অনুগ্রহ করে আপনার মোবাইল নম্বরটি লিখুন!");
+        return;
+      }
+      if (qPhone.length === 10 && qPhone.startsWith('1')) qPhone = '0' + qPhone;
+
+      const btn = document.getElementById('btnCheckStatus');
+      const resultBox = document.getElementById('statusResultBox');
+      btn.disabled = true;
+      btn.innerText = 'খোঁজা হচ্ছে...';
+      resultBox.style.display = 'block';
+      resultBox.innerHTML = '<div style="text-align:center; color:#64748b; padding:15px;">মাদ্রাসার কেন্দ্রীয় ডাটাবেজে আপনার আমন্ত্রণপত্র খোঁজা হচ্ছে, অপেক্ষা করুন...</div>';
+
+      fetch(SCRIPT_URL)
+        .then(res => res.json())
+        .then(async data => {
+          btn.disabled = false;
+          btn.innerText = 'আমন্ত্রণপত্র খুঁজুন';
+
+          const student = data.find(s => {
+            let sp = (s.phone || '').toString().trim().replace(/^'+/, '');
+            if (sp.length === 10 && sp.startsWith('1')) sp = '0' + sp;
+            return sp === qPhone;
+          });
+
+          if (!student) {
+            resultBox.innerHTML = '<div style="background:#fee2e2; color:#dc2626; padding:14px; border-radius:8px; font-weight:700; text-align:center;">❌ এই মোবাইল নম্বরে কোনো রেজিস্ট্রেশন তথ্য পাওয়া যায়নি। অনুগ্রহ করে নিচে ফরমটি পূরণ করে নিবন্ধন করুন।</div>';
+            return;
+          }
+
+          const st = student.status || 'Pending';
+          let photoId = '';
+          if (student.photoLink && student.photoLink.includes('/d/')) {
+            photoId = student.photoLink.split('/d/')[1].split('/')[0];
+          }
+          const rawImgUrl = photoId ? `https://lh3.googleusercontent.com/d/${photoId}` : 'https://via.placeholder.com/105x125?text=Photo';
+          const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=SIDM-VERIFIED-${student.phone}`;
+
+          if (st === 'Pending') {
+            resultBox.innerHTML = `
+              <div style="background:#fef3c7; border:1.5px solid #f59e0b; border-radius:10px; padding:18px; text-align:center;">
+                <h3 style="color:#b45309; font-size:18px; margin-bottom:6px;">⏳ আপনার পেমেন্ট যাচাই প্রক্রিয়াধীন রয়েছে</h3>
+                <p style="color:#475569; font-size:14px;">শ্রদ্ধেয় <strong>${student.name}</strong>, আপনার নিবন্ধন তথ্য ও TrxID (${student.trxId || 'N/A'}) গৃহীত হয়েছে। মাদ্রাসা কমিটি ফি যাচাই সম্পন্ন করলেই আপনার আকর্ষণীয় <strong>অফিসিয়াল ডিজিটাল আমন্ত্রণপত্রটি</strong> সক্রিয় হবে।</p>
+              </div>
+            `;
+            return;
+          }
+
+          if (st === 'Rejected') {
+            resultBox.innerHTML = `
+              <div style="background:#fee2e2; border:1.5px solid #dc2626; border-radius:10px; padding:18px; text-align:center;">
+                <h3 style="color:#b91c1c; font-size:18px; margin-bottom:6px;">❌ রেজিস্ট্রেশন ও পেমেন্ট যাচাইয়ে অমিল</h3>
+                <p style="color:#475569; font-size:14px;">শ্রদ্ধেয় <strong>${student.name}</strong>, আপনার পেমেন্ট বা তথ্যে অসঙ্গতি থাকায় অনুমোদন করা সম্ভব হয়নি। অনুগ্রহ করে মাদ্রাসা অফিসে অথবা কারিগরি সেলে যোগাযোগ করুন।</p>
+              </div>
+            `;
+            return;
+          }
+
+          resultBox.innerHTML = '<div style="text-align:center; color:#2563eb; padding:15px; font-weight:700;">আমন্ত্রণপত্র প্রস্তুত করা হচ্ছে...</div>';
+          const [base64StudentPhoto, base64QrCode] = await Promise.all([
+            toDataURL(rawImgUrl),
+            toDataURL(qrCodeUrl)
+          ]);
+
+          resultBox.innerHTML = `
+            <div class="invitation-card" id="printableCard">
+              <div class="inv-content">
+                <div class="inv-meta">
+                  <span>ডকুমেন্ট আইডি: SIDM-50-${student.phone.slice(-4)}</span>
+                  <span>ইস্যু: সুবর্ণজয়ন্তী পরিষদ</span>
+                </div>
+
+                <div class="inv-header">
+                  <div class="inv-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+                  <div class="inv-inst-name">স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা</div>
+                  <div style="font-size:13px; color:#64748b;">স্বস্তিপুর, কুষ্টিয়া সদর, কুষ্টিয়া</div>
+                  <div><span class="inv-title-badge">⚜️ সুবর্ণজয়ন্তী উৎসবের বিশেষ আমন্ত্রণপত্র ⚜️</span></div>
+                </div>
+
+                <div class="inv-body">
+                  <div class="inv-photo-wrap">
+                    <img class="inv-photo" src="${base64StudentPhoto}" alt="ছবি" crossorigin="anonymous">
+                  </div>
+                  <div class="inv-details">
+                    <div class="inv-salutation">সম্মানিত প্রাক্তন শিক্ষার্থী,</div>
+                    <div class="inv-guest-name">${student.name}</div>
+                    <div class="inv-guest-info">
+                      <div><strong>পিতার নাম:</strong> ${student.fatherName}</div>
+                      <div><strong>দাখিল/এসএসসি পাসের সন:</strong> ${student.passingYear} (ব্যাচ: ${student.batch})</div>
+                      <div><strong>বর্তমান পেশা:</strong> ${student.profession}</div>
+                      <div><strong>মোবাইল নম্বর:</strong> ${student.phone}</div>
+                    </div>
+                  </div>
+                  <div class="inv-qr-wrap">
+                    <img class="inv-qr-img" src="${base64QrCode}" alt="QR Code" crossorigin="anonymous">
+                    <div style="font-size:10px; color:#64748b; margin-top:3px; font-weight:700;">ডিজিটাল ভেরিফাইড</div>
+                  </div>
+                </div>
+
+                <div class="inv-text-letter">
+                  আসসালামু আলাইকুম ওয়া রাহমাতুল্লাহ। স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসার গৌরবময় পথচলার ৫০ বছর পূর্তি উপলক্ষে আয়োজিত <strong>"সুবর্ণজয়ন্তী উৎসব"</strong>-এ আপনাকে মাদ্রাসার পক্ষ থেকে অত্যন্ত প্রীতি ও আনন্দের সাথে সাদর আমন্ত্রণ জানাচ্ছি। আপনার উপস্থিতি আমাদের এই মিলনমেলাকে আরও মহিমান্বিত ও স্মরণীয় করে তুলবে।
+                </div>
+
+                <div class="inv-footer">
+                  <div class="inv-seal">
+                    <div style="color:#0f172a; font-weight:700;">রেজিস্ট্রেশন ফি: ১০০০/= পরিশোধিত</div>
+                    <div class="inv-seal-badge">
+                      <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; background:#16a34a; color:#fff; border-radius:50%; font-size:10px; font-weight:900;">✔</span>
+                      <span style="color:#15803d; font-weight:800; font-size:12px;">অনুমোদিত ও নিবন্ধিত প্রতিনিধি</span>
+                    </div>
+                  </div>
+                  <div class="inv-signature">
+                    <strong>আহ্বায়ক ও মাদ্রাসা কর্তৃপক্ষ</strong>
+                    <span>সুবর্ণজয়ন্তী উদযাপন পরিষদ</span>
+                    <div style="font-size: 11px; color: #64748b; margin-top: 4px; font-style: italic;">
+                      (এটি সিস্টেম জেনারেটেড ডিজিটাল কপি, কোনো স্বাক্ষরের প্রয়োজন নেই)
+                    </div>
+                  </div>
+                </div>
+
+                <div style="border-top: 1px dotted #cbd5e1; margin-top: 14px; padding-top: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #64748b; flex-wrap: wrap; gap: 6px;">
+                  <div>
+                    কারিগরি তত্ত্বাবধানে: <strong style="color: #1e3a8a; letter-spacing: 0.5px;">🛡️ RS BD SOFT</strong>
+                  </div>
+                  <div style="font-style: italic; font-size: 10px; color: #94a3b8;">
+                    IT & Software Oversight Cell
+                  </div>
+                </div>
+
+                <button type="button" class="btn-download-inv" id="btnDownloadJpg" onclick="downloadCardAsJpg('${student.name}')">
+                  🖼️ আমন্ত্রণপত্রটি ইমেজ (JPG) হিসেবে ডাউনলোড করুন
+                </button>
+              </div>
+            </div>
+          `;
+        })
+        .catch(err => {
+          btn.disabled = false;
+          btn.innerText = 'আমন্ত্রণপত্র খুঁজুন';
+          resultBox.innerHTML = '<div style="color:#dc2626; text-align:center;">সার্ভারের সাথে সংযোগ পাওয়া যায়নি। কিছুক্ষণ পর আবার চেষ্টা করুন।</div>';
+        });
+    }
+
+    function downloadCardAsJpg(studentName) {
+      const cardElement = document.getElementById('printableCard');
+      const downloadBtn = document.getElementById('btnDownloadJpg');
+      downloadBtn.style.display = 'none';
+
+      html2canvas(cardElement, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#fffdf7'
+      }).then(canvas => {
+        downloadBtn.style.display = 'flex';
+
+        const link = document.createElement('a');
+        link.download = `Amontron_Patra_${studentName.replace(/\s+/g, '_')}.jpg`;
+        link.href = canvas.toDataURL('image/jpeg', 0.95);
+        link.click();
+      }).catch(err => {
+        downloadBtn.style.display = 'flex';
+        alert('ছবি ডাউনলোড করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।');
+        console.error(err);
+      });
+    }
+
+    /* --- Live Database TrxID Duplicate Verification Logic --- */
+    let isTrxValid = false;
+    let trxCheckTimer = null;
+    const trxInput = document.getElementById('trxId');
+    const trxStatusMsg = document.getElementById('trxCheckStatus');
+    const submitBtn = document.getElementById('btnSubmit');
+
+    trxInput.addEventListener('input', function() {
+      const val = this.value.trim().toUpperCase();
+      this.value = val;
+      clearTimeout(trxCheckTimer);
+
+      if (val.length < 6) {
+        trxStatusMsg.style.display = 'block';
+        trxStatusMsg.style.color = '#d97706';
+        trxStatusMsg.innerHTML = '⚠️ অনুগ্রহ করে সঠিক ট্রানজেকশন আইডি লিখুন (কমপক্ষে ৬ ডিজিট)';
+        submitBtn.style.display = 'none';
+        isTrxValid = false;
+        return;
+      }
+
+      trxStatusMsg.style.display = 'block';
+      trxStatusMsg.style.color = '#2563eb';
+      trxStatusMsg.innerHTML = '⏳ আপনার ট্রানজেকশন আইডি ডাটাবেজের সাথে যাচাই করা হচ্ছে, অনুগ্রহ করে সময় দিন...';
+      submitBtn.style.display = 'none';
+
+      trxCheckTimer = setTimeout(() => {
+        verifyTrxWithDatabase(val);
+      }, 600);
+    });
+
+    function verifyTrxWithDatabase(trx) {
+      fetch(`${SCRIPT_URL}?checkTrx=${encodeURIComponent(trx)}&_t=${Date.now()}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.isDuplicate) {
+            trxStatusMsg.style.display = 'block';
+            trxStatusMsg.style.color = '#dc2626';
+            trxStatusMsg.innerHTML = '❌ এই TrxID (' + trx + ') ইতিপূর্বে ডাটাবেজে ব্যবহৃত হয়েছে! ডুপ্লিকেট পেমেন্ট আইডি গ্রহণযোগ্য নয়।';
+            submitBtn.style.display = 'none';
+            isTrxValid = false;
+          } else {
+            trxStatusMsg.style.display = 'block';
+            trxStatusMsg.style.color = '#16a34a';
+            trxStatusMsg.innerHTML = '✅ ট্রানজেকশন আইডি ডাটাবেজে সফলভাবে ভেরিফাইড হয়েছে! এখন আপনি নিবন্ধন সম্পন্ন করতে পারবেন।';
+            submitBtn.style.display = 'block';
+            submitBtn.style.background = 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)';
+            isTrxValid = true;
+          }
+        })
+        .catch(err => {
+          trxStatusMsg.style.display = 'block';
+          trxStatusMsg.style.color = '#dc2626';
+          trxStatusMsg.innerHTML = '⚠️ ডাটাবেজ যাচাইয়ে সংযোগ পেতে সমস্যা হচ্ছে। পুনরায় চেষ্টা করুন।';
+          submitBtn.style.display = 'none';
+          isTrxValid = false;
+        });
     }
 
     let base64Photo = '';
@@ -552,13 +1130,17 @@
     document.getElementById('regForm').addEventListener('submit', function(e) {
       e.preventDefault();
 
+      if (!isTrxValid) {
+        alert('অনুগ্রহ করে ট্রানজেকশন আইডি ডাটাবেজ যাচাই সম্পন্ন হওয়া পর্যন্ত অপেক্ষা করুন!');
+        return;
+      }
+
       if (!base64Photo) {
         alert('অনুগ্রহ করে আপনার একটি পাসপোর্ট সাইজ ছবি নির্বাচন করুন!');
         return;
       }
 
-      const payMethod = document.querySelector('input[name="payMethod"]:checked').value;
-      if (payMethod !== 'মাদ্রাসার অফিসে সরাসরি' && !base64PayProof) {
+      if (!base64PayProof) {
         alert('অনুগ্রহ করে পেমেন্ট স্লিপ বা স্ক্রিনশট আপলোড করুন!');
         return;
       }
@@ -574,6 +1156,8 @@
       btnSubmit.innerText = 'অপেক্ষা করুন, তথ্য ও চাঁদা স্লিপ জমা হচ্ছে...';
       statusMsg.innerText = '';
 
+      const payMethod = document.querySelector('input[name="payMethod"]:checked').value;
+
       const payload = {
         name: document.getElementById('name').value.trim(),
         fatherName: document.getElementById('fatherName').value.trim(),
@@ -586,7 +1170,7 @@
         photoData: base64Photo,
         photoType: document.getElementById('photo').files[0].type,
         payMethod: payMethod,
-        trxId: document.getElementById('trxId').value.trim(),
+        trxId: document.getElementById('trxId').value.trim().toUpperCase(),
         payProofData: base64PayProof,
         payProofType: document.getElementById('payProof').files[0] ? document.getElementById('payProof').files[0].type : ''
       };
@@ -598,7 +1182,7 @@
       .then(res => res.json())
       .then(data => {
         btnSubmit.disabled = false;
-        btnSubmit.innerText = 'ডেমো ৫০০/- টাকা ফি সহ নিবন্ধন সম্পন্ন করুন';
+        btnSubmit.innerText = '১০০০/- টাকা ফি সহ নিবন্ধন সম্পন্ন করুন';
 
         if (data.status === 'success') {
           statusMsg.className = 'status-msg success';
@@ -606,8 +1190,12 @@
           document.getElementById('regForm').reset();
           document.getElementById('previewContainer').innerHTML = 'ছবি নেই';
           document.getElementById('payProofPreview').innerHTML = 'স্লিপ নেই';
+          trxStatusMsg.style.display = 'none';
+          btnSubmit.style.display = 'none';
+          isTrxValid = false;
           base64Photo = '';
           base64PayProof = '';
+          updatePaymentMethod('বিকাশ (bKash)');
         } else {
           statusMsg.className = 'status-msg error';
           statusMsg.innerText = 'ত্রুটি: ' + data.message;
@@ -615,7 +1203,7 @@
       })
       .catch(err => {
         btnSubmit.disabled = false;
-        btnSubmit.innerText = '৫০০/- টাকা ফি সহ নিবন্ধন সম্পন্ন করুন';
+        btnSubmit.innerText = '১০০০/- টাকা ফি সহ নিবন্ধন সম্পন্ন করুন';
         statusMsg.className = 'status-msg error';
         statusMsg.innerText = 'সার্ভারে সংযোগ পেতে সমস্যা হয়েছে। আবার চেষ্টা করুন।';
         console.error(err);

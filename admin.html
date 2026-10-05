@@ -4,274 +4,480 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>এডমিন প্যানেল - সুবর্ণজয়ন্তী উৎসব</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background: #f8fafc; padding: 25px 15px; color: #1e293b; }
-    
-    .header-box { text-align: center; margin-bottom: 25px; }
-    .header-box h1 { color: #1e3a8a; font-size: 26px; font-weight: 800; margin-bottom: 4px; }
-    .header-box p { color: #64748b; font-size: 15px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    body { background: #f1f5f9; color: #0f172a; padding: 20px 15px; }
 
-    /* Login Modal */
-    #loginModal {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75);
-      display: flex; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(4px);
+    .top-bar {
+      max-width: 1300px;
+      margin: 0 auto 20px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
     }
-    .login-card { background: #fff; padding: 35px 30px; border-radius: 14px; width: 340px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-    .login-card input { width: 100%; padding: 12px; margin: 15px 0; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 15px; outline: none; }
-    .login-card input:focus { border-color: #2563eb; }
-    .login-card button { width: 100%; padding: 12px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-    .login-card button:hover { background: #1d4ed8; }
+    .top-bar h1 { font-size: 20px; font-weight: 800; color: #1e3a8a; }
+    .top-bar p { font-size: 13px; color: #64748b; margin-top: 2px; }
 
-    /* Controls Bar */
-    .controls { max-width: 1280px; margin: 0 auto 25px auto; }
-    .search-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .search-inputs { display: flex; gap: 10px; flex-wrap: wrap; }
-    .search-inputs input { padding: 10px 16px; border: 1.5px solid #cbd5e1; border-radius: 8px; min-width: 250px; font-size: 14px; background: #fff; outline: none; }
-    .search-inputs input:focus { border-color: #2563eb; }
-    
-    .status-filter-tabs { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 12px; }
-    .tab-btn {
-      background: #e2e8f0; border: none; padding: 8px 18px; border-radius: 20px; font-size: 13.5px; font-weight: 700; cursor: pointer; color: #475569; transition: 0.2s;
+    .stats-container {
+      max-width: 1300px;
+      margin: 0 auto 16px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
     }
-    .tab-btn.active { background: #1e40af; color: #fff; }
-    .tab-btn.pending { background: #fef3c7; color: #b45309; }
-    .tab-btn.received { background: #dcfce7; color: #15803d; }
-    .tab-btn.rejected { background: #fee2e2; color: #b91c1c; }
-    .tab-btn.active.pending { background: #d97706; color: #fff; }
-    .tab-btn.active.received { background: #16a34a; color: #fff; }
-    .tab-btn.active.rejected { background: #dc2626; color: #fff; }
-
-    .btn-action { color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
-    .btn-refresh { background: #10b981; }
-    .btn-refresh:hover { background: #059669; }
-    .btn-print { background: #0284c7; }
-    .btn-logout { background: #ef4444; }
-
-    /* Student Cards Grid */
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 22px; max-width: 1280px; margin: 0 auto; }
-    
-    /* Modern Polished Card */
-    .card {
+    .stat-box {
       background: #ffffff;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      border: 1px solid #e2e8f0;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      overflow: hidden;
-    }
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-    }
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 5px;
-      background: linear-gradient(90deg, #2563eb, #38bdf8);
-    }
-
-    .card-top { text-align: center; margin-bottom: 12px; }
-    .card-photo {
-      width: 110px;
-      height: 130px;
-      object-fit: cover;
       border-radius: 10px;
-      border: 2px solid #e2e8f0;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.06);
-      margin: 6px auto 10px auto;
-      display: block;
-    }
-    .card-name { font-size: 19px; font-weight: 800; color: #0f172a; margin-bottom: 4px; }
-    .batch-badge {
-      display: inline-block;
-      background: #f0f9ff;
-      color: #0284c7;
-      border: 1px solid #bae6fd;
-      padding: 3px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    /* Modern Structured Payment Section */
-    .pay-card-section {
-      background: #f8fafc;
+      padding: 14px 18px;
       border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 12px 14px;
-      margin: 12px 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     }
-    .pay-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      padding-bottom: 6px;
-      border-bottom: 1px dashed #cbd5e1;
-    }
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 11.5px;
-      font-weight: 800;
-    }
-    .status-Pending { background: #fef3c7; color: #b45309; }
-    .status-Received { background: #dcfce7; color: #15803d; }
-    .status-Rejected { background: #fee2e2; color: #b91c1c; }
+    .stat-title { font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-value { font-size: 22px; font-weight: 800; color: #0f172a; margin-top: 4px; }
+    .stat-sub { font-size: 11.5px; color: #94a3b8; }
+    .stat-box.received .stat-value { color: #16a34a; }
+    .stat-box.pending .stat-value { color: #d97706; }
+    .stat-box.rejected .stat-value { color: #dc2626; }
 
-    .fee-badge {
-      font-size: 12px;
+    .year-filter-card {
+      max-width: 1300px;
+      margin: 0 auto 18px auto;
+      background: #ffffff;
+      padding: 14px 18px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    .year-filter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .year-filter-header h3 {
+      font-size: 13.5px;
       font-weight: 800;
       color: #1e3a8a;
-      background: #dbeafe;
-      padding: 2px 8px;
-      border-radius: 6px;
     }
-
-    .pay-info-row {
-      font-size: 12.5px;
-      color: #475569;
-      line-height: 1.7;
+    .year-badges-scroll {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      max-height: 120px;
+      overflow-y: auto;
+      padding-top: 2px;
     }
-    .pay-info-row strong { color: #0f172a; }
-    .trx-tag {
-      background: #e2e8f0;
-      color: #0f172a;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: monospace;
-      font-size: 11.5px;
+    .year-btn {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #334155;
       font-weight: 700;
-    }
-    .btn-slip {
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      background: #3b82f6;
-      color: #fff !important;
-      padding: 4px 10px;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .year-btn:hover { background: #e2e8f0; border-color: #94a3b8; }
+    .year-btn.active { background: #1e40af; border-color: #1e40af; color: #ffffff; }
+    .year-count-badge {
+      background: #e2e8f0;
+      color: #0f172a;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .year-btn.active .year-count-badge { background: #ffffff; color: #1e40af; }
+
+    .table-controls {
+      max-width: 1300px;
+      margin: 0 auto 15px auto;
+      background: #ffffff;
+      padding: 14px 18px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .search-group { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; }
+    .search-group input {
+      padding: 8px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13.5px;
+      outline: none;
+      min-width: 220px;
+    }
+    .search-group input:focus { border-color: #2563eb; }
+    
+    .status-filter-pills { display: flex; gap: 6px; background: #f1f5f9; padding: 4px; border-radius: 8px; }
+    .filter-pill {
+      background: transparent; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12.5px; font-weight: 700; cursor: pointer; color: #64748b; transition: 0.15s;
+    }
+    .filter-pill.active { background: #ffffff; color: #0f172a; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+    .btn-tool {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #fff;
+    }
+    .btn-scan { background: #7c3aed; }
+    .btn-scan:hover { background: #6d28d9; }
+    .btn-excel { background: #059669; }
+    .btn-refresh { background: #2563eb; }
+    .btn-refresh:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-logout { background: #ef4444; }
+
+    .table-wrapper {
+      max-width: 1300px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      overflow-x: auto;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13.5px; }
+    th {
+      background: #f8fafc;
+      padding: 12px 16px;
+      font-weight: 700;
+      color: #475569;
+      border-bottom: 1px solid #e2e8f0;
+      white-space: nowrap;
+    }
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #1e293b;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    tr:hover { background: #f8fafc; }
+
+    .user-cell { display: flex; align-items: center; gap: 10px; }
+    .user-thumb {
+      width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #e2e8f0; background: #e2e8f0;
+    }
+    .user-meta .name { font-weight: 700; color: #0f172a; font-size: 14px; }
+    .user-meta .sub { font-size: 11.5px; color: #64748b; }
+
+    .status-select {
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 12px;
+      border: 1px solid transparent;
+      outline: none;
+      cursor: pointer;
+    }
+    .status-select.Pending { background: #fef3c7; color: #b45309; border-color: #fde68a; }
+    .status-select.Received { background: #dcfce7; color: #15803d; border-color: #bbf7d0; }
+    .status-select.Rejected { background: #fee2e2; color: #b91c1c; border-color: #fecaca; }
+
+    .action-icons { display: flex; gap: 6px; align-items: center; }
+    .icon-link {
+      padding: 5px 8px;
       border-radius: 6px;
       font-size: 11.5px;
       font-weight: 700;
       text-decoration: none;
-      margin-top: 6px;
-      transition: 0.2s;
-    }
-    .btn-slip:hover { background: #1d4ed8; }
-
-    /* Student General Details */
-    .card-info {
-      font-size: 13px;
-      color: #475569;
-      line-height: 1.6;
-      padding: 4px 0 10px 0;
-    }
-    .card-info p { margin-bottom: 2px; }
-    .card-info strong { color: #1e293b; }
-
-    /* Bottom Status Action Buttons */
-    .status-control-box {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
-      margin-top: 10px;
-      padding-top: 12px;
-      border-top: 1px solid #f1f5f9;
-    }
-    .status-btn {
-      border: none;
-      padding: 8px 4px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
       color: #fff;
-      display: flex;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      border: none;
+    }
+    .icon-card { background: #f59e0b; color: #fff; }
+    .icon-card:hover { background: #d97706; }
+    .icon-view { background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; }
+    .icon-view:hover { background: #e2e8f0; }
+    .icon-call { background: #0284c7; }
+    .icon-wa { background: #16a34a; }
+
+    #detailModal, #cardModal, #scannerModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.7);
+      z-index: 1000;
       align-items: center;
       justify-content: center;
-      gap: 4px;
-      transition: opacity 0.2s, transform 0.1s;
+      padding: 15px;
     }
-    .status-btn:active { transform: scale(0.96); }
-    .btn-st-received { background: #16a34a; }
-    .btn-st-pending { background: #d97706; }
-    .btn-st-reject { background: #dc2626; }
-    .status-btn:hover { opacity: 0.92; }
+    .modal-box {
+      background: #ffffff;
+      width: 100%;
+      max-width: 580px;
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-close {
+      position: absolute; top: 14px; right: 16px; border: none; background: #e2e8f0; border-radius: 50%;
+      width: 28px; height: 28px; font-weight: 800; cursor: pointer; color: #475569;
+    }
 
-    @media print {
-      body { background: #fff; padding: 0; }
-      .controls, .header-box p, .status-control-box { display: none; }
-      .grid { display: block; }
-      .card { page-break-inside: avoid; margin-bottom: 18px; border: 1px solid #ccc; box-shadow: none; }
+    #reader {
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 10px;
     }
+    #scanResultCard {
+      display: none;
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+    }
+
+    .modal-user-header { display: flex; gap: 15px; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px; }
+    .modal-img { width: 75px; height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1; }
+    .modal-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; margin-bottom: 15px; }
+    .modal-info-grid strong { color: #475569; display: block; font-size: 11.5px; }
+    .modal-slip-preview {
+      width: 100%; max-height: 250px; object-fit: contain; border-radius: 8px; border: 1px dashed #cbd5e1; margin-top: 8px; background: #f8fafc;
+    }
+
+    .admin-invitation-card {
+      background: #fffdf7;
+      border: 3px solid #b45309;
+      outline: 2px dashed #f59e0b;
+      outline-offset: -8px;
+      border-radius: 16px;
+      padding: 30px 22px;
+      position: relative;
+      color: #1e293b;
+      overflow: hidden;
+    }
+    .admin-invitation-card::after {
+      content: "৫০";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 150px;
+      font-weight: 900;
+      color: rgba(217, 119, 6, 0.04);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .admin-inv-content { position: relative; z-index: 2; }
+    .admin-inv-meta { display: flex; justify-content: space-between; font-size: 11px; color: #94a3b8; border-bottom: 1px solid #fef3c7; padding-bottom: 4px; margin-bottom: 12px; }
+    .admin-inv-header { text-align: center; border-bottom: 2px dashed #f59e0b; padding-bottom: 12px; margin-bottom: 15px; }
+    .admin-inv-body { display: flex; gap: 15px; align-items: center; margin-bottom: 15px; flex-wrap: wrap; }
+    .admin-inv-photo { width: 95px; height: 115px; object-fit: cover; border-radius: 6px; border: 2.5px solid #f59e0b; }
+    .admin-inv-letter { background: rgba(254, 243, 199, 0.45); padding: 10px 14px; border-radius: 6px; border-left: 3px solid #f59e0b; font-size: 12.5px; line-height: 1.6; text-align: justify; margin-bottom: 15px; }
+    .admin-inv-footer { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px dashed #cbd5e1; padding-top: 12px; }
+
+    .login-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a;
+      display: flex; align-items: center; justify-content: center; z-index: 2000;
+    }
+    .login-dialog { background: #fff; padding: 30px; border-radius: 12px; width: 320px; text-align: center; }
   </style>
 </head>
 <body>
 
-  <!-- Admin Login Modal -->
-  <div id="loginModal">
-    <div class="login-card">
-      <h3 style="margin-bottom: 8px; color: #1e293b;">অ্যাডমিন লগইন</h3>
-      <input type="password" id="adminPass" placeholder="পাসওয়ার্ড দিন (Enter চাপুন)" autofocus>
-      <button onclick="checkLogin()">লগইন করুন</button>
+  <div id="loginModal" class="login-overlay">
+    <div class="login-dialog">
+      <h3 style="margin-bottom: 6px; color: #0f172a;">অ্যাডমিন লগইন</h3>
+      <p style="font-size: 12px; color: #64748b; margin-bottom: 14px;">সুবর্ণজয়ন্তী ডাটাবেজ ড্যাশবোর্ড</p>
+      <input type="password" id="adminPass" placeholder="পাসওয়ার্ড লিখুন" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:6px; margin-bottom:12px; outline:none;" autofocus>
+      <button onclick="checkLogin()" style="width:100%; padding:10px; background:#2563eb; color:#fff; border:none; border-radius:6px; font-weight:700; cursor:pointer;">লগইন করুন</button>
       <div id="loginErr" style="color: red; font-size: 12px; margin-top: 8px;"></div>
     </div>
   </div>
 
-  <div class="header-box">
-    <h1>স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা</h1>
-    <p>সুবর্ণজয়ন্তী উৎসব — শিক্ষার্থী ও চাঁদা ডাটাবেজ ড্যাশবোর্ড</p>
-  </div>
-
-  <div class="controls">
-    <div class="search-row">
-      <div class="search-inputs">
-        <input type="text" id="searchInput" placeholder="নাম, মোবাইল বা TrxID দিয়ে খুঁজুন..." onkeyup="filterData()">
-        <input type="text" id="batchInput" placeholder="ব্যাচ খুঁজুন (যেমন: 2024 বা ২০২৪)..." onkeyup="filterData()">
-      </div>
-      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-        <button class="btn-action btn-refresh" id="refreshBtn" onclick="loadRegistrations()">🔄 রিফ্রেশ</button>
-        <button class="btn-action btn-print" onclick="window.print()">🖨️ প্রিন্ট</button>
-        <button class="btn-action btn-logout" onclick="logoutAdmin()">🚪 লগআউট</button>
-      </div>
-    </div>
-
-    <!-- Status Tabs -->
-    <div class="status-filter-tabs">
-      <button class="tab-btn active" onclick="setStatusFilter('ALL', this)">সব শিক্ষার্থী (<span id="countAll">0</span>)</button>
-      <button class="tab-btn pending" onclick="setStatusFilter('Pending', this)">⏳ Pending (<span id="countPending">0</span>)</button>
-      <button class="tab-btn received" onclick="setStatusFilter('Received', this)">✅ Received (<span id="countReceived">0</span>)</button>
-      <button class="tab-btn rejected" onclick="setStatusFilter('Rejected', this)">❌ Rejected (<span id="countRejected">0</span>)</button>
+  <div id="scannerModal" onclick="closeScannerModal()">
+    <div class="modal-box" style="max-width: 480px;" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeScannerModal()">✕</button>
+      <h3 style="color:#1e3a8a; margin-bottom:4px;">📷 গেট পাস QR কোড স্ক্যানার</h3>
+      <p style="font-size:12px; color:#64748b;">ক্যামেরার সামনে আমন্ত্রণপত্রের QR কোডটি ধরুন</p>
+      <div id="reader"></div>
+      <div id="scanResultCard"></div>
     </div>
   </div>
 
-  <div id="loader" style="text-align: center; color: #64748b; margin-top: 40px;">ডাটা লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...</div>
-  <div class="grid" id="studentsContainer"></div>
+  <div id="detailModal" onclick="closeDetailModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeDetailModal()">✕</button>
+      <div class="modal-user-header">
+        <img id="mPhoto" src="" alt="Photo" class="modal-img">
+        <div>
+          <h3 id="mName" style="color:#0f172a; font-size:18px;"></h3>
+          <p id="mBatch" style="color:#2563eb; font-size:12.5px; font-weight:700;"></p>
+          <p id="mPhone" style="color:#64748b; font-size:12.5px;"></p>
+        </div>
+      </div>
+      <div class="modal-info-grid">
+        <div><strong>পিতার নাম:</strong> <span id="mFather"></span></div>
+        <div><strong>মাতার নাম:</strong> <span id="mMother"></span></div>
+        <div><strong>পেশা:</strong> <span id="mProfession"></span></div>
+        <div><strong>পেমেন্ট মাধ্যম:</strong> <span id="mPayMethod"></span></div>
+        <div><strong>TrxID:</strong> <span id="mTrx" style="font-family:monospace; font-weight:700;"></span></div>
+        <div><strong>বর্তমান ঠিকানা:</strong> <span id="mAddress"></span></div>
+      </div>
+      <div style="margin-top: 10px;">
+        <span style="font-size:12px; font-weight:700; color:#475569;">পেমেন্ট স্লিপ:</span>
+        <img id="mSlip" src="" alt="Slip" class="modal-slip-preview">
+        <div style="text-align:right; margin-top:6px;">
+          <a id="mSlipLink" href="" target="_blank" style="font-size:11.5px; color:#2563eb; text-decoration:none; font-weight:700;">🔗 ড্রাইভে সরাসরি দেখতে ক্লিক করুন</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="cardModal" onclick="closeCardModal()">
+    <div class="modal-box" style="max-width: 650px;" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeCardModal()">✕</button>
+      <div id="adminCardRenderArea"></div>
+      <div style="margin-top: 15px; display: flex; gap: 10px;">
+        <button id="btnAdminDownloadJpg" onclick="downloadAdminCardJpg()" style="flex:1; padding:12px; background:#16a34a; color:#fff; border:none; border-radius:8px; font-weight:700; cursor:pointer;">📥 কার্ডটি JPG হিসেবে ডাউনলোড করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <header class="top-bar">
+    <div>
+      <h1>স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা</h1>
+      <p>সুবর্ণজয়ন্তী উৎসব — এডমিন প্যানেল</p>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <button class="btn-tool btn-scan" onclick="openScannerModal()">📷 QR স্ক্যানার</button>
+      <button class="btn-tool btn-excel" onclick="exportToCSV()">📥 এক্সেল</button>
+      <button class="btn-tool btn-refresh" id="refreshBtn" onclick="loadRegistrations()">🔄 রিফ্রেশ</button>
+      <button class="btn-tool btn-logout" onclick="logoutAdmin()">🚪 প্রস্থান</button>
+    </div>
+  </header>
+
+  <section class="stats-container">
+    <div class="stat-box received">
+      <div class="stat-title">প্রাপ্ত চাঁদা (Received)</div>
+      <div class="stat-value"><span id="sumReceived">০</span> ৳</div>
+      <div class="stat-sub"><span id="countReceived">0</span> জন শিক্ষার্থী</div>
+    </div>
+    <div class="stat-box pending">
+      <div class="stat-title">অপেক্ষমাণ (Pending)</div>
+      <div class="stat-value"><span id="sumPending">০</span> ৳</div>
+      <div class="stat-sub"><span id="countPending">0</span> জন শিক্ষার্থী</div>
+    </div>
+    <div class="stat-box rejected">
+      <div class="stat-title">বাতিল (Rejected)</div>
+      <div class="stat-value"><span id="sumRejected">০</span> ৳</div>
+      <div class="stat-sub"><span id="countRejected">0</span> জন শিক্ষার্থী</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-title">সর্বমোট নিবন্ধিত</div>
+      <div class="stat-value"><span id="countTotal">0</span> জন</div>
+      <div class="stat-sub">সম্ভাব্য মোট: <span id="sumTotal">০</span> ৳</div>
+    </div>
+  </section>
+
+  <section class="year-filter-card">
+    <div class="year-filter-header">
+      <h3>📅 দাখিল / এসএসসি পাসের সন অনুযায়ী শিক্ষার্থী সংখ্যা</h3>
+      <small style="color: #64748b; font-size: 11.5px;">(যেকোনো সালে ক্লিক করলে সেই সালের সব শিক্ষার্থী তালিকায় চলে আসবে)</small>
+    </div>
+    <div class="year-badges-scroll" id="yearBadgesContainer">
+      <span style="font-size: 12px; color: #94a3b8;">সন লোড হচ্ছে...</span>
+    </div>
+  </section>
+
+  <section class="table-controls">
+    <div class="search-group">
+      <input type="text" id="searchInput" placeholder="নাম, মোবাইল বা TrxID..." onkeyup="filterData()">
+      <span id="activeYearNotice" style="font-size:12px; color:#1e40af; font-weight:700; align-self:center; display:none;"></span>
+    </div>
+    <div class="status-filter-pills">
+      <button class="filter-pill active" onclick="setStatusFilter('ALL', this)">সব (<span id="tabCountAll">0</span>)</button>
+      <button class="filter-pill" onclick="setStatusFilter('Pending', this)">Pending (<span id="tabCountPending">0</span>)</button>
+      <button class="filter-pill" onclick="setStatusFilter('Received', this)">Received (<span id="tabCountReceived">0</span>)</button>
+      <button class="filter-pill" onclick="setStatusFilter('Rejected', this)">Rejected (<span id="tabCountRejected">0</span>)</button>
+    </div>
+  </section>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>শিক্ষার্থীর নাম ও তথ্য</th>
+          <th>পাসের সন / ব্যাচ</th>
+          <th>মোবাইল নম্বর</th>
+          <th>পেমেন্ট ও TrxID</th>
+          <th>স্ট্যাটাস</th>
+          <th>অ্যাকশন বাটনসমূহ</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <tr>
+          <td colspan="6" style="text-align: center; padding: 40px; color: #64748b;">ডাটা লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxhGJXqi5sqTO-WrAO5oGgiQxFfRKJ7lOA7M7XUS3LqLTnCgOjMqoDInP2TsvXU5l3hOw/exec';
-    const ADMIN_PASSWORD = 'admin123'; 
+    const ADMIN_PASSWORD = 'admin123';
+    const REG_FEE = 1000;
 
     let allStudents = [];
-    let currentStatusTab = 'ALL';
+    let currentStatusFilter = 'ALL';
+    let selectedPassingYear = '';
+    let currentModalStudent = null;
+    let html5QrScanner = null;
 
     const enToBnMap = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
     const bnToEnMap = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
 
-    function convertEnToBn(str) { return (str || '').toString().replace(/[0-9]/g, w => enToBnMap[w]); }
-    function convertBnToEn(str) { return (str || '').toString().replace(/[০-৯]/g, w => bnToEnMap[w]); }
+    function toBnNum(num) {
+      return (num || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',').replace(/[0-9]/g, w => enToBnMap[w] || w);
+    }
+    function toEnStr(str) {
+      return (str || '').toString().replace(/[০-৯]/g, w => bnToEnMap[w] || w);
+    }
 
-    document.getElementById('adminPass').addEventListener('keypress', function(e) {
+    async function toDataURL(url) {
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      } catch (e) {
+        return url;
+      }
+    }
+
+    document.getElementById('adminPass').addEventListener('keypress', e => {
       if (e.key === 'Enter') checkLogin();
     });
 
@@ -283,8 +489,8 @@
     };
 
     function checkLogin() {
-      const pass = document.getElementById('adminPass').value;
-      if (pass === ADMIN_PASSWORD) {
+      const p = document.getElementById('adminPass').value;
+      if (p === ADMIN_PASSWORD) {
         sessionStorage.setItem('isAdminLoggedIn', 'true');
         document.getElementById('loginModal').style.display = 'none';
         loadRegistrations();
@@ -298,156 +504,228 @@
       location.reload();
     }
 
-    function loadRegistrations() {
-      const loader = document.getElementById('loader');
-      const refreshBtn = document.getElementById('refreshBtn');
-      loader.style.display = 'block';
-      loader.innerText = 'নতুন ডাটা লোড হচ্ছে...';
-      refreshBtn.disabled = true;
+    async function loadRegistrations() {
+      const btn = document.getElementById('refreshBtn');
+      const tbody = document.getElementById('tableBody');
+      
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '⏳ লোড হচ্ছে...';
+      }
 
-      fetch(SCRIPT_URL)
-        .then(res => res.json())
-        .then(data => {
-          allStudents = data;
-          loader.style.display = 'none';
-          refreshBtn.disabled = false;
-          updateTabCounts();
-          filterData();
-        })
-        .catch(err => {
-          loader.innerText = 'তথ্য লোড করতে ব্যর্থ হয়েছে!';
-          refreshBtn.disabled = false;
-          console.error(err);
-        });
+      try {
+        const cacheBusterUrl = SCRIPT_URL + (SCRIPT_URL.includes('?') ? '&' : '?') + 'nocache=' + Date.now();
+        const res = await fetch(cacheBusterUrl);
+        if (!res.ok) throw new Error("HTTP Status " + res.status);
+        const data = await res.json();
+
+        allStudents = Array.isArray(data) ? data : [];
+        updateSummary();
+        renderYearBadges();
+        filterData();
+      } catch (err) {
+        console.error("Fetch Error:", err);
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#dc2626; padding:30px;">
+            তথ্য লোড করতে সমস্যা হয়েছে! (${err.message})<br>
+            <small style="color:#64748b;">পুনরায় চেষ্টা করতে "🔄 রিফ্রেশ" বাটনে ক্লিক করুন।</small>
+          </td></tr>`;
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '🔄 রিফ্রেশ';
+        }
+      }
     }
 
-    function updateTabCounts() {
-      document.getElementById('countAll').innerText = allStudents.length;
-      document.getElementById('countPending').innerText = allStudents.filter(s => (s.status || 'Pending') === 'Pending').length;
-      document.getElementById('countReceived').innerText = allStudents.filter(s => s.status === 'Received').length;
-      document.getElementById('countRejected').innerText = allStudents.filter(s => s.status === 'Rejected').length;
+    function updateSummary() {
+      const rec = allStudents.filter(s => (s.status || '') === 'Received').length;
+      const pen = allStudents.filter(s => (s.status || 'Pending') === 'Pending').length;
+      const rej = allStudents.filter(s => (s.status || '') === 'Rejected').length;
+      const tot = allStudents.length;
+
+      document.getElementById('sumReceived').innerText = toBnNum(rec * REG_FEE);
+      document.getElementById('countReceived').innerText = rec;
+
+      document.getElementById('sumPending').innerText = toBnNum(pen * REG_FEE);
+      document.getElementById('countPending').innerText = pen;
+
+      document.getElementById('sumRejected').innerText = toBnNum(rej * REG_FEE);
+      document.getElementById('countRejected').innerText = rej;
+
+      document.getElementById('countTotal').innerText = tot;
+      document.getElementById('sumTotal').innerText = toBnNum((rec + pen) * REG_FEE);
+
+      document.getElementById('tabCountAll').innerText = tot;
+      document.getElementById('tabCountPending').innerText = pen;
+      document.getElementById('tabCountReceived').innerText = rec;
+      document.getElementById('tabCountRejected').innerText = rej;
+    }
+
+    function renderYearBadges() {
+      const container = document.getElementById('yearBadgesContainer');
+      const yearCountMap = {};
+
+      allStudents.forEach(s => {
+        let yr = toEnStr((s.passingYear || s.batch || '').toString().trim());
+        if (yr) {
+          yearCountMap[yr] = (yearCountMap[yr] || 0) + 1;
+        }
+      });
+
+      const sortedYears = Object.keys(yearCountMap).sort((a, b) => {
+        return (parseInt(b) || 0) - (parseInt(a) || 0);
+      });
+
+      container.innerHTML = '';
+
+      if (sortedYears.length === 0) {
+        container.innerHTML = '<span style="font-size:12px; color:#94a3b8;">কোনো পাসের সনের তথ্য নেই।</span>';
+        return;
+      }
+
+      const allBtn = document.createElement('button');
+      allBtn.className = `year-btn ${selectedPassingYear === '' ? 'active' : ''}`;
+      allBtn.innerHTML = `সব সন <span class="year-count-badge">${allStudents.length}</span>`;
+      allBtn.onclick = () => selectYearFilter('');
+      container.appendChild(allBtn);
+
+      sortedYears.forEach(year => {
+        const btn = document.createElement('button');
+        btn.className = `year-btn ${selectedPassingYear === year ? 'active' : ''}`;
+        btn.innerHTML = `সন ${toBnNum(year)} <span class="year-count-badge">${yearCountMap[year]} জন</span>`;
+        btn.onclick = () => selectYearFilter(year);
+        container.appendChild(btn);
+      });
+    }
+
+    function selectYearFilter(year) {
+      selectedPassingYear = (selectedPassingYear === year) ? '' : year;
+      
+      const notice = document.getElementById('activeYearNotice');
+      if (selectedPassingYear) {
+        notice.style.display = 'inline';
+        notice.innerText = `🔍 ফিল্টার: ${toBnNum(selectedPassingYear)} সনের শিক্ষার্থী`;
+      } else {
+        notice.style.display = 'none';
+      }
+
+      renderYearBadges();
+      filterData();
     }
 
     function setStatusFilter(status, btn) {
-      currentStatusTab = status;
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      currentStatusFilter = status;
+      document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       filterData();
     }
 
-    function renderCards(list) {
-      const container = document.getElementById('studentsContainer');
-      container.innerHTML = '';
+    function filterData() {
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+
+      const filtered = allStudents.filter(s => {
+        const st = s.status || 'Pending';
+        if (currentStatusFilter !== 'ALL' && st !== currentStatusFilter) return false;
+
+        if (selectedPassingYear !== '') {
+          const itemYear = toEnStr((s.passingYear || s.batch || '').toString().trim());
+          if (itemYear !== selectedPassingYear) return false;
+        }
+
+        const name = (s.name || '').toLowerCase();
+        const phone = (s.phone || '').toString();
+        const trx = (s.trxId || '').toLowerCase();
+
+        return !q || name.includes(q) || phone.includes(q) || trx.includes(q);
+      });
+
+      renderTable(filtered);
+    }
+
+    function renderTable(list) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
 
       if (list.length === 0) {
-        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 40px; font-weight: 600;">কোনো শিক্ষার্থীর তথ্য পাওয়া যায়নি।</div>';
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:35px; color:#64748b;">কোনো শিক্ষার্থীর তথ্য পাওয়া যায়নি।</td></tr>`;
         return;
       }
 
-      list.forEach((student) => {
+      list.forEach((s) => {
+        const originalIndex = allStudents.indexOf(s);
         let photoId = '';
-        if (student.photoLink && student.photoLink.includes('/d/')) {
-          photoId = student.photoLink.split('/d/')[1].split('/')[0];
+        if (s.photoLink && s.photoLink.includes('/d/')) {
+          photoId = s.photoLink.split('/d/')[1].split('/')[0];
         }
-        const imgUrl = photoId ? `https://lh3.googleusercontent.com/d/${photoId}` : 'https://via.placeholder.com/110x130?text=No+Photo';
+        const thumbUrl = photoId ? `https://lh3.googleusercontent.com/d/${photoId}` : 'https://via.placeholder.com/38?text=User';
 
-        const st = student.status || 'Pending';
+        const rawPhone = (s.phone || '').toString().trim().replace(/^'+/, '');
+        const cleanPhone = (rawPhone.length === 10 && rawPhone.startsWith('1')) ? '0' + rawPhone : rawPhone;
+        const intlPhone = cleanPhone.startsWith('0') ? '88' + cleanPhone : cleanPhone;
+        const st = s.status || 'Pending';
 
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <div>
-            <div class="card-top">
-              <img class="card-photo" src="${imgUrl}" alt="ছবি" onerror="this.src='https://via.placeholder.com/110x130?text=Error'">
-              <div class="card-name">${student.name}</div>
-              <span class="batch-badge">ব্যাচ: ${student.batch} (পাস: ${student.passingYear})</span>
-            </div>
+        const waMsg = encodeURIComponent(
+          `আসসালামু আলাইকুম ${s.name} ভাই,\n` +
+          `স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসার সুবর্ণজয়ন্তী উৎসবের জন্য আপনার রেজিস্ট্রেশন ফি ১০০০/- টাকা সফলভাবে অনুমোদিত হয়েছে (Received)।\n\n` +
+          `লিংক থেকে আপনার অফিসিয়াল ডিজিটাল আমন্ত্রণপত্রটি (JPG) ডাউনলোড করে নিন:\n` +
+          `https://tinyurl.com/swastipur/\n\n` +
+          `ধন্যবাদান্তে,\nসুবর্ণজয়ন্তী পরিষদ`
+        );
 
-            <!-- Polished Payment Details -->
-            <div class="pay-card-section">
-              <div class="pay-header">
-                <span class="status-badge status-${st}">● ${st}</span>
-                <span class="fee-badge">ফি: ৫০০/=</span>
-              </div>
-              <div class="pay-info-row">
-                <div><strong>মাধ্যম:</strong> ${student.payMethod || 'অজানা'}</div>
-                <div><strong>TrxID:</strong> <span class="trx-tag">${student.trxId || 'N/A'}</span></div>
-                ${student.payProofLink && student.payProofLink !== 'N/A' ? 
-                  `<div style="margin-top: 4px;"><a href="${student.payProofLink}" target="_blank" class="btn-slip">🖼️ স্লিপ দেখুন</a></div>` : 
-                  '<div style="color:#94a3b8; font-size:11.5px; margin-top:2px;">(স্লিপ নেই)</div>'}
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <div class="user-cell">
+              <img src="${thumbUrl}" alt="Photo" class="user-thumb" onerror="this.src='https://via.placeholder.com/38?text=User'">
+              <div class="user-meta">
+                <div class="name">${s.name || 'নাম নেই'}</div>
+                <div class="sub">পিতা: ${s.fatherName || '-'} | পেশা: ${s.profession || '-'}</div>
               </div>
             </div>
-
-            <!-- Student Info -->
-            <div class="card-info">
-              <p><strong>পিতা:</strong> ${student.fatherName}</p>
-              <p><strong>মোবাইল:</strong> ${student.phone}</p>
-              <p><strong>পেশা:</strong> ${student.profession}</p>
-              <p><strong>ঠিকানা:</strong> ${student.address}</p>
+          </td>
+          <td>
+            <div style="font-weight:700; color:#1e40af;">সন: ${s.passingYear || '-'}</div>
+            <div style="font-size:11.5px; color:#64748b;">ব্যাচ: ${s.batch || '-'}</div>
+          </td>
+          <td>
+            <span style="font-family:monospace; font-weight:700;">${cleanPhone}</span>
+          </td>
+          <td>
+            <div><strong>${s.payMethod || 'পেমেন্ট'}</strong> (১০০০/=)</div>
+            <div style="font-family:monospace; font-size:11.5px; color:#64748b;">Trx: ${s.trxId || 'N/A'}</div>
+          </td>
+          <td>
+            <select class="status-select ${st}" onchange="changeStatus('${cleanPhone}', '${s.name}', this.value, this)">
+              <option value="Pending" ${st === 'Pending' ? 'selected' : ''}>⏳ Pending</option>
+              <option value="Received" ${st === 'Received' ? 'selected' : ''}>✓ Received</option>
+              <option value="Rejected" ${st === 'Rejected' ? 'selected' : ''}>✕ Rejected</option>
+            </select>
+          </td>
+          <td>
+            <div class="action-icons">
+              <button class="icon-link icon-card" onclick="openInvitationCardModal(${originalIndex})" title="আমন্ত্রণপত্র দেখুন ও ডাউনলোড করুন">💌 কার্ড</button>
+              <button class="icon-link icon-view" onclick="openDetailModal(${originalIndex})" title="পেমেন্ট স্লিপ ও ফর্ম">👁 বিস্তারিত</button>
+              <a href="tel:${cleanPhone}" class="icon-link icon-call" title="কল">📞</a>
+              <a href="https://wa.me/${intlPhone}${st === 'Received' ? '?text=' + waMsg : ''}" target="_blank" class="icon-link icon-wa" title="WhatsApp">${st === 'Received' ? '📩 লিংক' : '💬'}</a>
             </div>
-          </div>
-
-          <!-- Bottom Action Buttons -->
-          <div class="status-control-box">
-            <button class="status-btn btn-st-received" onclick="changeStatus('${student.phone}', '${student.name}', 'Received')">✓ Received</button>
-            <button class="status-btn btn-st-pending" onclick="changeStatus('${student.phone}', '${student.name}', 'Pending')">⏳ Pending</button>
-            <button class="status-btn btn-st-reject" onclick="changeStatus('${student.phone}', '${student.name}', 'Rejected')">✕ Reject</button>
-          </div>
+          </td>
         `;
-        container.appendChild(card);
+        tbody.appendChild(tr);
       });
     }
 
-    function filterData() {
-      const rawQuery = document.getElementById('searchInput').value.trim().toLowerCase();
-      const rawBatchQuery = document.getElementById('batchInput').value.trim();
-
-      const queryEn = convertBnToEn(rawQuery);
-      const queryBn = convertEnToBn(rawQuery);
-      const batchEn = convertBnToEn(rawBatchQuery).toLowerCase();
-      const batchBn = convertEnToBn(rawBatchQuery);
-
-      const filtered = allStudents.filter(item => {
-        const itemStatus = item.status || 'Pending';
-        if (currentStatusTab !== 'ALL' && itemStatus !== currentStatusTab) {
-          return false;
-        }
-
-        const nameStr = (item.name || '').toLowerCase();
-        const phoneStr = (item.phone || '').toString();
-        const profStr = (item.profession || '').toLowerCase();
-        const trxStr = (item.trxId || '').toLowerCase();
-
-        const matchesGeneral = !rawQuery || 
-          nameStr.includes(rawQuery) || 
-          profStr.includes(rawQuery) || 
-          trxStr.includes(rawQuery) ||
-          phoneStr.includes(queryEn) || 
-          phoneStr.includes(queryBn);
-
-        const batchFullStr = (item.batch || '').toString();
-        const passYearStr = (item.passingYear || '').toString();
-
-        const matchesBatch = !rawBatchQuery ||
-          batchFullStr.includes(batchBn) ||
-          convertBnToEn(batchFullStr).toLowerCase().includes(batchEn) ||
-          passYearStr.includes(batchBn) ||
-          convertBnToEn(passYearStr).includes(batchEn);
-
-        return matchesGeneral && matchesBatch;
+    function changeStatus(phone, name, newStatus, selectEl) {
+      selectEl.className = `status-select ${newStatus}`;
+      const target = allStudents.find(s => {
+        const p = (s.phone || '').toString().trim().replace(/^'+/, '');
+        return p === phone && s.name === name;
       });
 
-      renderCards(filtered);
-    }
-
-    function changeStatus(phone, name, newStatus) {
-      if (!confirm(`আপনি কি এই শিক্ষার্থীর স্ট্যাটাস "${newStatus}" করতে চান?`)) return;
-
-      const target = allStudents.find(s => s.phone.toString() === phone.toString() && s.name.toString() === name.toString());
       if (target) {
         target.status = newStatus;
-        updateTabCounts();
-        filterData();
+        updateSummary();
       }
 
       fetch(SCRIPT_URL, {
@@ -459,18 +737,313 @@
           newStatus: newStatus
         })
       })
-      .then(res => res.json())
+      .then(r => r.json())
       .then(res => {
         if (res.status !== 'success') {
-          alert('স্ট্যাটাস আপডেট করতে সমস্যা হয়েছে!');
+          alert('স্ট্যাটাস আপডেট ব্যর্থ হয়েছে!');
           loadRegistrations();
         }
       })
-      .catch(err => {
-        console.error(err);
-        alert('সার্ভারে সংযোগ পেতে ব্যর্থ হয়েছে!');
+      .catch(() => alert('সার্ভার সংযোগ সমস্যা!'));
+    }
+
+    function openDetailModal(idx) {
+      const s = allStudents[idx];
+      if (!s) return;
+
+      let photoId = '';
+      if (s.photoLink && s.photoLink.includes('/d/')) {
+        photoId = s.photoLink.split('/d/')[1].split('/')[0];
+      }
+      const pUrl = photoId ? `https://lh3.googleusercontent.com/d/${photoId}` : 'https://via.placeholder.com/75x90?text=No+Photo';
+
+      let slipId = '';
+      if (s.payProofLink && s.payProofLink.includes('/d/')) {
+        slipId = s.payProofLink.split('/d/')[1].split('/')[0];
+      }
+      const sUrl = slipId ? `https://lh3.googleusercontent.com/d/${slipId}` : (s.payProofLink || '');
+
+      document.getElementById('mPhoto').src = pUrl;
+      document.getElementById('mName').innerText = s.name || '';
+      document.getElementById('mBatch').innerText = `পাসের সন: ${s.passingYear || '-'} (ব্যাচ: ${s.batch || '-'})`;
+      document.getElementById('mPhone').innerText = `মোবাইল: ${s.phone || ''}`;
+      document.getElementById('mFather').innerText = s.fatherName || '-';
+      document.getElementById('mMother').innerText = s.motherName || '-';
+      document.getElementById('mProfession').innerText = s.profession || '-';
+      document.getElementById('mPayMethod').innerText = s.payMethod || '-';
+      document.getElementById('mTrx').innerText = s.trxId || 'N/A';
+      document.getElementById('mAddress').innerText = s.address || '-';
+
+      const slipImg = document.getElementById('mSlip');
+      const slipLink = document.getElementById('mSlipLink');
+      if (sUrl && sUrl !== 'N/A') {
+        slipImg.src = sUrl;
+        slipImg.style.display = 'block';
+        slipLink.href = s.payProofLink;
+        slipLink.style.display = 'inline';
+      } else {
+        slipImg.style.display = 'none';
+        slipLink.style.display = 'none';
+      }
+
+      document.getElementById('detailModal').style.display = 'flex';
+    }
+
+    function closeDetailModal() {
+      document.getElementById('detailModal').style.display = 'none';
+    }
+
+    function openScannerModal() {
+      document.getElementById('scannerModal').style.display = 'flex';
+      const resultCard = document.getElementById('scanResultCard');
+      resultCard.style.display = 'none';
+      resultCard.innerHTML = '';
+
+      html5QrScanner = new Html5Qrcode("reader");
+      const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+      html5QrScanner.start({ facingMode: "environment" }, config, onScanSuccess)
+        .catch(err => {
+          console.error("Camera Start Error:", err);
+          document.getElementById('reader').innerHTML = '<div style="color:red; padding:15px; font-size:13px;">ক্যামেরা চালু করতে ব্রাউজারে ক্যামেরার অনুমতি দিন।</div>';
+        });
+    }
+
+    function onScanSuccess(decodedText) {
+      if (html5QrScanner) {
+        html5QrScanner.pause(true);
+      }
+
+      const resultCard = document.getElementById('scanResultCard');
+      resultCard.style.display = 'block';
+
+      let cleanPhone = '';
+      if (decodedText.includes('SIDM-VERIFIED-')) {
+        cleanPhone = decodedText.split('SIDM-VERIFIED-')[1].trim();
+      } else {
+        cleanPhone = decodedText.trim();
+      }
+
+      const student = allStudents.find(s => {
+        let p = (s.phone || '').toString().trim().replace(/^'+/, '');
+        if (p.length === 10 && p.startsWith('1')) p = '0' + p;
+        return p === cleanPhone;
       });
+
+      if (!student) {
+        resultCard.innerHTML = `
+          <div style="background:#fee2e2; border:1px solid #f87171; color:#b91c1c; padding:12px; border-radius:6px; text-align:center;">
+            <strong>❌ অবৈধ প্রবেশপত্র!</strong><br>
+            <span style="font-size:12px;">ডাটাবেজে এই নম্বরের (${cleanPhone}) কোনো বৈধ নিবন্ধন পাওয়া যায়নি।</span>
+            <div style="margin-top:10px;">
+              <button onclick="resumeScanning()" style="padding:6px 14px; background:#ef4444; color:#fff; border:none; border-radius:4px; font-size:12px; cursor:pointer;">পুনরায় স্ক্যান করুন</button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const st = student.status || 'Pending';
+      let statusHtml = '';
+      if (st === 'Received') {
+        statusHtml = `<span style="background:#dcfce7; color:#15803d; border:1px solid #86efac; padding:3px 10px; border-radius:15px; font-weight:800; font-size:12px;">✅ অনুমোদিত ও বৈধ (Received)</span>`;
+      } else if (st === 'Pending') {
+        statusHtml = `<span style="background:#fef3c7; color:#b45309; border:1px solid #fde68a; padding:3px 10px; border-radius:15px; font-weight:800; font-size:12px;">⏳ ফি যাচাই বাকি (Pending)</span>`;
+      } else {
+        statusHtml = `<span style="background:#fee2e2; color:#b91c1c; border:1px solid #fecaca; padding:3px 10px; border-radius:15px; font-weight:800; font-size:12px;">❌ বাতিলকৃত (Rejected)</span>`;
+      }
+
+      resultCard.innerHTML = `
+        <div style="border-left: 4px solid #16a34a; padding-left: 10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="font-size:16px; color:#0f172a;">${student.name}</strong>
+            ${statusHtml}
+          </div>
+          <div style="font-size:13px; color:#334155; line-height:1.6;">
+            <div><strong>পিতার নাম:</strong> ${student.fatherName || '-'}</div>
+            <div><strong>পাসের সন:</strong> ${student.passingYear || '-'} (ব্যাচ: ${student.batch || '-'})</div>
+            <div><strong>মোবাইল:</strong> ${cleanPhone}</div>
+            <div><strong>পেমেন্ট TrxID:</strong> <span style="font-family:monospace; background:#e2e8f0; padding:1px 5px; border-radius:3px;">${student.trxId || 'N/A'}</span></div>
+          </div>
+          <div style="margin-top:12px; display:flex; gap:8px;">
+            <button onclick="resumeScanning()" style="flex:1; padding:8px; background:#2563eb; color:#fff; border:none; border-radius:6px; font-weight:700; cursor:pointer;">পরবর্তী স্ক্যান করুন</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function resumeScanning() {
+      document.getElementById('scanResultCard').style.display = 'none';
+      if (html5QrScanner) {
+        html5QrScanner.resume();
+      }
+    }
+
+    function closeScannerModal() {
+      if (html5QrScanner) {
+        html5QrScanner.stop().then(() => {
+          html5QrScanner.clear();
+          document.getElementById('scannerModal').style.display = 'none';
+        }).catch(() => {
+          document.getElementById('scannerModal').style.display = 'none';
+        });
+      } else {
+        document.getElementById('scannerModal').style.display = 'none';
+      }
+    }
+
+    async function openInvitationCardModal(idx) {
+      const s = allStudents[idx];
+      if (!s) return;
+      currentModalStudent = s;
+
+      const cardArea = document.getElementById('adminCardRenderArea');
+      cardArea.innerHTML = '<div style="text-align:center; padding:30px; color:#2563eb; font-weight:700;">আমন্ত্রণপত্র প্রস্তুত হচ্ছে...</div>';
+      document.getElementById('cardModal').style.display = 'flex';
+
+      let photoId = '';
+      if (s.photoLink && s.photoLink.includes('/d/')) {
+        photoId = s.photoLink.split('/d/')[1].split('/')[0];
+      }
+      const rawImgUrl = photoId ? `https://lh3.googleusercontent.com/d/${photoId}` : 'https://via.placeholder.com/95x115?text=Photo';
+      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=SIDM-VERIFIED-${s.phone}`;
+
+      const [base64Photo, base64Qr] = await Promise.all([
+        toDataURL(rawImgUrl),
+        toDataURL(qrCodeUrl)
+      ]);
+
+      cardArea.innerHTML = `
+        <div class="admin-invitation-card" id="adminPrintableCard">
+          <div class="admin-inv-content">
+            <div class="admin-inv-meta">
+              <span>ডকুমেন্ট আইডি: SIDM-50-${(s.phone||'').slice(-4)}</span>
+              <span>ইস্যু: সুবর্ণজয়ন্তী পরিষদ</span>
+            </div>
+
+            <div class="admin-inv-header">
+              <div style="font-size:14px; color:#166534; font-weight:bold;">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+              <div style="font-size:18px; font-weight:900; color:#1e3a8a;">স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসা</div>
+              <div style="font-size:11.5px; color:#64748b;">স্বস্তিপুর, কুষ্টিয়া সদর, কুষ্টিয়া</div>
+              <div style="margin-top:4px;"><span style="background:linear-gradient(135deg,#b45309,#f59e0b); color:#fff; padding:3px 14px; border-radius:15px; font-size:12px; font-weight:800;">⚜ সুবর্ণজয়ন্তী উৎসবের বিশেষ আমন্ত্রণপত্র ⚜</span></div>
+            </div>
+
+            <div class="admin-inv-body">
+              <img class="admin-inv-photo" src="${base64Photo}" alt="Photo">
+              <div style="flex:1;">
+                <div style="font-size:13px; color:#64748b; font-style:italic;">সম্মানিত প্রাক্তন শিক্ষার্থী,</div>
+                <div style="font-size:20px; font-weight:900; color:#0f172a;">${s.name || 'নাম নেই'}</div>
+                <div style="font-size:12.5px; color:#334155; line-height:1.6; margin-top:4px;">
+                  <div><strong>পিতার নাম:</strong> ${s.fatherName || '-'}</div>
+                  <div><strong>দাখিল/এসএসসি পাসের সন:</strong> ${s.passingYear || '-'} (ব্যাচ: ${s.batch || '-'})</div>
+                  <div><strong>বর্তমান পেশা:</strong> ${s.profession || '-'}</div>
+                  <div><strong>মোবাইল নম্বর:</strong> ${s.phone || '-'}</div>
+                </div>
+              </div>
+              <div style="text-align:center;">
+                <img src="${base64Qr}" alt="QR" style="width:75px; height:75px; border:1px solid #e2e8f0; padding:2px; background:#fff; border-radius:6px;">
+                <div style="font-size:9.5px; color:#64748b; margin-top:2px; font-weight:700;">ডিজিটাল ভেরিফাইড</div>
+              </div>
+            </div>
+
+            <div class="admin-inv-letter">
+              আসসালামু আলাইকুম ওয়া রাহমাতুল্লাহ। স্বস্তিপুর ইসলামিয়া দাখিল মাদ্রাসার গৌরবময় পথচলার ৫০ বছর পূর্তি উপলক্ষে আয়োজিত <strong>"সুবর্ণজয়ন্তী উৎসব"</strong>-এ আপনাকে মাদ্রাসার পক্ষ থেকে অত্যন্ত প্রীতি ও আনন্দের সাথে সাদর আমন্ত্রণ জানাচ্ছি।
+            </div>
+
+            <div class="admin-inv-footer">
+              <div>
+                <div style="font-size:11px; font-weight:700;">রেজিস্ট্রেশন ফি: ১০০০/= পরিশোধিত</div>
+                <div style="display:inline-flex; align-items:center; gap:5px; background:#dcfce7; border:1px solid #86efac; padding:3px 8px; border-radius:5px; margin-top:3px;">
+                  <span style="width:14px; height:14px; background:#16a34a; color:#fff; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:9px;">✔</span>
+                  <span style="color:#15803d; font-weight:800; font-size:11px;">অনুমোদিত ও নিবন্ধিত প্রতিনিধি</span>
+                </div>
+              </div>
+              <div style="text-align:right; font-size:11.5px; color:#475569;">
+                <strong style="display:block; color:#0f172a;">আহ্বায়ক ও মাদ্রাসা কর্তৃপক্ষ</strong>
+                <span>সুবর্ণজয়ন্তী উদযাপন পরিষদ</span>
+                <div style="font-size:10px; color:#64748b; font-style:italic;">(কম্পিউটার জেনারেটেড কপি)</div>
+              </div>
+            </div>
+
+            <div style="border-top:1px dotted #cbd5e1; margin-top:10px; padding-top:6px; display:flex; justify-content:space-between; font-size:10.5px; color:#64748b;">
+              <div>কারিগরি তত্ত্বাবধানে: <strong style="color: #1e3a8a;">🛡️ RSB BD SOFT</strong></div>
+              <div style="font-style:italic; font-size:9.5px; color:#94a3b8;">IT & System Oversight</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function closeCardModal() {
+      document.getElementById('cardModal').style.display = 'none';
+    }
+
+    function downloadAdminCardJpg() {
+      const cardEl = document.getElementById('adminPrintableCard');
+      const btn = document.getElementById('btnAdminDownloadJpg');
+      btn.innerText = 'ডাউনলোড হচ্ছে...';
+      btn.disabled = true;
+
+      html2canvas(cardEl, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#fffdf7'
+      }).then(canvas => {
+        btn.innerText = '📥 কার্ডটি JPG হিসেবে ডাউনলোড করুন';
+        btn.disabled = false;
+
+        const link = document.createElement('a');
+        const studentName = currentModalStudent ? currentModalStudent.name : 'Student';
+        link.download = `Amontron_Patra_${studentName.replace(/\s+/g, '_')}.jpg`;
+        link.href = canvas.toDataURL('image/jpeg', 0.95);
+        link.click();
+      }).catch(err => {
+        btn.innerText = '📥 কার্ডটি JPG হিসেবে ডাউনলোড করুন';
+        btn.disabled = false;
+        alert('কার্ড তৈরিতে সমস্যা হয়েছে!');
+        console.error(err);
+      });
+    }
+
+    function exportToCSV() {
+      if (!allStudents || allStudents.length === 0) {
+        alert("ডাউনলোড করার মতো কোনো ডাটা নেই!");
+        return;
+      }
+
+      let csv = '\uFEFF';
+      csv += 'তারিখ,নাম,পিতার নাম,মাতার নাম,ব্যাচ,পাসের সন,পেশা,ঠিকানা,মোবাইল,পেমেন্ট মাধ্যম,TrxID,স্ট্যাটাস,পেমেন্ট স্লিপ,ছবির লিঙ্ক\n';
+
+      allStudents.forEach(s => {
+        let cleanPhone = (s.phone || '').toString().trim().replace(/^'+/, '');
+        if (cleanPhone.length === 10 && cleanPhone.startsWith('1')) cleanPhone = '0' + cleanPhone;
+
+        const row = [
+          `"${(s.timestamp || '').toString().replace(/"/g, '""')}"`,
+          `"${(s.name || '').replace(/"/g, '""')}"`,
+          `"${(s.fatherName || '').replace(/"/g, '""')}"`,
+          `"${(s.motherName || '').replace(/"/g, '""')}"`,
+          `"${(s.batch || '').toString().replace(/"/g, '""')}"`,
+          `"${(s.passingYear || '').toString().replace(/"/g, '""')}"`,
+          `"${(s.profession || '').replace(/"/g, '""')}"`,
+          `"${(s.address || '').replace(/"/g, '""')}"`,
+          `"=""${cleanPhone}"""`,
+          `"${(s.payMethod || '').replace(/"/g, '""')}"`,
+          `"${(s.trxId || '').replace(/"/g, '""')}"`,
+          `"${(s.status || 'Pending')}"`,
+          `"${(s.payProofLink || '')}"`,
+          `"${(s.photoLink || '')}"`
+        ];
+        csv += row.join(',') + '\n';
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `Swastipur_Madrasa_Registrations_${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}.csv`;
+      link.click();
     }
   </script>
 </body>
-</html>
+</html
